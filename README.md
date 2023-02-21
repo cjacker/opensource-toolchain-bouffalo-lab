@@ -80,17 +80,29 @@ If built successfully, the target file 'sipeed_debugger_plus_blink_bl702.bin' an
 
 
 # Programming
-There is a lot of programming utilies, such as [blisp](https://github.com/pine64/blisp). here we use official programming utility : '[bflb-mcu-tool](https://pypi.org/project/bflb-mcu-tool/)'.
+The official programming utility is '[bflb-mcu-tool](https://pypi.org/project/bflb-mcu-tool/)'. There are also a lot of third-party tools such as [blisp](https://github.com/pine64/blisp). 
 
 ## Installation
 
-bflb-mcu-tool is written in python:
+bflb-mcu-tool is written in python, install it as: 
 
 ```
 pip install bflb-mcu-tool
 ```
 
 And you should add `$HOME/.local/bin` to PATH env to find `bflb-mcu-tool` command.
+
+[blisp](https://github.com/pine64/blisp) is written  by Pine64 community, currently it can support BL60x and BL70x, and without support for BL616 and BL808, but still worth a try. to build and install it:
+
+```
+git clone --recursive https://github.com/pine64/blisp.git
+cd blisp
+git submodule update --init --recursive
+mkdir build && cd build
+cmake -DBLISP_BUILD_CLI=ON ..
+cmake --build .
+```
+
 
 ## Programming
 Use above 'sipeed_rv_debugger_plus_blink' as example, the target file if 'build/build_out/sipeed_debugger_plus_blink_bl702.bin'.
@@ -104,9 +116,14 @@ Bus 001 Device 067: ID ffff:ffff BLIOT CDC Virtual ComPort
 ```
 At the same time, there is a serial device `/dev/ttyACM0` created.
 
-Then you can download the firmware with `bflb-mcu-tool` installed before as:
+Then you can download the firmware with `bflb-mcu-tool` :
 ```
 ~/.local/bin/bflb-mcu-tool --chipname=bl702 --interface=uart --port=/dev/ttyACM0 --baudrate=2000000 --firmware=build/build_out/sipeed_debugger_plus_blink_bl702.bin
+```
+
+Or with `blisp`
+```
+blisp write -c bl70x -p /dev/ttyACM0 --reset build/build_out/sipeed_debugger_plus_blink_bl702.bin
 ```
 
 
