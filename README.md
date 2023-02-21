@@ -151,3 +151,15 @@ blisp write -c bl70x -p /dev/ttyACM0 --reset build/build_out/sipeed_debugger_plu
 ```
 
 
+## Debugging
+
+Default JTAG pin:
+
+|   CHIP/Pin    |  BL602/BL604  |  BL702/BL704/BL706 | BL616/BL618 |   BL808  |
+|:-------------:|:-------------:|:------------------:|:-----------:|:--------:|
+|TMS            |     GPIO12    |      GPIO0         |    GPIO0    |   GPIO6  |
+|TCK            |     GPIO14    |      GPIO2         |    GPIO1    |   GPIO12 |
+|TDO            |     GPIO11    |      GPIO9         |    GPIO2    |   GPIO7  |
+|TDI            |     GPIO17    |      GPIO1         |    GPIO3    |   GPIO13 |
+
+
