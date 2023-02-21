@@ -17,8 +17,12 @@ This tutorial will try best to cover these chips.
 - A dev board with BL chips from Bouffalo Lab
   + Sipeed rv debugger plus : BL702, this so called "debugger" is a mini BL702 board actually.
   + Sipeed M0Sense series : BL616
-  + Sipeed M1s : BL808
+  + Sipeed M1s or Pine64 ox64 : BL808
+  + various other boards
 
 # Toolchain overview:
-- Compiler : riscv gcc toolchain
+- Compiler : riscv 32/64 gcc toolchain
 - SDK : bl_mcu_sdk
+- Debugger : OpenOCD / gdb
+- Programming tool : bfld-mcu-tool
+
