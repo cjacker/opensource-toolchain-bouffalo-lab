@@ -15,9 +15,10 @@ This tutorial will try best to cover these chips.
 # Hardware prerequist:
 
 A dev board with BL chips from Bouffalo Lab
-  - Sipeed rv debugger plus : BL702, this so called "debugger" is a mini BL702 board actually.
-  - Sipeed M0Sense series : BL616
-  - Sipeed M1s or Pine64 ox64 : BL808
+  - [Sipeed rv debugger plus](https://github.com/sipeed/RV-Debugger-BL702) : BL702, this so called "debugger" is a mini BL702 board actually.
+  - [Sipeed M0](https://wiki.sipeed.com/hardware/en/maixzero/sense/maix_zero_sense.html) : BL702
+  - [Sipeed M0S](https://wiki.sipeed.com/hardware/en/maixzero/m0s/m0s.html) : BL616
+  - [Sipeed M1s](https://wiki.sipeed.com/hardware/en/maix/m1s/m1s_module.html) or [Pine64 Ox64](https://wiki.pine64.org/wiki/Ox64) : BL808
   - various other boards
 
 # Toolchain overview:
