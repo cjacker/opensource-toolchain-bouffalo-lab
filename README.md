@@ -27,6 +27,30 @@ A dev board with BL chips from Bouffalo Lab
 - Programming tool : bflb-mcu-tool
 - Debugger : OpenOCD / gdb
 
+# Compiler
+
+Not like usual RISC-V based MCU (such as CH32V / GD32V, etc), The toolchain setup for BL chips from Bouffalo Lab is a little bit complex. For BL60x/61x/70x, it's as simple as usual RISC-V based MCU, just require a 32bit 'riscv-none-embed' toolchain.
+
+But for BL808, since its 3 cores include a RV64GCV 480MHz core based on T-Head C906. It's 64bit general purpose CPU and have MMU, that means, it can run as baremetal and also able to run ordinary RISC-V Linux OS. Thus, For BL808, it need 3 toolchains.
+
+## RISC-V 32bit embeded gcc
+[xpack-dev-tools](https://github.com/xpack-dev-tools/riscv-none-embed-gcc-xpack) provde a prebuilt toolchain for riscv. you can download it from [here](https://github.com/xpack-dev-tools/riscv-none-embed-gcc-xpack). although the riscv-none-embed-gcc-xpack had been marked as deprecated, but you'd better stay with riscv gcc v10.2 due to the riscv '-march' changes happened in gcc v12.0 and above.
+
+After download:
+
+```
+sudo mkdir -p /opt/xpack-riscv-toolchain
+sudo tar xf xpack-riscv-none-embed-gcc-10.2.0-1.2-linux-x64.tar.gz -C /opt/xpack-riscv-toolchain --strip-components=1
+```
+
+and add `/opt/xpack-riscv-toolchain/bin` to PATH env according to your shell.
+
+**NOTE**, the triplet of xpack prebuilt toolchain is **`riscv-none-embed`**.
+
+## RISC-V 64bit embeded gcc
+
+## RISC-V 64bit linux gcc
+
 
 # SDK
 
