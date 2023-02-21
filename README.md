@@ -91,3 +91,21 @@ pip install bflb-mcu-tool
 
 And you should add `$HOME/.local/bin` to PATH env to find `bflb-mcu-tool` command.
 
+## Programming
+Use above 'sipeed_rv_debugger_plus_blink' as example, the target file if 'build/build_out/sipeed_debugger_plus_blink_bl702.bin'.
+
+**Hold the Boot button down and plug sipeed rv debugger plus to PC Host USB port**
+
+And run `lsusb`, you will find:
+
+```
+Bus 001 Device 067: ID ffff:ffff BLIOT CDC Virtual ComPort
+```
+At the same time, there is a serial device `/dev/ttyACM0` created.
+
+Then you can download the firmware with `bflb-mcu-tool` installed before as:
+```
+~/.local/bin/bflb-mcu-tool --chipname=bl702 --interface=uart --port=/dev/ttyACM0 --baudrate=2000000 --firmware=build/build_out/sipeed_debugger_plus_blink_bl702.bin
+```
+
+
