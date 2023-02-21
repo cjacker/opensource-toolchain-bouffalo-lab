@@ -14,11 +14,11 @@ This tutorial will try best to cover these chips.
 
 # Hardware prerequist:
 
-- A dev board with BL chips from Bouffalo Lab
-  + Sipeed rv debugger plus : BL702, this so called "debugger" is a mini BL702 board actually.
-  + Sipeed M0Sense series : BL616
-  + Sipeed M1s or Pine64 ox64 : BL808
-  + various other boards
+A dev board with BL chips from Bouffalo Lab
+  - Sipeed rv debugger plus : BL702, this so called "debugger" is a mini BL702 board actually.
+  - Sipeed M0Sense series : BL616
+  - Sipeed M1s or Pine64 ox64 : BL808
+  - various other boards
 
 # Toolchain overview:
 - Compiler : riscv 32/64 gcc toolchain
