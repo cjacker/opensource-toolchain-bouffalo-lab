@@ -31,7 +31,13 @@ A dev board with BL chips from Bouffalo Lab
 
 Not like usual RISC-V based MCU (such as CH32V / GD32V, etc), The toolchain setup for BL chips from Bouffalo Lab is a little bit complex. For BL60x/61x/70x, it's as simple as usual RISC-V based MCU, just require a 32bit 'riscv-none-embed' toolchain.
 
-But for BL808, since its 3 cores include a RV64GCV 480MHz core based on T-Head C906. It's 64bit general purpose CPU and have MMU, that means, it can run as baremetal and also able to run ordinary RISC-V Linux OS. Thus, For BL808, it may need setup 3 toolchains.
+**For BL808**, since it has 3 cores include a RV64GCV 480MHz core based on T-Head C906. It's 64bit general purpose CPU and have MMU, that means, it can run as baremetal and also able to run ordinary RISC-V Linux OS. Thus, For BL808, it need setup 3 toolchains:
+
+- riscv 32bit embed toolchain
+- riscv 64bit embed toolchain
+- riscv 64bit linux toolchain
+
+I prefer to use Xpack prebuilt toolchains, but Xpack only provide rv32 embed toolchain up to now. For rv64 embed and rv64 linux toolchain, we have to use prebuilt T-Head Xuantie toolchains. By the way, T-Head doesn't provide rv32 toolchain.
 
 ## RISC-V 32bit embeded gcc
 [xpack-dev-tools](https://github.com/xpack-dev-tools/riscv-none-embed-gcc-xpack) provde a prebuilt toolchain for riscv. you can download it from [here](https://github.com/xpack-dev-tools/riscv-none-embed-gcc-xpack). although the riscv-none-embed-gcc-xpack had been marked as deprecated, but you'd better stay with riscv gcc v10.2 due to the riscv '-march' changes happened in gcc v12.0 and above.
@@ -48,8 +54,33 @@ and add `/opt/xpack-riscv-toolchain/bin` to PATH env according to your shell.
 **NOTE**, the triplet of xpack prebuilt toolchain is **`riscv-none-embed`**.
 
 ## RISC-V 64bit embeded gcc
+T-Head provide RISC-V 64bit embed toolchain (gcc v10.2.0), it can be download from [here](https://occ-oss-prod.oss-cn-hangzhou.aliyuncs.com/resource//1663142243961/Xuantie-900-gcc-elf-newlib-x86_64-V2.6.1-20220906.tar.gz).
+
+After download:
+
+```
+sudo mkdir -p /opt/xuantie-riscv64-embed-toolchain
+sudo tar xf Xuantie-900-gcc-elf-newlib-x86_64-V2.6.1-20220906.tar.gz -C /opt/xuantie-riscv64-embed-toolchain --strip-components=1
+```
+
+and add `/opt/xuantie-riscv64-embed-toolchain/bin` to PATH env according to your shell.
+
+**NOTE**, the triplet of prebuilt Xuantie rv64 embed toolchain is **`riscv64-unknown-elf`**.
 
 ## RISC-V 64bit linux gcc
+T-Head provide RISC-V 64bit linux toolchain (gcc v10.2.0), it can be download from [here](https://occ-oss-prod.oss-cn-hangzhou.aliyuncs.com/resource//1663142514282/Xuantie-900-gcc-linux-5.10.4-glibc-x86_64-V2.6.1-20220906.tar.gz).
+
+After download:
+
+```
+sudo mkdir -p /opt/xuantie-riscv64-linux-toolchain
+sudo tar xf Xuantie-900-gcc-linux-5.10.4-glibc-x86_64-V2.6.1-20220906.tar.gz -C /opt/xuantie-riscv64-linux-toolchain --strip-components=1
+```
+
+and add `/opt/xuantie-riscv64-linux-toolchain/bin` to PATH env according to your shell.
+
+**NOTE 1**, the triplet of prebuilt Xuantie rv64 linux toolchain is **`riscv64-unknown-linux-gnu`**.
+**NOTE 2**, the sysroot is at '/opt/xuantie-riscv64-linux-toolchain/sysroot'.
 
 
 # SDK
