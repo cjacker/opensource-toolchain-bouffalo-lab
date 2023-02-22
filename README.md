@@ -22,7 +22,7 @@ A dev board with BL chips from Bouffalo Lab
   - various other boards
 
 # Toolchain overview:
-- Compiler : riscv 32/64 gcc toolchain
+- Compiler : RISC-V 32/64 embed and linux toolchain
 - SDK : [bl mcu sdk](https://github.com/bouffalolab/bl_mcu_sdk)
 - Programming tool : bflb-mcu-tool / blisp
 - Debugger : OpenOCD / gdb
