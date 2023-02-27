@@ -248,6 +248,10 @@ For old firmware (without .fw_header).
 ```
 blisp write -c bl70x -p /dev/ttyACM0 --reset build/build_out/sipeed_debugger_plus_blink_bl702.bin
 ```
+Or
+```
+blisp iot -c bl70x -p /dev/ttyACM0 --reset -s build/build_out/sipeed_debugger_plus_blink_bl702.bin -l 0x0
+```
 
 ## Debugging
 
