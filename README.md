@@ -133,7 +133,7 @@ To build it:
 ```
 cd sipeed_rv_debugger_plus_blink
 # use sipeed rv debugger plus as example, it's BL702
-make CHIP=bl702 BOARD=bl702dk CROSS_COMPILE=riscv-none-embed- BL_SDK_PATH=/opt/bl_mcu_sdk
+make CHIP=bl702 BOARD=bl702dk CROSS_COMPILE=riscv-none-embed- BL_SDK_BASE=/opt/bl_mcu_sdk
 ```
 You can also set CHIP / BOARD / CROSS_COMPILE options in 'Makefile'.
 
