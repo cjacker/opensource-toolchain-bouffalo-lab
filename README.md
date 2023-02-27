@@ -100,15 +100,15 @@ The installation process of bl_mcu_sdk is very simple, just fetch it and put it 
 git clone https://github.com/bouffalolab/bl_mcu_sdk.git
 cd bl_mcu_sdk
 git checkout 18408f971e3f8c2f82e79ec5fddd38c22f288c0d
-# move it to /opt
-sudo mv bl_mcu_sdk /opt
+# move it to home dir if not, you should have write permission to sdk dir.
+sudo mv bl_mcu_sdk <where your home dir>
 ```
 
 **You have to `git checkout 18408f971e3f8c2f82e79ec5fddd38c22f288c0d` now.** After a new program tool (only binary) 'BLFlashCommand' committed and various bootloader added, All known opensource program solution are broken, even official 'bflb-mcu-tool' is broken. And the 'BLFlashCommand' has no source codes released.
 
 And, set env as:
 ```
-export BL_SDK_BASE=/opt/bl_mcu_sdk
+export BL_SDK_BASE=<path to>/bl_mcu_sdk
 ```
 
 If you put the bl_mcu_sdk to other dir, please change above `export` to point to your sdk dir. 
@@ -133,7 +133,7 @@ To build it:
 ```
 cd sipeed_rv_debugger_plus_blink
 # use sipeed rv debugger plus as example, it's BL702
-make CHIP=bl702 BOARD=bl702dk CROSS_COMPILE=riscv-none-embed- BL_SDK_BASE=/opt/bl_mcu_sdk
+make CHIP=bl702 BOARD=bl702dk CROSS_COMPILE=riscv-none-embed- BL_SDK_BASE=<path to bl_mcu_sdk>
 ```
 You can also set CHIP / BOARD / CROSS_COMPILE options in 'Makefile'.
 
