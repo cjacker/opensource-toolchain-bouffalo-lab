@@ -1,3 +1,4 @@
+// Blink led connect to GPIO9
 #include "bflb_gpio.h"
 #include "board.h"
 
