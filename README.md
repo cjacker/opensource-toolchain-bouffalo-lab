@@ -1,5 +1,7 @@
 # Opensource toolchain for series RISC-V based MCU from Bouffalo Lab
 
+**This tutorial is not complete, BL808 contents to be written.**
+
 Bouffalo Lab Intelligent Technology (Nanjing) Co., Ltd. was established in Nanjing in 2016. It is a company focusing on the research and development of world-leading ultra-low power consumption, intelligent Internet of Things and edge computing SoCs, as well as providing overall solutions for intelligent cloud platforms. enterprise. At the same time, the company has complete multi-mode wireless connection technology, audio and video processing and artificial intelligence algorithm technology, which can fully realize the chip research and development of single-chip integration.
 
 In short, this company produce a series RISC-V based MCU which focused on Wi-Fi, BT, BLE, Zigbee, includes:
@@ -102,10 +104,8 @@ The installation process of bl_mcu_sdk is very simple, just fetch it and put it 
 ```
 # fetch it
 git clone https://github.com/bouffalolab/bl_mcu_sdk.git
-cd bl_mcu_sdk
-git checkout 18408f971e3f8c2f82e79ec5fddd38c22f288c0d
 # move it to home dir if not, you should have write permission to sdk dir.
-sudo mv bl_mcu_sdk <where your home dir>
+mv bl_mcu_sdk <where your home dir>
 ```
 
 And, set env as:
@@ -113,13 +113,11 @@ And, set env as:
 export BL_SDK_BASE=<path to>/bl_mcu_sdk
 ```
 
-If you put the bl_mcu_sdk to other dir, please change above `export` to point to your sdk dir. 
-
-If you did not export the `BL_SDK_BASE` env, you need supply it when issue 'make'.
+If you put the bl_mcu_sdk to other dir, please change above `export` to point to your sdk dir. if did not export the `BL_SDK_BASE` env, you need supply it when invoke 'make'.
 
 ## Demo project
 
-The bl_mcu_sdk mainly use cmake and make to manage the project, and have it's own project management style, take blink demos in this repo as example, the dir structure looks like:
+The bl_mcu_sdk use cmake and make to manage the project, and have it's own project management style, use blink demos in this repo as example, the dir structure looks like:
 
 ```
 blink_demo
@@ -152,6 +150,8 @@ You could refer to 'README.md' in each demo dir to find more command usage.
 
 If built successfully, the target '.bin / .elf' files should be generated in `build/build_out/` dir. you can modify the 'project' name in 'CMakeLists.txt' to change the target file name.
 
+If you want to start a new project, you can either copy demos from this repo, or use various demos in `bl_mcu_sdk/examples` dir.
+
 # Programming
 
 The official programming utility shipped in 'bl_mcu_sdk' is 'BLFlashCommand', it is commited into the 'bl_mcu_sdk' repo recently.
@@ -162,16 +162,16 @@ There is also '[bflb-mcu-tool](https://pypi.org/project/bflb-mcu-tool/)' with of
 
 After BLFlashCommand commited in and with the commit [[update][board] enable fw header for new flash tool ](https://github.com/bouffalolab/bl_mcu_sdk/commit/e70e482d2129411f34208d1184b4710074c67777).
 
-- **Good news:** it has a program tool integrated, 'make flash' works.
-- **Bad news:** it alter the firmware format, and not compatible with other opensource tools.
+- **The good news:** it has a program tool integrated, 'make flash' works.
+- **The bad news:** it alter the firmware format, and not compatible with other opensource tools.
 
-Compare with old firmware before this commit, the final ELF has a section '.fw_header' added. you can use 'readelf -S build/build_out/xxx.elf' to verify whether it has a '.fw_header' section or not.
+Compare with old firmware before this commit, the final ELF has a section '.fw_header' added. you can use 'readelf -S build/build_out/xxx.elf' to verify it has a '.fw_header' section or not.
 
-- you can use 'BLFlashCommand' / 'blisp' / 'bflb-mcu-tool' to program new firmware (firmware with .fw_header section).
-- you can only use 'blisp' / 'bflb-mcu-tool' to program old firmware (firmware without .fw_header section). or use `git checkout 18408f971e3f8c2f82e79ec5fddd38c22f288c0d` to roll back the 'fw_header' commit and rebuild your project.
+- use 'BLFlashCommand' / 'blisp' / 'bflb-mcu-tool' to program new firmware (firmware with .fw_header section).
+- use 'blisp' / 'bflb-mcu-tool' to program old firmware (firmware without .fw_header section). or `git checkout 18408f971e3f8c2f82e79ec5fddd38c22f288c0d` to roll back the 'fw_header' commit and rebuild your project.
 
 
-## Tools installation
+## Program tools installation
 
 'BLFlashCommand' is integreated into 'bl_mcu_ask', there is no additional installation required.
 
@@ -183,7 +183,7 @@ pip install bflb-mcu-tool
 
 And you should add `$HOME/.local/bin` to PATH env to find `bflb-mcu-tool` command.
 
-[blisp](https://github.com/pine64/blisp) is written by Pine64 community, currently it can support BL60x and BL70x, and without support for BL616 and BL808, but still worth a try. to build and install it:
+[blisp](https://github.com/pine64/blisp) is written by Pine64 community, currently it can support BL60x and BL70x, and lack support for BL616 and BL808, but still worth a try. to build and install it:
 
 ```
 git clone --recursive https://github.com/pine64/blisp.git
@@ -198,9 +198,7 @@ cmake --build .
 
 Use above 'blink_bl702' demo as example, the target file if 'build/build_out/sipeed_debugger_plus_blink_bl702.bin'.
 
-**Hold the Boot button down and plug sipeed rv debugger plus to PC Host USB port**
-
-It's same for Sipeed M0S Dock (BL616).
+**Hold the Boot button down and plug sipeed rv debugger plus to PC Host USB port**, it's same for Sipeed M0S Dock (BL616).
 
 And run `lsusb`, you will find:
 
@@ -217,14 +215,14 @@ For BL602, I only found one devboard named XT-BL12. to enter program mode, it ne
 
 Then you can download the firmware:
 
-### with BLFlashCommand
+### Option 1 : with `BLFlashCommand`
 
 BLFlashCommand read the 'flash_prog_cfg.ini' as config file, please setup it correctly, and use blink demos in this repo, just type:
 ```
 make flash
 ```
 
-### with `bflb-mcu-tool` :
+### Option 2 : with `bflb-mcu-tool` :
 
 For new firmware (with .fw_header). If you rebuild your project with updated 'bl_mcu_sdk', it should be always new firmware.
 
@@ -238,7 +236,7 @@ For old firmware (without .fw_header). Usually, old firmware is some pre-built a
 ~/.local/bin/bflb-mcu-tool --chipname=bl702 --interface=uart --port=/dev/ttyACM0 --baudrate=2000000 --firmware=build/build_out/sipeed_debugger_plus_blink_bl702.bin
 ```
 
-### with `blisp`
+### Option 3 : with `blisp`
 
 For new firmware (with .fw_header). If you rebuild your project with updated 'bl_mcu_sdk', it should be always new firmware.
 
