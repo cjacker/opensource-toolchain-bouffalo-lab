@@ -19,7 +19,7 @@ This tutorial will try best to cover these chips.
   + [Sipeed M0sense](https://wiki.sipeed.com/hardware/en/maixzero/sense/maix_zero_sense.html) : BL702
   + [Sipeed M0S and M0S Dock](https://wiki.sipeed.com/hardware/en/maixzero/m0s/m0s.html) : BL616
   + [Sipeed M1s Dock](https://wiki.sipeed.com/hardware/en/maix/m1s/m1s_module.html) or [Pine64 Ox64](https://wiki.pine64.org/wiki/Ox64) : BL808
-  + various other devboards
+  + various other devboards, for example XT-ZB1 bl702 and XT-BL12 bl602 devboards from Aliexpress.
 - A CK-Link Lite debugger
   + Option 1: T-Head or HLK CK-Link Lite debugger
   + Option 2: Sipeed rv debugger plus with [ck-link lite firmware for bl702](https://github.com/cjacker/opensource-toolchain-bouffalo-lab/raw/main/sipeed_rv_debugger_plus_firmware/bl702_cklink_whole_img_v2.2.bin)
