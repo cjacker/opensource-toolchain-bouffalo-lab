@@ -133,7 +133,7 @@ blink_demo
 
 To build it:
 
-For 'blink_bl702', here is Sipeed RV debugger plus:
+For 'blink_bl702' (bl602 blink demo is almost same except chip model differs), here is Sipeed RV debugger plus:
 ```
 cd blink_bl702
 make CHIP=bl702 BOARD=bl702dk CROSS_COMPILE=riscv-none-embed- BL_SDK_BASE=<path to bl_mcu_sdk>
@@ -196,16 +196,24 @@ cmake --build .
 
 ## Programming
 
-Use above 'blink_demo' as example, the target file if 'build/build_out/sipeed_debugger_plus_blink_bl702.bin'.
+Use above 'blink_bl702' demo as example, the target file if 'build/build_out/sipeed_debugger_plus_blink_bl702.bin'.
 
 **Hold the Boot button down and plug sipeed rv debugger plus to PC Host USB port**
+
+It's same for Sipeed M0S Dock (BL616).
 
 And run `lsusb`, you will find:
 
 ```
 Bus 001 Device 067: ID ffff:ffff BLIOT CDC Virtual ComPort
 ```
+
 At the same time, there should be a serial device `/dev/ttyACM0` created.
+
+**NOTE:** 
+
+For BL602, I only found one devboard named XT-BL12. to enter program mode, it need to **Hold the 'D8' button down, press and release 'EN' button, then release 'D8' button.**
+
 
 Then you can download the firmware:
 
