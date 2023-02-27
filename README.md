@@ -158,14 +158,14 @@ If you want to start a new project, you can either copy demos from this repo, or
 
 The official programming utility shipped in 'bl_mcu_sdk' is 'BLFlashCommand', it is commited into the 'bl_mcu_sdk' repo recently.
 
-There is also '[bflb-mcu-tool](https://pypi.org/project/bflb-mcu-tool/)' with official support and third party from Pine64 [blisp](https://github.com/pine64/blisp) can be used.
+There is also '[bflb-mcu-tool](https://pypi.org/project/bflb-mcu-tool/)' with official support and [blisp](https://github.com/pine64/blisp)  from Pine64 can be used.
 
 **NOTE:**
 
-After BLFlashCommand commited in and with the commit [[update][board] enable fw header for new flash tool ](https://github.com/bouffalolab/bl_mcu_sdk/commit/e70e482d2129411f34208d1184b4710074c67777).
+After `BLFlashCommand` commited into official bl_mcu_sdk repo and with the commit [[update][board] enable fw header for new flash tool ](https://github.com/bouffalolab/bl_mcu_sdk/commit/e70e482d2129411f34208d1184b4710074c67777):
 
-- **The good news:** it has a program tool integrated, 'make flash' works.
-- **The bad news:** it alter the firmware format, and not compatible with other opensource tools.
+- **The good news:** It has a program tool integrated, 'make flash' works.
+- **The bad news:** It alter the firmware format, and not compatible with other opensource tools.
 
 Compare with old firmware before this commit, the final ELF has a section '.fw_header' added. you can use 'readelf -S build/build_out/xxx.elf' to verify it has a '.fw_header' section or not.
 
@@ -175,7 +175,7 @@ Compare with old firmware before this commit, the final ELF has a section '.fw_h
 
 ## Program tools installation
 
-'BLFlashCommand' is integreated into 'bl_mcu_ask', there is no additional installation required.
+'BLFlashCommand' is already integreated into 'bl_mcu_ask', there is no additional installation required.
 
 'bflb-mcu-tool' is written in python, install it as: 
 
@@ -212,14 +212,15 @@ At the same time, there should be a serial device `/dev/ttyACM0` created.
 
 **NOTE:** 
 
-For BL602, I only found one devboard named XT-BL12. to enter program mode, it need to **Hold the 'D8' button down, press and release 'EN' button, then release 'D8' button.**
+For BL602, I only found one devboard named 'XT-BL12'. to enter program mode, it need to **Hold the 'D8' (GPIO8) button down, press and release 'EN' button, then release 'D8' (GPIO8) button.**
 
 
 Then you can download the firmware:
 
 ### Option 1 : with `BLFlashCommand`
 
-BLFlashCommand read the 'flash_prog_cfg.ini' as config file, please setup it correctly, and use blink demos in this repo, just type:
+BLFlashCommand read the 'flash_prog_cfg.ini' as config file, please setup this file correctly, and use blink demos in this repo, just type:
+
 ```
 make flash
 ```
@@ -229,13 +230,13 @@ make flash
 For new firmware (with .fw_header). If you rebuild your project with updated 'bl_mcu_sdk', it should be always new firmware.
 
 ```
-~/.local/bin/bflb-mcu-tool --chipname=bl702 --interface=uart --port=/dev/ttyACM0 --baudrate=2000000 --firmware=build/build_out/sipeed_debugger_plus_blink_bl702.bin --addr 0x1000
+bflb-mcu-tool --chipname=bl702 --interface=uart --port=/dev/ttyACM0 --baudrate=2000000 --firmware=build/build_out/sipeed_debugger_plus_blink_bl702.bin --addr 0x1000
 ```
 
-For old firmware (without .fw_header). Usually, old firmware is some pre-built and released bin file. please remove `--addr 0x1000` options from above command:
+For old firmware (without .fw_header). Usually, old firmwares are some pre-built and released bin files. please remove `--addr 0x1000` options from above command:
 
 ```
-~/.local/bin/bflb-mcu-tool --chipname=bl702 --interface=uart --port=/dev/ttyACM0 --baudrate=2000000 --firmware=build/build_out/sipeed_debugger_plus_blink_bl702.bin
+bflb-mcu-tool --chipname=bl702 --interface=uart --port=/dev/ttyACM0 --baudrate=2000000 --firmware=build/build_out/sipeed_debugger_plus_blink_bl702.bin
 ```
 
 ### Option 3 : with `blisp`
@@ -270,11 +271,12 @@ Default JTAG pin:
 
 
 # Off topic
+
 ## how to build uartjtag and dualuart firmware for Sipeed RV debugger plus
 
-Upstream repo for Sipeed RV debugger plus is https://github.com/sipeed/RV-Debugger-BL702/, The readme is not updated after dir structure changed.
+Upstream repo for Sipeed RV debugger plus is https://github.com/sipeed/RV-Debugger-BL702/, The build instruction in README.md is outdated.
 
-We do not use the outdated `bl_mcu_sdk` shipped with RV Debugger in this tutorial, just build the 'uartjtag' and 'dualuart' firmware with it.
+We do not use the outdated version of `bl_mcu_sdk` shipped with RV Debugger in this tutorial, just build the 'uartjtag' and 'dualuart' firmwares with it.
 
 ```
 git clone https://github.com/sipeed/RV-Debugger-BL702
@@ -296,7 +298,7 @@ make BOARD=bl702_debugger APP_DIR=../app APP=usb2dualuart
 
 If all good, the target file is 'out/app/usb2dualuart/usb2dualuart_bl702.bin'.
 
-To program these firmwares to Sipeed rv debugger plus, you should use:
+To program these firmwares to Sipeed rv debugger plus, you can use:
 
 ```
 bflb-mcu-tool --chipname=bl702 --interface=uart --port=/dev/ttyACM0 --baudrate=2000000  <firmware.bin>
