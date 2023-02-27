@@ -20,8 +20,8 @@ This tutorial will try best to cover all these chips.
   + [Sipeed rv debugger plus](https://github.com/sipeed/RV-Debugger-BL702) : BL702, this so called "debugger" is a mini BL702 devboard actually.
   + [Sipeed M0sense](https://wiki.sipeed.com/hardware/en/maixzero/sense/maix_zero_sense.html) : BL702
   + [Sipeed M0S and M0S Dock](https://wiki.sipeed.com/hardware/en/maixzero/m0s/m0s.html) : BL616, this so called "dock" can also be a "debugger" actually.
-  + [Sipeed M1s Dock](https://wiki.sipeed.com/hardware/en/maix/m1s/m1s_module.html) or [Pine64 Ox64](https://wiki.pine64.org/wiki/Ox64) : BL808. M1s Dock is really a "Dock".
-  + various other devboards, for example XT-ZB1 bl702 and XT-BL12 bl602 devboards from Aliexpress.
+  + [Sipeed M1s Dock](https://wiki.sipeed.com/hardware/en/maix/m1s/m1s_module.html) or [Pine64 Ox64](https://wiki.pine64.org/wiki/Ox64) : BL808. M1s Dock is really a "dock".
+  + various other devboards, for example XT-ZB1 (bl702) and XT-BL12 (bl602) devboards from Aliexpress.
 - A CK-Link Lite debugger
   + Option 1: T-Head or HLK CK-Link Lite debugger from Aliexpress (expensive hardware)
   + Option 2: Sipeed rv debugger plus with [ck-link lite firmware for bl702](https://github.com/cjacker/opensource-toolchain-bouffalo-lab/raw/main/sipeed_rv_debugger_plus_firmware/bl702_cklink_whole_img_v2.2.bin)
@@ -37,7 +37,7 @@ This tutorial will try best to cover all these chips.
 
 Not like usual RISC-V based MCU (such as CH32V / GD32V, etc), The toolchain setup for BL chips from Bouffalo Lab is a little bit complex. For BL60x/70x, it's as simple as usual RISC-V based MCU, just require a 32bit 'riscv-none-embed' toolchain.
 
-**For BL616**, the bl_mcu_sdk set `-mcpu` to `e907`, it can not supported by common `riscv-none-embed` toolchain, you had to use toolchains from T-Head.
+**For BL616**, bl_mcu_sdk set `-mcpu` to `e907`, it can not supported by general `riscv-none-embed` toolchain, you had to use T-Head RISC-V toolchain.
 
 **For BL808**, since it has 3 cores include a RV64GCV 480MHz core based on T-Head C906. It's 64bit general purpose CPU and have MMU, that means, it can run as baremetal and also able to run ordinary RISC-V Linux OS. Thus, For BL808, it need setup 3 toolchains:
 
@@ -48,6 +48,7 @@ Not like usual RISC-V based MCU (such as CH32V / GD32V, etc), The toolchain setu
 I prefer to use Xpack prebuilt toolchains, but Xpack only provide rv32 embed toolchain up to now. For rv64 embed and rv64 linux toolchain, we have to use prebuilt T-Head Xuantie toolchains. By the way, T-Head doesn't provide rv32 toolchain.
 
 ## RISC-V 32bit embeded gcc
+
 [xpack-dev-tools](https://github.com/xpack-dev-tools/riscv-none-embed-gcc-xpack) provde a prebuilt toolchain for riscv. you can download it from [here](https://github.com/xpack-dev-tools/riscv-none-embed-gcc-xpack). although the riscv-none-embed-gcc-xpack had been marked as deprecated, but you'd better stay with riscv gcc v10.2 due to the riscv '-march' changes happened in gcc v12.0 and above.
 
 After download:
@@ -73,9 +74,11 @@ sudo tar xf Xuantie-900-gcc-elf-newlib-x86_64-V2.6.1-20220906.tar.gz -C /opt/xua
 
 and add `/opt/xuantie-riscv64-embed-toolchain/bin` to PATH env according to your shell.
 
-**NOTE**, the triplet of prebuilt Xuantie rv64 embed toolchain is **`riscv64-unknown-elf`**.
+**NOTE 1**, the triplet of prebuilt Xuantie rv64 embed toolchain is **`riscv64-unknown-elf`**.
+**NOTE 2**, you may already know, the 64bit toolchain is able to generate 32bit codes.
 
 ## RISC-V 64bit linux gcc
+
 T-Head provide RISC-V 64bit linux toolchain (gcc v10.2.0), it can be download from [here](https://occ-oss-prod.oss-cn-hangzhou.aliyuncs.com/resource//1663142514282/Xuantie-900-gcc-linux-5.10.4-glibc-x86_64-V2.6.1-20220906.tar.gz).
 
 After download:
@@ -93,7 +96,7 @@ and add `/opt/xuantie-riscv64-linux-toolchain/bin` to PATH env according to your
 
 # SDK
 
-[bl mcu sdk](https://github.com/bouffalolab/bl_mcu_sdk) is an MCU software development kit provided by the Bouffalo Lab Team, supports all the series of Bouffalo chips. it supports all BL chips include but not limited to:
+[bl mcu sdk](https://github.com/bouffalolab/bl_mcu_sdk) is an MCU software development kit provided by the Bouffalo Lab Team, supports all the series of Bouffalo chips, include but not limited to:
 
 - BL602/BL604
 - BL702/BL704/BL706
@@ -123,17 +126,17 @@ The bl_mcu_sdk use cmake and make to manage the project, and have it's own proje
 
 ```
 blink_demo
-├── CMakeLists.txt : manage sources, build flags and target name.
-├── flash_prog_cfg.ini : used by BLFlashCommand and invoke with 'make flash'
-├── main.c : source file(s), to blink a LED connect to GPIO9.
-├── Makefile : define CHIP/BOARD name, toolchain prefix, SDK PATH. used to start the building process.
+├── CMakeLists.txt : manage sources list, build flags and target name.
+├── flash_prog_cfg.ini : used by BLFlashCommand.
+├── main.c : source file(s).
+├── Makefile : define CHIP/BOARD name, toolchain prefix, SDK PATH, etc. used to invoke the building process.
 ├── proj.conf : project specific CMAKE flags
 └── readme.md
 ```
 
 To build it:
 
-For 'blink_bl702' (bl602 blink demo is almost same except chip model differs), here is Sipeed RV debugger plus:
+For 'blink_bl702' (bl602 blink demo is almost same except chip model differs), here use Sipeed RV debugger plus:
 ```
 cd blink_bl702
 make CHIP=bl702 BOARD=bl702dk CROSS_COMPILE=riscv-none-embed- BL_SDK_BASE=<path to bl_mcu_sdk>
