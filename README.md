@@ -278,14 +278,14 @@ cd firmware/bl_mcu_sdk
 
 To build jtaguart firmware for Sipeed rv debugger plus:
 ```
-make APP=usb2uartjtag APP_DIR=../app
+make BOARD=bl702_debugger APP_DIR=../app APP=usb2uartjtag
 ```
 If all good, the target file is 'out/app/usb2uartjtag/usb2uartjtag_bl702.bin'.
 
 
 To build dualuart firmware for Sipeed rv debugger plus:
 ```
-make APP=usb2dualuart APP_DIR=../app
+make BOARD=bl702_debugger APP_DIR=../app APP=usb2dualuart
 ```
 
 If all good, the target file is 'out/app/usb2dualuart/usb2dualuart_bl702.bin'.
