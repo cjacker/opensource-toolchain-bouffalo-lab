@@ -148,15 +148,20 @@ There is also '[bflb-mcu-tool](https://pypi.org/project/bflb-mcu-tool/)' with of
 
 **NOTE:**
 
-After BLFlashCommand commited in and with the commit [[update][board] enable fw header for new flash tool ](https://github.com/bouffalolab/bl_mcu_sdk/commit/e70e482d2129411f34208d1184b4710074c67777). Compare with old firmware before this commit, the final ELF has a section '.fw_header' added. you can use 'readelf -S build/build_out/xxx.elf' to verify whether it has a '.fw_header' section or not.
+After BLFlashCommand commited in and with the commit [[update][board] enable fw header for new flash tool ](https://github.com/bouffalolab/bl_mcu_sdk/commit/e70e482d2129411f34208d1184b4710074c67777).
 
-- you can use 'BLFlashCommand' / 'blisp' / 'bflb-mcu-tool' to program new firmware (with .fw_header section).
-- you can only use 'blisp' / 'bflb-mcu-tool' to program old firmware (without .fw_header section). or use `git checkout 18408f971e3f8c2f82e79ec5fddd38c22f288c0d` to roll back the 'fw_header' commit and rebuild your project.
+- **Good news:** it has a program tool integrated, 'make flash' works.
+- **Bad news:** it alter the firmware format, and not compatible with other opensource tools.
+
+Compare with old firmware before this commit, the final ELF has a section '.fw_header' added. you can use 'readelf -S build/build_out/xxx.elf' to verify whether it has a '.fw_header' section or not.
+
+- you can use 'BLFlashCommand' / 'blisp' / 'bflb-mcu-tool' to program new firmware (firmware with .fw_header section).
+- you can only use 'blisp' / 'bflb-mcu-tool' to program old firmware (firmware without .fw_header section). or use `git checkout 18408f971e3f8c2f82e79ec5fddd38c22f288c0d` to roll back the 'fw_header' commit and rebuild your project.
 
 
-## Installation
+## Tools installation
 
-'BLFlashCommand' is integreated with 'bl_mcu_ask', there is no additional installation required.
+'BLFlashCommand' is integreated into 'bl_mcu_ask', there is no additional installation required.
 
 'bflb-mcu-tool' is written in python, install it as: 
 
