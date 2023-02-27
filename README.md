@@ -117,7 +117,7 @@ The bl_mcu_sdk mainly use cmake and make to manage the project, and have it's ow
 ```
 sipeed_rv_debugger_plus_blink
 ├── CMakeLists.txt : manage sources, build flags and target name.
-├── flash_prog_cfg.ini : not used now, maybe it is used with bouffalo devcube?
+├── flash_prog_cfg.ini : linux not used now, maybe it will be used with bouffalo devcube?
 ├── main.c : source file(s), to blink a LED connect to GPIO9.
 ├── Makefile : define CHIP/BOARD name, toolchain prefix, SDK PATH. used to start the building process.
 ├── proj.conf : project specific CMAKE flags
@@ -130,6 +130,7 @@ cd sipeed_rv_debugger_plus_blink
 # use sipeed rv debugger plus as example, it's BL702
 make CHIP=bl702 BOARD=bl702dk CROSS_COMPILE=riscv-none-embed- BL_SDK_PATH=/opt/bl_mcu_sdk
 ```
+You can also set CHIP / BOARD / CROSS_COMPILE options in 'Makefile'.
 
 If built successfully, the target file 'sipeed_debugger_plus_blink_bl702.bin' and 'sipeed_debugger_plus_blink_bl702.elf' should be generated in `build/build_out` dir. you can modify the 'CMakeLists.txt' to change the 'target file name'.
 
@@ -158,7 +159,6 @@ mkdir build && cd build
 cmake -DBLISP_BUILD_CLI=ON ..
 cmake --build .
 ```
-
 
 ## Programming
 
