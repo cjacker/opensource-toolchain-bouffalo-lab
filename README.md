@@ -104,7 +104,7 @@ git checkout 18408f971e3f8c2f82e79ec5fddd38c22f288c0d
 sudo mv bl_mcu_sdk <where your home dir>
 ```
 
-**You have to `git checkout 18408f971e3f8c2f82e79ec5fddd38c22f288c0d` now.** After a new program tool (only binary) 'BLFlashCommand' committed and various bootloader added, All known opensource program solution are broken, even official 'bflb-mcu-tool' is broken. And the 'BLFlashCommand' has no source codes released.
+
 
 And, set env as:
 ```
@@ -117,12 +117,12 @@ If you did not export the `BL_SDK_BASE` env, you need supply it when issue 'make
 
 ## Demo project
 
-The bl_mcu_sdk mainly use cmake and make to manage the project, and have it's own project management style, take [sipeed_rv_debugger_plus_blink] demo as example, the dir structure looks like:
+The bl_mcu_sdk mainly use cmake and make to manage the project, and have it's own project management style, take [blink_demo](https://github.com/cjacker/opensource-toolchain-bouffalo-lab/tree/main/blink_demo) as example, the dir structure looks like:
 
 ```
-sipeed_rv_debugger_plus_blink
+blink_demo
 ├── CMakeLists.txt : manage sources, build flags and target name.
-├── flash_prog_cfg.ini : linux not used now, maybe it will be used with bouffalo devcube?
+├── flash_prog_cfg.ini : used by BLFlashCommand and invoke with 'make flash'
 ├── main.c : source file(s), to blink a LED connect to GPIO9.
 ├── Makefile : define CHIP/BOARD name, toolchain prefix, SDK PATH. used to start the building process.
 ├── proj.conf : project specific CMAKE flags
@@ -131,22 +131,34 @@ sipeed_rv_debugger_plus_blink
 
 To build it:
 ```
-cd sipeed_rv_debugger_plus_blink
+cd blink_demo
 # use sipeed rv debugger plus as example, it's BL702
 make CHIP=bl702 BOARD=bl702dk CROSS_COMPILE=riscv-none-embed- BL_SDK_BASE=<path to bl_mcu_sdk>
 ```
-You can also set CHIP / BOARD / CROSS_COMPILE options in 'Makefile'.
+You can also set CHIP / BOARD / CROSS_COMPILE / BL_SDK_BASE options in 'Makefile'.
 
-If built successfully, the target file 'sipeed_debugger_plus_blink_bl702.bin' and 'sipeed_debugger_plus_blink_bl702.elf' should be generated in `build/build_out` dir. you can modify the 'CMakeLists.txt' to change the 'target file name'.
+If built successfully, the target file 'sipeed_debugger_plus_blink_bl702.bin' and 'sipeed_debugger_plus_blink_bl702.elf' should be generated in `build/build_out/` dir. you can modify the 'CMakeLists.txt' to change the 'target file name'.
 
 
 # Programming
 
-The official programming utility is '[bflb-mcu-tool](https://pypi.org/project/bflb-mcu-tool/)'. There are also a lot of third-party tools such as [blisp](https://github.com/pine64/blisp). 
+The official programming utility shipped in 'bl_mcu_sdk' is 'BLFlashCommand', it is commited into the 'bl_mcu_sdk' repo recently.
+
+There is also '[bflb-mcu-tool](https://pypi.org/project/bflb-mcu-tool/)' with official support and third party from Pine64 [blisp](https://github.com/pine64/blisp) can be used.
+
+**NOTE:**
+
+After BLFlashCommand commited in and with the commit [[update][board] enable fw header for new flash tool ](https://github.com/bouffalolab/bl_mcu_sdk/commit/e70e482d2129411f34208d1184b4710074c67777). Compare with old firmware before this commit, the final ELF has a section '.fw_header' added. you can use 'readelf -S build/build_out/xxx.elf' to verify whether it has a '.fw_header' section or not.
+
+- you can use 'BLFlashCommand' / 'blisp' / 'bflb-mcu-tool' to program new firmware (with .fw_header section).
+- you can only use 'blisp' / 'bflb-mcu-tool' to program old firmware (without .fw_header section). or use `git checkout 18408f971e3f8c2f82e79ec5fddd38c22f288c0d` to roll back the 'fw_header' commit and rebuild your project.
+
 
 ## Installation
 
-bflb-mcu-tool is written in python, install it as: 
+'BLFlashCommand' is integreated with 'bl_mcu_ask', there is no additional installation required.
+
+'bflb-mcu-tool' is written in python, install it as: 
 
 ```
 pip install bflb-mcu-tool
@@ -167,7 +179,7 @@ cmake --build .
 
 ## Programming
 
-Use above 'sipeed_rv_debugger_plus_blink' as example, the target file if 'build/build_out/sipeed_debugger_plus_blink_bl702.bin'.
+Use above 'blink_demo' as example, the target file if 'build/build_out/sipeed_debugger_plus_blink_bl702.bin'.
 
 **Hold the Boot button down and plug sipeed rv debugger plus to PC Host USB port**
 
@@ -176,18 +188,42 @@ And run `lsusb`, you will find:
 ```
 Bus 001 Device 067: ID ffff:ffff BLIOT CDC Virtual ComPort
 ```
-At the same time, there is a serial device `/dev/ttyACM0` created.
+At the same time, there should be a serial device `/dev/ttyACM0` created.
 
-Then you can download the firmware with `bflb-mcu-tool` :
+Then you can download the firmware:
+
+### with BLFlashCommand
+BLFlashCommand read the 'flash_prog_cfg.ini' as config file, please verify it is correct or not.
+And just type:
+```
+make flash
+```
+
+### with `bflb-mcu-tool` :
+
+For new firmware (with .fw_header). If you rebuild your project with updated 'bl_mcu_sdk', it should be always new firmware.
+
+```
+~/.local/bin/bflb-mcu-tool --chipname=bl702 --interface=uart --port=/dev/ttyACM0 --baudrate=2000000 --firmware=build/build_out/sipeed_debugger_plus_blink_bl702.bin --addr 0x1000
+```
+
+For old firmware (without .fw_header). Usually, old firmware is some pre-built and released bin file. please remove `--addr 0x1000` options from above command:
+
 ```
 ~/.local/bin/bflb-mcu-tool --chipname=bl702 --interface=uart --port=/dev/ttyACM0 --baudrate=2000000 --firmware=build/build_out/sipeed_debugger_plus_blink_bl702.bin
 ```
 
-Or with `blisp`
+### with `blisp`
+For new firmware (with .fw_header). If you rebuild your project with updated 'bl_mcu_sdk', it should be always new firmware.
+
+```
+blisp iot -c bl70x -p /dev/ttyACM0 --reset -s build/build_out/sipeed_debugger_plus_blink_bl702.bin -l 0x1000
+```
+
+For old firmware (without .fw_header).
 ```
 blisp write -c bl70x -p /dev/ttyACM0 --reset build/build_out/sipeed_debugger_plus_blink_bl702.bin
 ```
-
 
 ## Debugging
 
