@@ -261,3 +261,40 @@ Default JTAG pin:
 |TDI            |     GPIO17    |      GPIO1         |    GPIO3    |   GPIO13 |
 
 **To be written**
+
+
+# Off topic
+## how to build uartjtag and dualuart firmware for Sipeed RV debugger plus
+
+Upstream repo for Sipeed RV debugger plus is https://github.com/sipeed/RV-Debugger-BL702/, The readme is not updated after dir structure changed.
+
+We do not use the outdated `bl_mcu_sdk` shipped with RV Debugger in this tutorial, just build the 'uartjtag' and 'dualuart' firmware with it.
+
+```
+git clone https://github.com/sipeed/RV-Debugger-BL702
+git submodule update --init --progress
+cd firmware/bl_mcu_sdk
+```
+
+To build jtaguart firmware for Sipeed rv debugger plus:
+```
+make APP=usb2uartjtag APP_DIR=../app
+```
+If all good, the target file is 'out/app/usb2uartjtag/usb2uartjtag_bl702.bin'.
+
+
+To build dualuart firmware for Sipeed rv debugger plus:
+```
+make APP=usb2dualuart APP_DIR=../app
+```
+
+If all good, the target file is 'out/app/usb2dualuart/usb2dualuart_bl702.bin'.
+
+To program these firmwares to Sipeed rv debugger plus, you should use:
+
+```
+bflb-mcu-tool --chipname=bl702 --interface=uart --port=/dev/ttyACM0 --baudrate=2000000  <firmware.bin>
+```
+
+
+
