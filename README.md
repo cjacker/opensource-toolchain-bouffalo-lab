@@ -98,9 +98,14 @@ The installation process of bl_mcu_sdk is very simple, just fetch it and put it 
 ```
 # fetch it
 git clone https://github.com/bouffalolab/bl_mcu_sdk.git
+cd bl_mcu_sdk
+git checkout 18408f971e3f8c2f82e79ec5fddd38c22f288c0d
 # move it to /opt
 sudo mv bl_mcu_sdk /opt
 ```
+
+**You have to `git checkout 18408f971e3f8c2f82e79ec5fddd38c22f288c0d` now.** After a new program tool (only binary) 'BLFlashCommand' committed and various bootloader added, All known opensource program solution are broken, even official 'bflb-mcu-tool' is broken. And the 'BLFlashCommand' has no source codes released.
+
 And, set env as:
 ```
 export BL_SDK_BASE=/opt/bl_mcu_sdk
