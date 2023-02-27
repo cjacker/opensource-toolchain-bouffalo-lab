@@ -14,17 +14,21 @@ This tutorial will try best to cover these chips.
 
 # Hardware prerequist:
 
-A dev board with BL chips from Bouffalo Lab
-  - [Sipeed rv debugger plus](https://github.com/sipeed/RV-Debugger-BL702) : BL702, this so called "debugger" is a mini BL702 board actually.
-  - [Sipeed M0sense](https://wiki.sipeed.com/hardware/en/maixzero/sense/maix_zero_sense.html) : BL702
-  - [Sipeed M0S and M0S Dock](https://wiki.sipeed.com/hardware/en/maixzero/m0s/m0s.html) : BL616
-  - [Sipeed M1s Dock](https://wiki.sipeed.com/hardware/en/maix/m1s/m1s_module.html) or [Pine64 Ox64](https://wiki.pine64.org/wiki/Ox64) : BL808
-  - various other boards
+- A dev board with BL chips from Bouffalo Lab
+  + [Sipeed rv debugger plus](https://github.com/sipeed/RV-Debugger-BL702) : BL702, this so called "debugger" is a mini BL702 board actually.
+  + [Sipeed M0sense](https://wiki.sipeed.com/hardware/en/maixzero/sense/maix_zero_sense.html) : BL702
+  + [Sipeed M0S and M0S Dock](https://wiki.sipeed.com/hardware/en/maixzero/m0s/m0s.html) : BL616
+  + [Sipeed M1s Dock](https://wiki.sipeed.com/hardware/en/maix/m1s/m1s_module.html) or [Pine64 Ox64](https://wiki.pine64.org/wiki/Ox64) : BL808
+  + various other devboards
+- A CK-Link Lite debugger
+  + Option 1: T-Head or HLK CK-Link Lite debugger
+  + Option 2: Sipeed rv debugger plus with [ck-link lite firmware for bl702](https://github.com/cjacker/opensource-toolchain-bouffalo-lab/raw/main/sipeed_rv_debugger_plus_firmware/bl702_cklink_whole_img_v2.2.bin)
+  + Option 3: Sipeed M0S Dock with [ck-link lite firmware for bl616](https://github.com/cjacker/opensource-toolchain-bouffalo-lab/raw/main/m0s_dock_firmware/bl616-cklink-lite-2023-02-27.bin)
 
 # Toolchain overview:
 - Compiler : RISC-V 32/64 embed and linux toolchain
-- SDK : [bl mcu sdk](https://github.com/bouffalolab/bl_mcu_sdk)
-- Programming tool : bflb-mcu-tool / blisp
+- SDK : official [bl mcu sdk](https://github.com/bouffalolab/bl_mcu_sdk)
+- Programming tool : BLFlashCommand (integrated in bl_mcu_sdk) / bflb-mcu-tool / blisp
 - Debugger : OpenOCD / gdb
 
 # Compiler
@@ -104,8 +108,6 @@ git checkout 18408f971e3f8c2f82e79ec5fddd38c22f288c0d
 sudo mv bl_mcu_sdk <where your home dir>
 ```
 
-
-
 And, set env as:
 ```
 export BL_SDK_BASE=<path to>/bl_mcu_sdk
@@ -117,7 +119,7 @@ If you did not export the `BL_SDK_BASE` env, you need supply it when issue 'make
 
 ## Demo project
 
-The bl_mcu_sdk mainly use cmake and make to manage the project, and have it's own project management style, take [blink_demo](https://github.com/cjacker/opensource-toolchain-bouffalo-lab/tree/main/blink_demo) as example, the dir structure looks like:
+The bl_mcu_sdk mainly use cmake and make to manage the project, and have it's own project management style, take blink demos in this repo as example, the dir structure looks like:
 
 ```
 blink_demo
@@ -130,15 +132,25 @@ blink_demo
 ```
 
 To build it:
+
+For 'blink_bl702', here is Sipeed RV debugger plus:
 ```
-cd blink_demo
-# use sipeed rv debugger plus as example, it's BL702
+cd blink_bl702
 make CHIP=bl702 BOARD=bl702dk CROSS_COMPILE=riscv-none-embed- BL_SDK_BASE=<path to bl_mcu_sdk>
 ```
-You can also set CHIP / BOARD / CROSS_COMPILE / BL_SDK_BASE options in 'Makefile'.
 
-If built successfully, the target file 'sipeed_debugger_plus_blink_bl702.bin' and 'sipeed_debugger_plus_blink_bl702.elf' should be generated in `build/build_out/` dir. you can modify the 'CMakeLists.txt' to change the 'target file name'.
+For 'blink_bl616', here is Sipeed M0S Dock:
+```
+cd blink_bl616
+make CHIP=bl616 BOARD=bl616dk CROSS_COMPILE=riscv64-unknown-elf- BL_SDK_BASE=<bl_mcu_sdk path>
+```
+The CHIP / BOARD / CROSS_COMPILE / BL_SDK_BASE options can be set in 'Makefile'.
 
+**NOTE:** the `CROSS_COMPILE=` option is different for bl702 and bl616, since bl616 is based on E907 core.
+
+You could refer to 'README.md' in each demo dir to find more command usage.
+
+If built successfully, the target '.bin / .elf' files should be generated in `build/build_out/` dir. you can modify the 'project' name in 'CMakeLists.txt' to change the target file name.
 
 # Programming
 
@@ -198,8 +210,8 @@ At the same time, there should be a serial device `/dev/ttyACM0` created.
 Then you can download the firmware:
 
 ### with BLFlashCommand
-BLFlashCommand read the 'flash_prog_cfg.ini' as config file, please verify it is correct or not.
-And just type:
+
+BLFlashCommand read the 'flash_prog_cfg.ini' as config file, please setup it correctly, and use blink demos in this repo, just type:
 ```
 make flash
 ```
@@ -219,6 +231,7 @@ For old firmware (without .fw_header). Usually, old firmware is some pre-built a
 ```
 
 ### with `blisp`
+
 For new firmware (with .fw_header). If you rebuild your project with updated 'bl_mcu_sdk', it should be always new firmware.
 
 ```
