@@ -12,18 +12,18 @@ In short, this company produce a series RISC-V based MCU which focused on Wi-Fi,
 - BL616 series, Wi-FI/BT5
 - BL808 series, 3 cores + 1 npu, RV64GCV 480MHz / RV32GCP 320MHz / RV32EMC 160MHz and  BLAI-100
 
-This tutorial will try best to cover these chips.
+This tutorial will try best to cover all these chips.
 
 # Hardware prerequist:
 
 - A dev board with BL chips from Bouffalo Lab
-  + [Sipeed rv debugger plus](https://github.com/sipeed/RV-Debugger-BL702) : BL702, this so called "debugger" is a mini BL702 board actually.
+  + [Sipeed rv debugger plus](https://github.com/sipeed/RV-Debugger-BL702) : BL702, this so called "debugger" is a mini BL702 devboard actually.
   + [Sipeed M0sense](https://wiki.sipeed.com/hardware/en/maixzero/sense/maix_zero_sense.html) : BL702
-  + [Sipeed M0S and M0S Dock](https://wiki.sipeed.com/hardware/en/maixzero/m0s/m0s.html) : BL616
-  + [Sipeed M1s Dock](https://wiki.sipeed.com/hardware/en/maix/m1s/m1s_module.html) or [Pine64 Ox64](https://wiki.pine64.org/wiki/Ox64) : BL808
+  + [Sipeed M0S and M0S Dock](https://wiki.sipeed.com/hardware/en/maixzero/m0s/m0s.html) : BL616, this so called "dock" can also be a "debugger" actually.
+  + [Sipeed M1s Dock](https://wiki.sipeed.com/hardware/en/maix/m1s/m1s_module.html) or [Pine64 Ox64](https://wiki.pine64.org/wiki/Ox64) : BL808. M1s Dock is really a "Dock".
   + various other devboards, for example XT-ZB1 bl702 and XT-BL12 bl602 devboards from Aliexpress.
 - A CK-Link Lite debugger
-  + Option 1: T-Head or HLK CK-Link Lite debugger
+  + Option 1: T-Head or HLK CK-Link Lite debugger from Aliexpress (expensive hardware)
   + Option 2: Sipeed rv debugger plus with [ck-link lite firmware for bl702](https://github.com/cjacker/opensource-toolchain-bouffalo-lab/raw/main/sipeed_rv_debugger_plus_firmware/bl702_cklink_whole_img_v2.2.bin)
   + Option 3: Sipeed M0S Dock with [ck-link lite firmware for bl616](https://github.com/cjacker/opensource-toolchain-bouffalo-lab/raw/main/m0s_dock_firmware/bl616-cklink-lite-2023-02-27.bin)
 
