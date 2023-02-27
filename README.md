@@ -35,7 +35,9 @@ This tutorial will try best to cover all these chips.
 
 # Compiler
 
-Not like usual RISC-V based MCU (such as CH32V / GD32V, etc), The toolchain setup for BL chips from Bouffalo Lab is a little bit complex. For BL60x/61x/70x, it's as simple as usual RISC-V based MCU, just require a 32bit 'riscv-none-embed' toolchain.
+Not like usual RISC-V based MCU (such as CH32V / GD32V, etc), The toolchain setup for BL chips from Bouffalo Lab is a little bit complex. For BL60x/70x, it's as simple as usual RISC-V based MCU, just require a 32bit 'riscv-none-embed' toolchain.
+
+**For BL616**, the bl_mcu_sdk set `-mcpu` to `e907`, it can not supported by common `riscv-none-embed` toolchain, you had to use toolchains from T-Head.
 
 **For BL808**, since it has 3 cores include a RV64GCV 480MHz core based on T-Head C906. It's 64bit general purpose CPU and have MMU, that means, it can run as baremetal and also able to run ordinary RISC-V Linux OS. Thus, For BL808, it need setup 3 toolchains:
 
@@ -144,7 +146,7 @@ make CHIP=bl616 BOARD=bl616dk CROSS_COMPILE=riscv64-unknown-elf- BL_SDK_BASE=<bl
 ```
 The CHIP / BOARD / CROSS_COMPILE / BL_SDK_BASE options can be set in 'Makefile'.
 
-**NOTE:** the `CROSS_COMPILE=` option is different for bl702 and bl616, since bl616 is based on E907 core.
+**NOTE:** the `CROSS_COMPILE=` option is different for bl702 and bl616, since bl616 is based on E907 core and `-mcpu` set to `e907` which only supported by T-Head toolchain.
 
 You could refer to 'README.md' in each demo dir to find more command usage.
 
