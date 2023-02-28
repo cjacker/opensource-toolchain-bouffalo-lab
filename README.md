@@ -28,8 +28,8 @@ This tutorial will try best to cover all these chips.
   + various other devboards, for example XT-ZB1 (bl702) and XT-BL12 (bl602) devboards from Aliexpress.
 - A CK-Link Lite debugger
   + Option 1: T-Head or HLK CK-Link Lite debugger from Aliexpress (expensive hardware)
-  + Option 2: Sipeed rv debugger plus with [ck-link lite firmware for bl702](https://github.com/cjacker/opensource-toolchain-bouffalo-lab/raw/main/sipeed_rv_debugger_plus_firmware/bl702_cklink_whole_img_v2.2.bin)
-  + Option 3: Sipeed M0S Dock with [ck-link lite firmware for bl616](https://github.com/cjacker/opensource-toolchain-bouffalo-lab/raw/main/m0s_dock_firmware/bl616-cklink-lite-2023-02-27.bin)
+  + Option 2: Sipeed rv debugger plus with [ck-link lite firmware for bl702](https://github.com/cjacker/opensource-toolchain-bouffalo-lab/raw/main/sipeed_rv_debugger_plus_factory_firmware/bl702_cklink_whole_img_v2.2.bin)
+  + Option 3: Sipeed M0S Dock with [ck-link lite firmware for bl616](https://github.com/cjacker/opensource-toolchain-bouffalo-lab/raw/main/m0s_dock_cklink-lite_firmware/bl616-cklink-lite-2023-02-27.bin)
 
 # Toolchain overview:
 - Compiler : RISC-V 32/64 embed and linux toolchain
