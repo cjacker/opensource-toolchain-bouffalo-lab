@@ -226,16 +226,8 @@ If all good, `build_out/blink.bin` will be generated.
 
 # Programming
 
-The official GUI programming tool is Dev Cube, it support Windows / MacOSX and Linux, you can download it from : https://dev.bouffalolab.com/download
+The official GUI programming tool is BLDevCube, it support Windows / MacOSX and Linux. 
 
-```
-mkdir devcube
-wget https://dev.bouffalolab.com/media/upload/download/BouffaloLabDevCube-v1.8.3.zip -P devcube
-cd devcube
-unzip BouffaloLabDevCube-v1.8.3.zip
-chmod +x BLDevCube-ubuntu
-chmod +x bflb_iot_tool-ubuntu
-```
 The official command line programming utility shipped in 'bl_mcu_sdk' is 'BLFlashCommand', it is commited into the 'bl_mcu_sdk' repo recently.
 
 There are also '[bflb-mcu-tool](https://pypi.org/project/bflb-mcu-tool/)' and '[bflb-iot-tool](https://pypi.org/project/bflb-iot-tool/) with official support and [blisp](https://github.com/pine64/blisp)  from Pine64 can be used.
@@ -255,15 +247,27 @@ Compare with old firmware before this commit, the final ELF has a section '.fw_h
 
 ## Program tools installation
 
-'BLFlashCommand' is already integreated into 'bl_mcu_ask', there is no additional installation required.
+### BLDevCube
+'BLDevCube' can be downloaded from : https://dev.bouffalolab.com/download
 
-'bflb-mcu-tool' is written in python, install it as: 
+```
+mkdir bldevcube
+wget https://dev.bouffalolab.com/media/upload/download/BouffaloLabDevCube-v1.8.3.zip -P devcube
+cd bldevcube
+unzip BouffaloLabDevCube-v1.8.3.zip
+chmod +x BLDevCube-ubuntu
+chmod +x bflb_iot_tool-ubuntu
+```
+Actually, these tools are written in Python and packaged by pyinstaller, you can depackage and decompile them...
 
+'BLFlashCommand' is already integreated into 'bl_mcu_ask', there is no additional installation required, it's also written in Python and packaged by pyinstaller.
+
+'bflb-mcu-tool' is written in python and open source, install it as: 
 ```
 pip install bflb-mcu-tool
 ```
 
-'bflb-iot-tool' is written in python too, install is as:
+'bflb-iot-tool' is written in python and open source too, install is as:
 ```
 pip install bflb-iot-tool
 ```
@@ -306,11 +310,13 @@ Then you can download the firmware:
 
 ### Option 1 : with `BLFlashCommand`
 
-BLFlashCommand read the 'flash_prog_cfg.ini' as config file, please setup this file correctly, and use blink demos in this repo, just type:
+`BLFlashCommand` read the 'flash_prog_cfg.ini' as config file, please setup this file correctly, and use blink demos in this repo, just type:
 
 ```
 make flash
 ```
+
+Since it already integrated in bl_mcu_sdk, we can treat it as the default and officially recommended tool to program BL chips.
 
 ### Option 2 : with `bflb-mcu-tool` :
 
