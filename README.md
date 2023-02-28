@@ -315,6 +315,16 @@ To program these firmwares to Sipeed rv debugger plus, you can use:
 ```
 bflb-mcu-tool --chipname=bl702 --interface=uart --port=/dev/ttyACM0 --baudrate=2000000  <firmware.bin>
 ```
+Or 
+```
+bflb-iot-tool --chipname=bl702 --port=/dev/ttyACM0 --baudrate=2000000 --addr 0x2000 --firmware=<firmware.bin>
+```
+Or
+```
+blisp iot -c bl70x --reset -s <firmware.bin> -l 0x2000
+```
+
+
 
 
 
