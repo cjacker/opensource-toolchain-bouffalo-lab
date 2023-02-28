@@ -58,7 +58,7 @@ then
 		--chipname=bl808 \
 		--port=/dev/ttyUSB1 \
 		--baudrate=2000000 \
-		--firmware=$FIRMWARE_FILE \
+		--firmware=$E907_FIRMWARE_FILE \
 		--pt=$PARTITION_FILE \
 		--boot2=$BOOT2_FILE
 else
@@ -91,7 +91,7 @@ echo ""
 read -r -p "Do you enter U-Disk mode and mount device to '/tmp/m1s' ? [y/N] " response_c906
 if [[ "$response_c906" =~ ^([yY][eE][sS]|[yY])$ ]]
 then
-	sudo cp d0fw_20221212.bin /tmp/m1s/
+	sudo cp $C906_FIRMWARE /tmp/m1s/
 	sudo umount /tmp/m1s
 else
     echo "Exit"
