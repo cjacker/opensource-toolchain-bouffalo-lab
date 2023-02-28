@@ -48,9 +48,13 @@ The answer is not very clear. In short, bl_iot_sdk support IOT-related programmi
 
 # Compiler
 
-Not like usual RISC-V based MCU (such as CH32V / GD32V, etc), The toolchain setup for BL chips from Bouffalo Lab is a little bit complex. For BL60x/70x, it's as simple as usual RISC-V based MCU, just require a 32bit 'riscv-none-embed' toolchain.
+Not like usual RISC-V based MCU (such as CH32V / GD32V, etc), The toolchain setup for BL chips from Bouffalo Lab is a little bit complex. Different cores may requires different toolchain, and different sdk (bl_mcu_sdk and bl_iot_sdk) requires different toolchain...
 
-**For BL616**, bl_mcu_sdk set `-mcpu` to `e907`, it can not supported by general `riscv-none-embed` toolchain, you had to use T-Head RISC-V toolchain.
+## For bl_mcu_sdk
+
+For BL60x/70x, it's 32bit RISC-V MCU, as usual RISC-V based MCU, it require a 32bit RISC-V toolchain.
+
+**For BL616**, bl_mcu_sdk set `-mtune` to `e907`, it can not supported by general RISC-V toolchain, you had to use T-Head RISC-V toolchain.
 
 **For BL808**, since it has 3 cores include a RV64GCV 480MHz core based on T-Head C906. It's 64bit general purpose CPU and have MMU, that means, it can run as baremetal and also able to run ordinary RISC-V Linux OS. Thus, For BL808, it need setup 3 toolchains:
 
@@ -107,7 +111,24 @@ and add `/opt/xuantie-riscv64-linux-toolchain/bin` to PATH env according to your
 **NOTE 2**, the sysroot is at '/opt/xuantie-riscv64-linux-toolchain/sysroot'.
 
 
+## For bl_iot_sdk
+
+You can not use above toolchains with bl_iot_sdk, bl_iot_sdk only works with SiFive GCC Toolchain. you can either use the full '[bl_iot_sdk](https://github.com/bouffalolab/bl_iot_sdk)' repo, it contains Windows / MacOSX / Linux toolchains and occupies about **14G** disk space. or use '[bl_iot_sdk_tiny](https://github.com/bouffalolab/bl_iot_sdk_tiny) and setup toolchain as:
+
+```
+cd bl_iot_sdk_tiny
+sudo bash ./scripts/setup.sh
+```
+
+It will download the sifive gcc toolchain and setup it automatically.
+
+Or you can download the sifive toolchain from : https://dev.bouffalolab.com/media/upload/download/toolchain_riscv_sifive_linux64.zip
+
+And setup it manually (note, should avoid conflict with other riscv64-unknown-elf- toolchains).
+
 # SDK
+
+## bl_mcu_sdk
 
 [bl mcu sdk](https://github.com/bouffalolab/bl_mcu_sdk) is an MCU software development kit provided by the Bouffalo Lab Team, supports all the series of Bouffalo chips, include but not limited to:
 
@@ -116,7 +137,7 @@ and add `/opt/xuantie-riscv64-linux-toolchain/bin` to PATH env according to your
 - BL616/BL618
 - BL808
 
-## SDK installation
+### SDK installation
 
 The installation process of bl_mcu_sdk is very simple, just fetch it and put it somewhere, for example:
 ```
@@ -133,7 +154,7 @@ export BL_SDK_BASE=<path to>/bl_mcu_sdk
 
 If you put the bl_mcu_sdk to other dir, please change above `export` to point to your sdk dir. if did not export the `BL_SDK_BASE` env, you need supply it when invoke 'make'.
 
-## Demo project
+### Demo project
 
 The bl_mcu_sdk use cmake and make to manage the project, and have it's own project management style, use blink demos in this repo as example, the dir structure looks like:
 
@@ -170,11 +191,54 @@ If built successfully, the target '.bin / .elf' files should be generated in `bu
 
 If you want to start a new project, you can either copy demos from this repo, or use various demos in `bl_mcu_sdk/examples` dir.
 
+## bl_iot_sdk
+
+Bouffalolab bl_iot_sdk support BL602 Wi-Fi/BLE Combo RISC-V based Chip and BL70X Zigbee/BLE RISC-V based Chip.
+
+The full [bl_iot_sdk](https://github.com/bouffalolab/bl_iot_sdk) will occupy 14G disk space since it contains all prebuilt toolchains for Windows / MacOSX (ARM and X86) and Linux (ARM and X86).
+
+I suggest use [bl_iot_sdk_tiny](https://github.com/bouffalolab/bl_iot_sdk_tiny)
+
+```
+git clone https://github.com/bouffalolab/bl_iot_sdk_tiny
+cd bl_iot_sdk_tiny
+git submodule update --init --recursive --progress
+cd components && git checkout
+cd tools && git checkout
+cd docs && git checkout
+cd customer_app && git checkout
+```
+As mentions above, bl_iot_sdk works with SiFive GCC toolchain, you need to install it as :
+
+```
+cd bl_iot_sdk_tiny
+sudo bash ./scripts/setup.sh
+```
+
+After toolchain installed, let's build the blink demo for BL602 to blink a LED connect to GPIO 5:
+```
+cd customer_app/get-start/blink
+./genromap
+```
+
+If all good, `build_out/blink.bin` will be generated.
+
+
 # Programming
 
-The official programming utility shipped in 'bl_mcu_sdk' is 'BLFlashCommand', it is commited into the 'bl_mcu_sdk' repo recently.
+The official GUI programming tool is Dev Cube, it support Windows / MacOSX and Linux, you can download it from : https://dev.bouffalolab.com/download
 
-There is also '[bflb-mcu-tool](https://pypi.org/project/bflb-mcu-tool/)' with official support and [blisp](https://github.com/pine64/blisp)  from Pine64 can be used.
+```
+mkdir devcube
+wget https://dev.bouffalolab.com/media/upload/download/BouffaloLabDevCube-v1.8.3.zip -P devcube
+cd devcube
+unzip BouffaloLabDevCube-v1.8.3.zip
+chmod +x BLDevCube-ubuntu
+chmod +x bflb_iot_tool-ubuntu
+```
+The official command line programming utility shipped in 'bl_mcu_sdk' is 'BLFlashCommand', it is commited into the 'bl_mcu_sdk' repo recently.
+
+There are also '[bflb-mcu-tool](https://pypi.org/project/bflb-mcu-tool/)' and '[bflb-iot-tool](https://pypi.org/project/bflb-iot-tool/) with official support and [blisp](https://github.com/pine64/blisp)  from Pine64 can be used.
 
 **NOTE:**
 
@@ -185,8 +249,8 @@ After `BLFlashCommand` commited into official bl_mcu_sdk repo and with the commi
 
 Compare with old firmware before this commit, the final ELF has a section '.fw_header' added. you can use 'readelf -S build/build_out/xxx.elf' to verify it has a '.fw_header' section or not.
 
-- use 'BLFlashCommand' / 'blisp' / 'bflb-mcu-tool' to program new firmware (firmware with .fw_header section).
-- use 'blisp' / 'bflb-mcu-tool' to program old firmware (firmware without .fw_header section). or `git checkout 18408f971e3f8c2f82e79ec5fddd38c22f288c0d` to roll back the 'fw_header' commit and rebuild your project.
+- use 'BLFlashCommand' / 'blisp' / 'bflb-mcu-tool' / 'bflb-iot-tool' to program new firmware (firmware with .fw_header section).
+- use 'blisp' / 'bflb-mcu-tool' / 'bflb-iot-tool' to program old firmware (firmware without .fw_header section). or `git checkout 18408f971e3f8c2f82e79ec5fddd38c22f288c0d` to roll back the 'fw_header' commit and rebuild your project.
 
 
 ## Program tools installation
@@ -199,7 +263,12 @@ Compare with old firmware before this commit, the final ELF has a section '.fw_h
 pip install bflb-mcu-tool
 ```
 
-And you should add `$HOME/.local/bin` to PATH env to find `bflb-mcu-tool` command.
+'bflb-iot-tool' is written in python too, install is as:
+```
+pip install bflb-iot-tool
+```
+
+And you should add `$HOME/.local/bin` to PATH env to find `bflb-mcu-tool` / `bflb-iot-tool` command.
 
 [blisp](https://github.com/pine64/blisp) is written by Pine64 community, currently it can support BL60x and BL70x, and lack support for BL616 and BL808, but still worth a try. to build and install it:
 
@@ -213,6 +282,8 @@ cmake --build .
 ```
 
 ## Programming
+
+### for bl_mcu_sdk
 
 Use above 'blink_bl702' demo as example, the target file if 'build/build_out/sipeed_debugger_plus_blink_bl702.bin'.
 
@@ -271,6 +342,21 @@ Or
 ```
 blisp iot -c bl70x -p /dev/ttyACM0 --reset -s build/build_out/sipeed_debugger_plus_blink_bl702.bin -l 0x0
 ```
+
+### for bl_iot_sdk
+
+Too many options make thing complex, let's keep it as simple as possible.
+
+Use `bl_iot_sdk/customer_app/get-start/blink` as example, after `build_out/blink.bin` generated as mentioned in 'SDK' section, program it to XT-BL12 devboard by :
+
+```
+bflb-iot-tool --chipname=bl602 --port=/dev/ttyUSB0 --baudrate=2000000 --firmware=build_out/blink.bin
+```
+
+Don't forget enter programming mode first by **Hold the 'D8' (GPIO8) button down, press and release 'EN' button, then release 'D8' (GPIO8) button.**
+
+After programming finished, you need repower the device to blink the LED connect to GPIO 5.
+
 
 ## Debugging
 
