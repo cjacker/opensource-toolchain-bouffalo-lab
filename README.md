@@ -124,7 +124,7 @@ It will download the sifive gcc toolchain and setup it automatically.
 
 Or you can download the sifive toolchain from : https://dev.bouffalolab.com/media/upload/download/toolchain_riscv_sifive_linux64.zip
 
-And setup it manually (note, should avoid conflict with other riscv64-unknown-elf- toolchains).
+And setup it manually (**not recommended** since they all provide 'riscv64-unknown-elf-gcc' command and may have confilict with other RISC-V toolchains).
 
 # SDK
 
@@ -195,7 +195,7 @@ If you want to start a new project, you can either copy demos from this repo, or
 
 Bouffalolab bl_iot_sdk support BL602 Wi-Fi/BLE Combo RISC-V based Chip and BL70X Zigbee/BLE RISC-V based Chip.
 
-The full [bl_iot_sdk](https://github.com/bouffalolab/bl_iot_sdk) will occupy 14G disk space since it contains all prebuilt toolchains for Windows / MacOSX (ARM and X86) and Linux (ARM and X86). If bandwidth and disk space is not a issue for you, you can `git clone https://github.com/bouffalolab/bl_iot_sdk`, since all toolchains included, it will be easy to use.
+The full [bl_iot_sdk](https://github.com/bouffalolab/bl_iot_sdk) will occupy 14G disk space since it contains all prebuilt toolchains for Windows / MacOSX (ARM and X86) and Linux (ARM and X86). If the bandwidth and disk space is not a issue for you, you can `git clone https://github.com/bouffalolab/bl_iot_sdk` directly, since all toolchains included, it will be easy to use.
 
 I suggest use [bl_iot_sdk_tiny](https://github.com/bouffalolab/bl_iot_sdk_tiny)
 
@@ -245,9 +245,10 @@ Compare with old firmware before this commit, the final ELF has a section '.fw_h
 - use 'blisp' / 'bflb-mcu-tool' / 'bflb-iot-tool' to program old firmware (firmware without .fw_header section). or `git checkout 18408f971e3f8c2f82e79ec5fddd38c22f288c0d` to roll back the 'fw_header' commit and rebuild your project.
 
 
-## Program tools installation
+## Programming tools installation
 
 ### BLDevCube
+
 'BLDevCube' can be downloaded from : https://dev.bouffalolab.com/download
 
 ```
@@ -351,7 +352,7 @@ blisp iot -c bl70x -p /dev/ttyACM0 --reset -s build/build_out/sipeed_debugger_pl
 
 ### for bl_iot_sdk
 
-Too many options make thing complex, let's keep it as simple as possible.
+Too many options make things complex, let's keep it as simple as possible.
 
 Use `bl_iot_sdk/customer_app/get-start/blink` as example, after `build_out/blink.bin` generated as mentioned in 'SDK' section, program it to XT-BL12 devboard by :
 
