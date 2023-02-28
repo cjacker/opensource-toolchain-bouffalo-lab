@@ -33,9 +33,14 @@ This tutorial will try best to cover all these chips.
 
 # Toolchain overview:
 - Compiler : RISC-V 32/64 embed and linux toolchain
-- SDK : official [bl mcu sdk](https://github.com/bouffalolab/bl_mcu_sdk)
+- SDK : official [bl_iot_sdk](https://github.com/bouffalolab/bl_iot_sdk) and [bl mcu sdk](https://github.com/bouffalolab/bl_mcu_sdk)
 - Programming tool : BLFlashCommand (integrated in bl_mcu_sdk) / bflb-mcu-tool / blisp
 - Debugger : OpenOCD / gdb
+
+**NOTE:**
+
+About the difference between bl_iot_sdk & bl_mcu_sdk, there is an answer [here](https://bbs.bouffalolab.com/d/124-difference-bl-iot-sdk-bl-mcu-sdk).
+
 
 # Compiler
 
