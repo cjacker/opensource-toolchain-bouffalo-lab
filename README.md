@@ -13,7 +13,7 @@ In short, this company produce a series RISC-V based MCU which focused on Wi-Fi,
 - BL808 series, 3 cores + 1 npu
   + T-HEAD C906 RV64GCV 480MHz (D0)
   + T-HEAD E907 RV32GCP 320MHz (M0)
-  + T-HEAD E902 RV32EMC 160MHz (LP), but there is no way to access this core up to now.
+  + T-HEAD E902 RV32EMC 160MHz (LP)
   + BLAI-100
 
 This tutorial will try best to cover all these chips.
@@ -21,7 +21,7 @@ This tutorial will try best to cover all these chips.
 # Hardware prerequist:
 
 - A dev board with BL chips from Bouffalo Lab
-  + [Sipeed rv debugger plus](https://github.com/sipeed/RV-Debugger-BL702) : BL702, this so called "debugger" is a mini BL702 devboard actually.
+  + [Sipeed RV Debugger Plus](https://github.com/sipeed/RV-Debugger-BL702) : BL702, this so called "debugger" is a mini BL702 devboard actually.
   + [Sipeed M0sense](https://wiki.sipeed.com/hardware/en/maixzero/sense/maix_zero_sense.html) : BL702
   + [Sipeed M0S and M0S Dock](https://wiki.sipeed.com/hardware/en/maixzero/m0s/m0s.html) : BL616, this so called "dock" can also be a "debugger" actually.
   + [Sipeed M1s Dock](https://wiki.sipeed.com/hardware/en/maix/m1s/m1s_module.html) or [Pine64 Ox64](https://wiki.pine64.org/wiki/Ox64) : BL808. M1s Dock is really a "dock".
@@ -29,7 +29,7 @@ This tutorial will try best to cover all these chips.
 
 - A CK-Link Lite debugger
   + Option 1: T-Head or HLK CK-Link Lite debugger from Aliexpress (expensive hardware)
-  + Option 2: Sipeed rv debugger plus with [ck-link lite firmware for bl702](https://github.com/cjacker/opensource-toolchain-bouffalo-lab/raw/main/sipeed_rv_debugger_plus_factory_firmware/bl702_cklink_whole_img_v2.2.bin)
+  + Option 2: Sipeed RV Debugger Plus with [ck-link lite firmware for bl702](https://github.com/cjacker/opensource-toolchain-bouffalo-lab/raw/main/sipeed_rv_debugger_plus_factory_firmware/bl702_cklink_whole_img_v2.2.bin)
   + Option 3: Sipeed M0S Dock with [ck-link lite firmware for bl616](https://github.com/cjacker/opensource-toolchain-bouffalo-lab/raw/main/m0s_dock_cklink-lite_firmware/bl616-cklink-lite-2023-02-27.bin)
 
 # Toolchain overview:
@@ -170,7 +170,7 @@ blink_demo
 
 To build it:
 
-For 'blink_bl702' (bl602 blink demo is almost same except chip model differs), here use Sipeed RV debugger plus:
+For 'blink_bl702' (bl602 blink demo is almost same except chip model differs), here use Sipeed RV Debugger Plus:
 ```
 cd blink_bl702
 make CHIP=bl702 BOARD=bl702dk CROSS_COMPILE=riscv-none-embed- BL_SDK_BASE=<path to bl_mcu_sdk>
@@ -381,11 +381,11 @@ Default JTAG pin:
 
 # Off topic
 
-## how to build uartjtag and dualuart firmware for Sipeed RV debugger plus
+## how to build uartjtag and dualuart firmware for Sipeed RV Debugger Plus
 
-Upstream repo for Sipeed RV debugger plus is https://github.com/sipeed/RV-Debugger-BL702/, The build instruction in README.md is outdated.
+Upstream repo for Sipeed RV Debugger Plus is https://github.com/sipeed/RV-Debugger-BL702/, The build instruction in README.md is outdated.
 
-We do not use the outdated version of `bl_mcu_sdk` shipped with RV Debugger in this tutorial, just build the 'uartjtag' and 'dualuart' firmwares with it.
+We do not use the outdated version of `bl_mcu_sdk` shipped with Sipeed RV Debugger Plus in this tutorial, just build the 'uartjtag' and 'dualuart' firmwares with it.
 
 ```
 git clone https://github.com/sipeed/RV-Debugger-BL702
@@ -393,21 +393,21 @@ git submodule update --init --progress
 cd firmware/bl_mcu_sdk
 ```
 
-To build jtaguart firmware for Sipeed rv debugger plus:
+To build jtaguart firmware for Sipeed RV Debugger Plus:
 ```
 make BOARD=bl702_debugger APP_DIR=../app APP=usb2uartjtag
 ```
 If all good, the target file is 'out/app/usb2uartjtag/usb2uartjtag_bl702.bin'.
 
 
-To build dualuart firmware for Sipeed rv debugger plus:
+To build dualuart firmware for Sipeed RV Debugger Plus:
 ```
 make BOARD=bl702_debugger APP_DIR=../app APP=usb2dualuart
 ```
 
 If all good, the target file is 'out/app/usb2dualuart/usb2dualuart_bl702.bin'.
 
-To program these firmwares to Sipeed rv debugger plus, you can use:
+To program these firmwares to Sipeed RV Debugger Plus, you can use:
 
 ```
 bflb-mcu-tool --chipname=bl702 --interface=uart --port=/dev/ttyACM0 --baudrate=2000000  <firmware.bin>
