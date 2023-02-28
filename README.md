@@ -26,6 +26,7 @@ This tutorial will try best to cover all these chips.
   + [Sipeed M0S and M0S Dock](https://wiki.sipeed.com/hardware/en/maixzero/m0s/m0s.html) : BL616, this so called "dock" can also be a "debugger" actually.
   + [Sipeed M1s Dock](https://wiki.sipeed.com/hardware/en/maix/m1s/m1s_module.html) or [Pine64 Ox64](https://wiki.pine64.org/wiki/Ox64) : BL808. M1s Dock is really a "dock".
   + various other devboards, for example XT-ZB1 (bl702) and XT-BL12 (bl602) devboards from Aliexpress.
+
 - A CK-Link Lite debugger
   + Option 1: T-Head or HLK CK-Link Lite debugger from Aliexpress (expensive hardware)
   + Option 2: Sipeed rv debugger plus with [ck-link lite firmware for bl702](https://github.com/cjacker/opensource-toolchain-bouffalo-lab/raw/main/sipeed_rv_debugger_plus_factory_firmware/bl702_cklink_whole_img_v2.2.bin)
@@ -33,14 +34,17 @@ This tutorial will try best to cover all these chips.
 
 # Toolchain overview:
 - Compiler : RISC-V 32/64 embed and linux toolchain
-- SDK : official [bl_iot_sdk](https://github.com/bouffalolab/bl_iot_sdk) and [bl mcu sdk](https://github.com/bouffalolab/bl_mcu_sdk)
-- Programming tool : BLFlashCommand (integrated in bl_mcu_sdk) / bflb-mcu-tool / blisp
-- Debugger : OpenOCD / gdb
+- SDK : official [bl_iot_sdk](https://github.com/bouffalolab/bl_iot_sdk_tiny) and [bl mcu sdk](https://github.com/bouffalolab/bl_mcu_sdk)
+- Programming tool : Dev Cube Linux Version / BLFlashCommand (integrated in bl_mcu_sdk) / bflb-iot-tool / bflb-mcu-tool / blisp
+- Debugger : OpenOCD / C-Sky Debug Server and gdb 
 
 **NOTE:**
 
 About the difference between bl_iot_sdk & bl_mcu_sdk, there is an answer [here](https://bbs.bouffalolab.com/d/124-difference-bl-iot-sdk-bl-mcu-sdk).
 
+<img src="https://raw.githubusercontent.com/cjacker/opensource-toolchain-bouffalo-lab/main/misc/diff-iot-mcu.png" width="60%" />
+
+The answer is not very clear. In short, bl_iot_sdk support IOT-related programming, such as Wi-Fi/BLE, etc, and bl_mcu_sdk doesn't.
 
 # Compiler
 
