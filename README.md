@@ -10,7 +10,11 @@ In short, this company produce a series RISC-V based MCU which focused on Wi-Fi,
 - BL702 series, BLE/Zigbee
 - BL606 series, Wi-Fi/BT/BLE/Zigbee/Ethernet/USB2.0 six-in-one 
 - BL616 series, Wi-FI/BT5
-- BL808 series, 3 cores + 1 npu, RV64GCV 480MHz / RV32GCP 320MHz / RV32EMC 160MHz and  BLAI-100
+- BL808 series, 3 cores + 1 npu
+  + T-HEAD C906 RV64GCV 480MHz (D0)
+  + T-HEAD E907 RV32GCP 320MHz (M0)
+  + T-HEAD E902 RV32EMC 160MHz (LP)
+  + BLAI-100
 
 This tutorial will try best to cover all these chips.
 
