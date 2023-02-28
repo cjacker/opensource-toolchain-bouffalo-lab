@@ -13,7 +13,7 @@ In short, this company produce a series RISC-V based MCU which focused on Wi-Fi,
 - BL808 series, 3 cores + 1 npu
   + T-HEAD C906 RV64GCV 480MHz (D0)
   + T-HEAD E907 RV32GCP 320MHz (M0)
-  + T-HEAD E902 RV32EMC 160MHz (LP), but there is no way to access this core up to now.
+  + T-HEAD E902 RV32EMC 160MHz (LP)
   + BLAI-100
 
 This tutorial will try best to cover all these chips.
