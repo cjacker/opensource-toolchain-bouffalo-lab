@@ -91,7 +91,7 @@ echo ""
 read -r -p "Do you enter U-Disk mode and mount device to '/tmp/m1s' ? [y/N] " response_c906
 if [[ "$response_c906" =~ ^([yY][eE][sS]|[yY])$ ]]
 then
-	sudo cp $C906_FIRMWARE /tmp/m1s/
+	sudo cp $C906_FIRMWARE_FILE /tmp/m1s/
 	sudo umount /tmp/m1s
 else
     echo "Exit"
