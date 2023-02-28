@@ -44,7 +44,7 @@ About the difference between bl_iot_sdk & bl_mcu_sdk, there is an answer [here](
 
 <img src="https://raw.githubusercontent.com/cjacker/opensource-toolchain-bouffalo-lab/main/misc/diff-iot-mcu.png" width="60%" />
 
-The answer is not very clear. In short, bl_iot_sdk support IOT-related programming, such as Wi-Fi/BLE, etc, and bl_mcu_sdk doesn't.
+The answer is not very clear. In short, bl_iot_sdk support IOT-related programming, such as Wi-Fi/BLE, etc, and bl_mcu_sdk doesn't. I am a little bit confusing why they have 2 official SDKs and even differ a lot, but it already does. you can choose the sdk as your own need.
 
 # Compiler
 
@@ -195,7 +195,7 @@ If you want to start a new project, you can either copy demos from this repo, or
 
 Bouffalolab bl_iot_sdk support BL602 Wi-Fi/BLE Combo RISC-V based Chip and BL70X Zigbee/BLE RISC-V based Chip.
 
-The full [bl_iot_sdk](https://github.com/bouffalolab/bl_iot_sdk) will occupy 14G disk space since it contains all prebuilt toolchains for Windows / MacOSX (ARM and X86) and Linux (ARM and X86).
+The full [bl_iot_sdk](https://github.com/bouffalolab/bl_iot_sdk) will occupy 14G disk space since it contains all prebuilt toolchains for Windows / MacOSX (ARM and X86) and Linux (ARM and X86). If bandwidth and disk space is not a issue for you, you can `git clone https://github.com/bouffalolab/bl_iot_sdk`, since all toolchains included, it will be easy to use.
 
 I suggest use [bl_iot_sdk_tiny](https://github.com/bouffalolab/bl_iot_sdk_tiny)
 
