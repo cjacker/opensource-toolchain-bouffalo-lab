@@ -163,7 +163,7 @@ demo dir
 └── readme.md
 ```
 
-### Blink Demo for BL702:
+### Blink Demo for BL702
 
 here use 'blink_bl702' with Sipeed RV Debugger Plus, 'blink_bl602' demo is almost same except you need change '702' to '602' for CHIP and BOARD:
 
@@ -195,7 +195,7 @@ make -C $@ BL_SDK_BASE=$(HOME)/bl_mcu_sdk
 
 And type `make` directly.
 
-After build successfully, these bin files will be generated:
+After build successfully, these firmware files will be generated:
 
 - ./helloworld_m0/build/build_out/helloworld_bl808_m0.bin : firmware for m0
 - ./helloworld_lp/build/build_out/helloworld_bl808_lp.bin : firmware for lp
@@ -480,7 +480,7 @@ Using Sipeed M1S Dock as example, beside BL808, it also have a standalone BL702 
               +-------------------------> D0 Core |  | M0 Core |      |
      +------------+            |        +---------+  +---------+      |
      | Standalone |           D18 (TX)  +---------+                   |
-     |UART adapter|<--------------------+ LP Core |                   |
+     |UART adapter|<--------------------> LP Core |                   |
      |   UART2    |           D19 (RX)  +---------+                   |
      +------------+            +--------------------------------------+
 ```
@@ -529,8 +529,6 @@ M1S dock implement U-Disk programming mode for C906 core, to activate U-Disk pro
 - copy C906 firmware to mount point and umount it.
 
 It will programmed automatically and reset the device.
-
-
 
 
 ## how to restore factory firmwares for M1S Dock
