@@ -52,7 +52,7 @@ Not like usual RISC-V based MCU (such as CH32V / GD32V, etc), The toolchain setu
 
 ## For bl_mcu_sdk
 
-For BL60x/70x, it's 32bit RISC-V MCU, as usual RISC-V based MCU, it require a 32bit RISC-V toolchain.
+For BL60x/70x, it's 32bit RISC-V MCU, as usual RISC-V based MCU, it require RISC-V toolchain to generate 32bit RISC-V object code. 
 
 **For BL616**, bl_mcu_sdk set `-mtune` to `e907`, it can not supported by general RISC-V toolchain, you had to use T-Head RISC-V toolchain.
 
@@ -60,27 +60,17 @@ For BL60x/70x, it's 32bit RISC-V MCU, as usual RISC-V based MCU, it require a 32
 
 - riscv 32bit embed toolchain
 - riscv 64bit embed toolchain
-- riscv 64bit linux toolchain
+- optional riscv 64bit linux toolchain
 
-I prefer to use Xpack prebuilt toolchains, but Xpack only provide rv32 embed toolchain up to now. For rv64 embed and rv64 linux toolchain, we have to use prebuilt T-Head Xuantie toolchains. By the way, T-Head doesn't provide rv32 toolchain.
+You may find some 'riscv64-unknown-elf' toolchain can with 32bit RISC-V mcu, just like x86_64 toolchain, it can generate object codes for x86 and x86_64, so we can reduce the toolchain to 2: 
 
-## RISC-V 32bit embeded gcc
+- riscv64 embeded toolchain to generate 32bit and 64bit codes
+- optional riscv64 linux toolchain if you want to work with linux on C906.
 
-[xpack-dev-tools](https://github.com/xpack-dev-tools/riscv-none-embed-gcc-xpack) provde a prebuilt toolchain for riscv. you can download it from [here](https://github.com/xpack-dev-tools/riscv-none-embed-gcc-xpack). although the riscv-none-embed-gcc-xpack had been marked as deprecated, but you'd better stay with riscv gcc v10.2 due to the riscv '-march' changes happened in gcc v12.0 and above.
+I prefer to use Xpack prebuilt toolchains, but Xpack only provide rv32 embed toolchain up to now. In this tutorial, we will and have to use prebuilt T-Head Xuantie toolchains.
 
-After download:
-
-```
-sudo mkdir -p /opt/xpack-riscv-toolchain
-sudo tar xf xpack-riscv-none-embed-gcc-10.2.0-1.2-linux-x64.tar.gz -C /opt/xpack-riscv-toolchain --strip-components=1
-```
-
-and add `/opt/xpack-riscv-toolchain/bin` to PATH env according to your shell.
-
-**NOTE**, the triplet of xpack prebuilt toolchain is **`riscv-none-embed`**.
-
-## RISC-V 64bit embeded gcc
-T-Head provide RISC-V 64bit embed toolchain (gcc v10.2.0), it can be download from [here](https://occ-oss-prod.oss-cn-hangzhou.aliyuncs.com/resource//1663142243961/Xuantie-900-gcc-elf-newlib-x86_64-V2.6.1-20220906.tar.gz).
+## T-Head Xuantie RISC-V embeded gcc
+T-Head provide RISC-V embed toolchain (gcc v10.2.0) to work with 32bit and 64bit RISC-V, it can be download from [here](https://occ-oss-prod.oss-cn-hangzhou.aliyuncs.com/resource//1663142243961/Xuantie-900-gcc-elf-newlib-x86_64-V2.6.1-20220906.tar.gz).
 
 After download:
 
@@ -94,7 +84,7 @@ and add `/opt/xuantie-riscv64-embed-toolchain/bin` to PATH env according to your
 **NOTE 1**, the triplet of prebuilt Xuantie rv64 embed toolchain is **`riscv64-unknown-elf`**.
 **NOTE 2**, you may already know, the 64bit toolchain is able to generate 32bit codes.
 
-## RISC-V 64bit linux gcc
+## T-Head XuanTie RISC-V linux gcc [Optional]
 
 T-Head provide RISC-V 64bit linux toolchain (gcc v10.2.0), it can be download from [here](https://occ-oss-prod.oss-cn-hangzhou.aliyuncs.com/resource//1663142514282/Xuantie-900-gcc-linux-5.10.4-glibc-x86_64-V2.6.1-20220906.tar.gz).
 
@@ -125,6 +115,8 @@ It will download the sifive gcc toolchain and setup it automatically.
 Or you can download the sifive toolchain from : https://dev.bouffalolab.com/media/upload/download/toolchain_riscv_sifive_linux64.zip
 
 And setup it manually (**not recommended** since they all provide 'riscv64-unknown-elf-gcc' command and may have confilict with other RISC-V toolchains).
+
+In this tutorial, I mentioned a little for bl_iot_sdk, and mostly focused on bl_mcu_sdk.
 
 # SDK
 
@@ -170,10 +162,10 @@ blink_demo
 
 To build it:
 
-For 'blink_bl702' (bl602 blink demo is almost same except chip model differs), here use Sipeed RV Debugger Plus:
+For 'blink_bl702' (blink_bl602 demo is almost same except you need change '702' to '602' for CHIP and BOARD), here use Sipeed RV Debugger Plus:
 ```
 cd blink_bl702
-make CHIP=bl702 BOARD=bl702dk CROSS_COMPILE=riscv-none-embed- BL_SDK_BASE=<path to bl_mcu_sdk>
+make CHIP=bl702 BOARD=bl702dk CROSS_COMPILE=riscv64-unknown-elf- BL_SDK_BASE=<path to bl_mcu_sdk>
 ```
 
 For 'blink_bl616', here is Sipeed M0S Dock:
@@ -181,15 +173,13 @@ For 'blink_bl616', here is Sipeed M0S Dock:
 cd blink_bl616
 make CHIP=bl616 BOARD=bl616dk CROSS_COMPILE=riscv64-unknown-elf- BL_SDK_BASE=<bl_mcu_sdk path>
 ```
-The CHIP / BOARD / CROSS_COMPILE / BL_SDK_BASE options can be set in 'Makefile'.
+The CHIP / BOARD / CROSS_COMPILE / BL_SDK_BASE options can be set in 'Makefile'. Refer to 'README.md' in each demo dir to find more command usage.
 
-**NOTE:** the `CROSS_COMPILE=` option is different for bl702 and bl616, since bl616 is based on E907 core and `-mcpu` set to `e907` which only supported by T-Head toolchain.
-
-You could refer to 'README.md' in each demo dir to find more command usage.
+You may find the commond line is too long to input everytime. Since we use out sdk build, we had to specify these options to invoke `make`, if you copy all these demos to `bl_mcu_sdk/examples` dir, you can just type `make` to build them.
 
 If built successfully, the target '.bin / .elf' files should be generated in `build/build_out/` dir. you can modify the 'project' name in 'CMakeLists.txt' to change the target file name.
 
-If you want to start a new project, you can either copy demos from this repo, or use various demos in `bl_mcu_sdk/examples` dir.
+If you want to start a new project, you can either copy these demos from this repo, or use various demos in `bl_mcu_sdk/examples` dir.
 
 ## bl_iot_sdk
 
