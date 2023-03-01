@@ -493,7 +493,7 @@ Here will explain how to program BL808 by command line:
 
 Usually, it's useful to fix or restore the factory 'dualuart' firmware.
 
-You need activate BL808 UART programming mode first, please refer to above sections on how to activate it.
+You need activate BL702 UART programming mode first, please refer to above sections on how to activate it.
 
 ```
 $ bflb-iot-tool --chipname=bl702 --port=/dev/ttyACM0 --baudrate=2000000 --firmware=<dualuart factory firmware> --addr 0x2000 
