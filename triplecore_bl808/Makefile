@@ -8,6 +8,6 @@ $(build_dirs):
 	make -C $@ BL_SDK_BASE=$(HOME)/bl_mcu_sdk
 
 clean:
-	rm -rf helloworld_m0/build helloworld_d0/build helloworld_lp/buil
+	rm -rf helloworld_m0/build helloworld_d0/build helloworld_lp/build
 
 .PHONY: $(build_dirs)
