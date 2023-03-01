@@ -1,0 +1,173 @@
+diff -Nur bl_mcu_sdk/bsp/board/bl808dk/bl808_flash_lp.ld /home/cjacker/bl_mcu_sdk/bsp/board/bl808dk/bl808_flash_lp.ld
+--- bl_mcu_sdk/bsp/board/bl808dk/bl808_flash_lp.ld	2023-02-27 09:31:53.000000000 +0800
++++ /home/cjacker/bl_mcu_sdk/bsp/board/bl808dk/bl808_flash_lp.ld	2023-03-01 11:25:07.651581418 +0800
+@@ -33,9 +33,9 @@
+ 
+ SECTIONS
+ {
+-    .fw_header0 :
++    .fw_header :
+     {
+-        KEEP(*(.fw_header0))
++        KEEP(*(.fw_header))
+     } > fw_header_memory0
+ 
+     .text :
+diff -Nur bl_mcu_sdk/bsp/board/bl808dk/board.c /home/cjacker/bl_mcu_sdk/bsp/board/bl808dk/board.c
+--- bl_mcu_sdk/bsp/board/bl808dk/board.c	2023-02-27 09:31:53.000000000 +0800
++++ /home/cjacker/bl_mcu_sdk/bsp/board/bl808dk/board.c	2023-03-01 11:26:10.018717470 +0800
+@@ -203,8 +203,9 @@
+     bflb_gpio_init(gpio, GPIO_PIN_16, 21 | GPIO_ALTERNATE | GPIO_PULLUP | GPIO_SMT_EN | GPIO_DRV_1);
+     bflb_gpio_init(gpio, GPIO_PIN_17, 21 | GPIO_ALTERNATE | GPIO_PULLUP | GPIO_SMT_EN | GPIO_DRV_1);
+ #elif defined(CPU_LP)
+-    bflb_gpio_uart_init(gpio, GPIO_PIN_16, GPIO_UART_FUNC_UART1_TX);
+-    bflb_gpio_uart_init(gpio, GPIO_PIN_17, GPIO_UART_FUNC_UART1_RX);
++    /* map GPIO_PIN_18 and GPIO_PIN_19 as UART for LP core */
++    bflb_gpio_uart_init(gpio, GPIO_PIN_18, GPIO_UART_FUNC_UART1_TX);
++    bflb_gpio_uart_init(gpio, GPIO_PIN_19, GPIO_UART_FUNC_UART1_RX);
+ #endif
+     struct bflb_uart_config_s cfg;
+     cfg.baudrate = 2000000;
+@@ -277,6 +278,12 @@
+     /* D0 image offset on flash is CONFIG_D0_FLASH_ADDR+0x1000(header) */
+     bflb_sf_ctrl_set_flash_image_offset(CONFIG_D0_FLASH_ADDR + 0x1000, 1, SF_CTRL_FLASH_BANK0);
+ 
++    Tzc_Sec_Set_CPU_Group(GLB_CORE_ID_LP, 2);
++    /* LP boot from 0x58020000 */
++    GLB_Set_CPU_Reset_Address(GLB_CORE_ID_LP, 0x58020000);
++    /* LP image offset on flash is CONFIG_LP_FLASH_ADDR+0x1000(header) */
++    bflb_sf_ctrl_set_flash_image_offset(CONFIG_LP_FLASH_ADDR + 0x1000, 2, SF_CTRL_FLASH_BANK1);
++
+     bflb_irq_restore(flag);
+ 
+     GLB_Release_CPU(GLB_CORE_ID_D0);
+diff -Nur bl_mcu_sdk/drivers/lhal/CMakeLists.txt /home/cjacker/bl_mcu_sdk/drivers/lhal/CMakeLists.txt
+--- bl_mcu_sdk/drivers/lhal/CMakeLists.txt	2023-02-27 09:31:53.000000000 +0800
++++ /home/cjacker/bl_mcu_sdk/drivers/lhal/CMakeLists.txt	2023-03-01 11:26:50.699806221 +0800
+@@ -128,7 +128,7 @@
+ sdk_add_compile_definitions(-DCPU_${CPU_ID_NAME})
+ endif()
+ 
+-if(NOT ("${CPU_ID}" STREQUAL "d0"))
++if((NOT ("${CPU_ID}" STREQUAL "d0")) AND (NOT ("${CPU_ID}" STREQUAL "lp")))
+ sdk_add_static_library(src/pka/libpka.a)
+ endif()
+ # add_subdirectory(src/pka)
+diff -Nur bl_mcu_sdk/examples/bl808_dualcore/helloworld_lp/CMakeLists.txt /home/cjacker/bl_mcu_sdk/examples/bl808_dualcore/helloworld_lp/CMakeLists.txt
+--- bl_mcu_sdk/examples/bl808_dualcore/helloworld_lp/CMakeLists.txt	1970-01-01 08:00:00.000000000 +0800
++++ /home/cjacker/bl_mcu_sdk/examples/bl808_dualcore/helloworld_lp/CMakeLists.txt	2023-03-01 02:31:14.424179659 +0800
+@@ -0,0 +1,9 @@
++cmake_minimum_required(VERSION 3.15)
++
++include(proj.conf)
++
++find_package(bouffalo_sdk REQUIRED HINTS $ENV{BL_SDK_BASE})
++
++sdk_set_main_file(main.c)
++
++project(helloworld)
+diff -Nur bl_mcu_sdk/examples/bl808_dualcore/helloworld_lp/flash_prog_cfg.ini /home/cjacker/bl_mcu_sdk/examples/bl808_dualcore/helloworld_lp/flash_prog_cfg.ini
+--- bl_mcu_sdk/examples/bl808_dualcore/helloworld_lp/flash_prog_cfg.ini	1970-01-01 08:00:00.000000000 +0800
++++ /home/cjacker/bl_mcu_sdk/examples/bl808_dualcore/helloworld_lp/flash_prog_cfg.ini	2023-03-01 09:17:24.814752998 +0800
+@@ -0,0 +1,11 @@
++[cfg]
++# 0: no erase, 1:programmed section erase, 2: chip erase
++erase = 1
++# skip mode set first para is skip addr, second para is skip len, multi-segment region with ; separated
++skip_mode = 0x0, 0x0
++# 0: not use isp mode, #1: isp mode
++boot2_isp_mode = 0
++
++[FW]
++filedir = ./build/build_out/helloworld*_$(CHIPNAME).bin
++address = 0x20000
+diff -Nur bl_mcu_sdk/examples/bl808_dualcore/helloworld_lp/main.c /home/cjacker/bl_mcu_sdk/examples/bl808_dualcore/helloworld_lp/main.c
+--- bl_mcu_sdk/examples/bl808_dualcore/helloworld_lp/main.c	1970-01-01 08:00:00.000000000 +0800
++++ /home/cjacker/bl_mcu_sdk/examples/bl808_dualcore/helloworld_lp/main.c	2023-03-01 03:18:23.151034748 +0800
+@@ -0,0 +1,19 @@
++#include "bflb_mtimer.h"
++#include "board.h"
++
++#define DBG_TAG "MAIN"
++#include "log.h"
++
++int main(void)
++{
++    board_init();
++    while (1) {
++        LOG_F("hello world lp\r\n");
++        LOG_E("hello world lp\r\n");
++        LOG_W("hello world lp\r\n");
++        LOG_I("hello world lp\r\n");
++        LOG_D("hello world lp\r\n");
++        LOG_T("hello world lp\r\n");
++        bflb_mtimer_delay_ms(1000);
++    }
++}
+diff -Nur bl_mcu_sdk/examples/bl808_dualcore/helloworld_lp/Makefile /home/cjacker/bl_mcu_sdk/examples/bl808_dualcore/helloworld_lp/Makefile
+--- bl_mcu_sdk/examples/bl808_dualcore/helloworld_lp/Makefile	1970-01-01 08:00:00.000000000 +0800
++++ /home/cjacker/bl_mcu_sdk/examples/bl808_dualcore/helloworld_lp/Makefile	2023-03-01 07:43:52.843529644 +0800
+@@ -0,0 +1,14 @@
++SDK_DEMO_PATH ?= .
++BL_SDK_BASE ?= $(SDK_DEMO_PATH)/../../..
++
++export BL_SDK_BASE
++
++CHIP ?= bl808
++BOARD ?= bl808dk
++CPU_ID ?= lp 
++CROSS_COMPILE ?= riscv64-unknown-elf-
++
++# add custom cmake definition
++#cmake_definition+=-Dxxx=sss
++
++include $(BL_SDK_BASE)/project.build
+diff -Nur bl_mcu_sdk/examples/bl808_dualcore/helloworld_lp/proj.conf /home/cjacker/bl_mcu_sdk/examples/bl808_dualcore/helloworld_lp/proj.conf
+--- bl_mcu_sdk/examples/bl808_dualcore/helloworld_lp/proj.conf	1970-01-01 08:00:00.000000000 +0800
++++ /home/cjacker/bl_mcu_sdk/examples/bl808_dualcore/helloworld_lp/proj.conf	2023-03-01 10:47:36.242469649 +0800
+@@ -0,0 +1,2 @@
++set(CONFIG_BFLOG 0)
++set(CONFIG_PSRAM 1)
+diff -Nur bl_mcu_sdk/examples/bl808_dualcore/helloworld_lp/README.md /home/cjacker/bl_mcu_sdk/examples/bl808_dualcore/helloworld_lp/README.md
+--- bl_mcu_sdk/examples/bl808_dualcore/helloworld_lp/README.md	1970-01-01 08:00:00.000000000 +0800
++++ /home/cjacker/bl_mcu_sdk/examples/bl808_dualcore/helloworld_lp/README.md	2023-03-01 02:31:14.423179659 +0800
+@@ -0,0 +1,22 @@
++# bl808_dualcore
++
++
++## Support CHIP
++
++|      CHIP        | Remark |
++|:----------------:|:------:|
++|BL808             |  Only for LP CPU      |
++
++## Compile
++
++- BL808
++
++```
++make CHIP=bl808 BOARD=bl808dk CPU_ID=lp
++```
++
++## Flash
++
++```
++make flash CHIP=chip_name COMX=xxx # xxx is your com name
++```
+\ No newline at end of file
+diff -Nur bl_mcu_sdk/examples/bl808_dualcore/Makefile /home/cjacker/bl_mcu_sdk/examples/bl808_dualcore/Makefile
+--- bl_mcu_sdk/examples/bl808_dualcore/Makefile	2023-02-21 10:28:12.000000000 +0800
++++ /home/cjacker/bl_mcu_sdk/examples/bl808_dualcore/Makefile	2023-03-01 11:19:55.252899916 +0800
+@@ -1,9 +1,10 @@
+ build_dirs += helloworld_m0
+ build_dirs += helloworld_d0
++build_dirs += helloworld_lp
+ 
+ all: $(build_dirs)
+ 
+ $(build_dirs):
+ 	make -C $@
+ 
+-.PHONY: $(build_dirs)
+\ No newline at end of file
++.PHONY: $(build_dirs)
