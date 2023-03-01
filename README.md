@@ -341,7 +341,6 @@ At the same time, there should be a serial device `/dev/ttyACM0` created.
 
 For BL602, I only found one devboard named 'XT-BL12'. to enter program mode, it need to **Hold the 'D8' (GPIO8) button down, press and release 'EN' button, then release 'D8' (GPIO8) button.**
 
-
 Then you can download the firmware:
 
 ### Option 1 : with `BLFlashCommand`
@@ -383,6 +382,38 @@ blisp write -c bl70x -p /dev/ttyACM0 --reset build/build_out/sipeed_debugger_plu
 Or
 ```
 blisp iot -c bl70x -p /dev/ttyACM0 --reset -s build/build_out/sipeed_debugger_plus_blink_bl702.bin -l 0x0
+```
+
+### Special case : M1S Dock BL808 programming
+
+Since BL808 has 3 cores, the programming process of BL808 will be a little bit complex. Using Sipeed M1S Dock as example, except BL808 chip, it also have another standalone BL702 chip integrated on board to emulate 2 UART interfaces.
+
+You can use 'BLDevCube' Linux version to make things easier, Sipeed already have a [good tutorial](https://wiki.sipeed.com/hardware/en/maix/m1s/other/start.html) here, please refer to [sipeed tutorial](https://wiki.sipeed.com/hardware/en/maix/m1s/other/start.html) on how to use 'BLDevCube' to program M1S Dock.
+
+Here will explain how to program BL808 by command line:
+
+**To program on-board BL702** 
+
+Usually, it's useful to fix or restore the 'dualuart' firmware.
+
+You need use UART typec port of M1S Dock, hold the 'BOOT' button and plug it in PC USB Port, it will enter UART programming mode of BL702, program it as:
+
+```
+$ bflb-iot-tool --chipname=bl702 --port=/dev/ttyACM0 --baudrate=2000000 --firmware=<dualuart factory firmware> --addr 0x2000 
+```
+
+Or 
+```
+$ blisp iot -c bl70x --reset -s usb2dualuart_bl702_221118.bin -l 0x2000
+```
+
+**To program E907 core of M1S Dock BL808**
+
+Connect the UART typec port to PC USB port, and hold 'BOOT' button down, press and release 'RESET' button, then release 'BOOT' button, it will enter E907 UART programming mode. use the larger number of 2 serial devices, here is '/dev/ttyUSB1'.
+
+
+```
+bflb-iot-tool --chipname=bl808 --port=/dev/ttyUSB1 --baudrate=2000000 --firmware=$E907_FIRMWARE_FILE --pt=$PARTITION_FILE --boot2=$BOOT2_FILE
 ```
 
 ### for bl_iot_sdk
