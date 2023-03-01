@@ -310,9 +310,11 @@ To program BL chips, you need enter UART programming mode first.
 
 - For BL702 / BL616, such as Sipeed RV Debugger Plus / M0Sense (702) and Sipeed M0S Dock (616), **Hold the Boot button down and plug sipeed rv debugger plug to PC Host USB port**.
 - For BL602, I have a 'XT-BL12' devboard, **Plug it in PC USB port, Hold the 'D8' (GPIO8) button down, press and release 'EN' button, then release 'D8' (GPIO8) button.**
-- For BL808, such as Sipeed M1S Dock, **Use 'UART' typec port to plug in PC USB Port, Hold 'BOOT' button down, press and release 'RESET' button, then release 'BOOT' button.*
+- For BL808, such as Sipeed M1S Dock, **Use 'UART' typec port to plug in PC USB Port, Hold 'BOOT' button down, press and release 'RESET' button, then release 'BOOT' button.**
 
-Then you can program the firmware:
+In short, if devboard has 'BOOT' button, "hold BOOT button down and power it" will enter UART programming mode. "hold BOOT button down and click RESET button" actually is equal to "hold BOOT button down and power it".
+
+Then you can program it:
 
 ### with `BLFlashCommand` (recommended)
 
