@@ -19,3 +19,7 @@ $ bflb-mcu-tool --chipname=bl616 --interface=uart --port=/dev/ttyACM0 --baudrate
 ```bash
 $ make CHIP=bl616 BOARD=bl616dk CROSS_COMPILE=riscv64-unknown-elf- BL_SDK_BASE=<bl_mcu_sdk path> flash
 ```
+Or
+```
+$ rm -rf build
+```

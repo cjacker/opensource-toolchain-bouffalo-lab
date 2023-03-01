@@ -1,13 +1,13 @@
 # to build:
 
 ```bash
-$ make CHIP=bl702 BOARD=bl702dk CROSS_COMPILE=riscv-none-embed- BL_SDK_BASE=<bl_mcu_sdk path>
+$ make CHIP=bl702 BOARD=bl702dk CROSS_COMPILE=riscv64-unknown-elf- BL_SDK_BASE=<bl_mcu_sdk path>
 ```
 
 # to flash:
 
 ```bash
-$ make flash COMX=/dev/ttyACM0 CHIP=bl702 BOARD=bl702dk CROSS_COMPILE=riscv-none-embed- BL_SDK_BASE=<bl_mcu_sdk path>
+$ make CHIP=bl702 BOARD=bl702dk CROSS_COMPILE=riscv64-unknown-elf- BL_SDK_BASE=<bl_mcu_sdk path> COMX=/dev/ttyACM0 flash
 ```
 # to flash with bfld-mcu-tool
 
@@ -24,5 +24,9 @@ $ blisp iot -c bl70x -p /dev/ttyACM0 --reset -s build/build_out/sipeed_debugger_
 # to clean
 
 ```bash
-make clean CHIP=bl702 BOARD=bl702dk CROSS_COMPILE=riscv-none-embed- BL_SDK_BASE=<bl_mcu_sdk path>
+$ make CHIP=bl702 BOARD=bl702dk CROSS_COMPILE=riscv64-unknown-elf- BL_SDK_BASE=<bl_mcu_sdk path> clean
+```
+Or
+```
+$ rm -rf build
 ```
