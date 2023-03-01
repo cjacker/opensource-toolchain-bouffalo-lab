@@ -22,7 +22,7 @@ This tutorial will try best to cover all these chips.
 
 - A dev board with BL chips from Bouffalo Lab
   + [Sipeed RV Debugger Plus](https://github.com/sipeed/RV-Debugger-BL702) : BL702, this so called "debugger" is a mini BL702 devboard actually.
-  + [Sipeed M0sense](https://wiki.sipeed.com/hardware/en/maixzero/sense/maix_zero_sense.html) : BL702
+  + [Sipeed M0sense](https://wiki.sipeed.com/hardware/en/maixzero/sense/maix_zero_sense.html) : BL702, M0sense is 'NOT M0S'.
   + [Sipeed M0S and M0S Dock](https://wiki.sipeed.com/hardware/en/maixzero/m0s/m0s.html) : BL616, this so called "dock" can also be a "debugger" actually.
   + [Sipeed M1s Dock](https://wiki.sipeed.com/hardware/en/maix/m1s/m1s_module.html) or [Pine64 Ox64](https://wiki.pine64.org/wiki/Ox64) : BL808. M1s Dock is really a "dock".
   + various other devboards, for example XT-ZB1 (bl702) and XT-BL12 (bl602) devboards from Aliexpress.
@@ -429,11 +429,33 @@ Or
 blisp iot -c bl70x --reset -s <firmware.bin> -l 0x2000
 ```
 
-## M1S Dock BL808 programming notes
+## how to turn M0S Dock to CK-Link Lite
+
+The CK-Link Lite firmware for M0S Dock is in [m0s_dock_cklink-lite_firmware](https://github.com/cjacker/opensource-toolchain-bouffalo-lab/tree/main/m0s_dock_cklink-lite_firmware) dir.
+
+Hold the BOOT button down and power on M0S Dock by plug it in PC USB port, and program it as:
+```
+$ bflb-mcu-tool --chipname=bl616 --interface=uart --port=/dev/ttyACM0 --baudrate=2000000 --firmware=bl616-cklink-lite.bin
+```
+
+
+## M0sense board (BL702) programming notes
+
+Sipeed M0sense is an AIOT development board based on BL702 of Bouffalo Lab, it's RISC-V architecture, supports low-energy bluetooth. There is a 8Pins FPC connector for connecting LCD screen, and 1 microphone, 1 RGB LED and a six-axis sensor chip are on this board. One USB 2.0 FS routes to Type-C interface.
+
+It has 'BOOT' and 'RESET' buttons indeed, but NOT for entering UART programming mode, it's for entering U-Disk programming mode with factory firmware.
+
+To enter UART programming mode we metioned above many times, you need to **short the 3v3 and boot pin**, then power it, the M0sense board will enter UART programming mode.
+
+After that, you can program it with `bflb-mcu-tool` etc.
+
+## M1S Dock (BL808) programming notes
 
 Since BL808 has 3 cores, the programming process of BL808 will be a little bit complex, it depend on devboard design and bsp codes. 
 
-Using Sipeed M1S Dock as example, except BL808 chip, it also have a standalone BL702 chip integrated on board to emulate 2 UART interfaces.
+Using Sipeed M1S Dock as example, beside BL808, it also have a standalone BL702 chip integrated on board to emulate 2 UART interfaces. you may need to:
+- program BL702 to fix/restore damage dualuart firmware.
+- program 3 cores of BL808
 
 ```
          +--------------+                  +----------------+
@@ -507,14 +529,7 @@ M1S dock implement U-Disk programming mode for C906 core, to activate U-Disk pro
 It will programmed automatically and reset the device.
 
 
-## how to turn M0S Dock to CK-Link Lite
 
-The CK-Link Lite firmware for M0S Dock is in [m0s_dock_cklink-lite_firmware](https://github.com/cjacker/opensource-toolchain-bouffalo-lab/tree/main/m0s_dock_cklink-lite_firmware) dir.
-
-Hold the BOOT button down and power on M0S Dock by plug it in PC USB port, and program it as:
-```
-$ bflb-mcu-tool --chipname=bl616 --interface=uart --port=/dev/ttyACM0 --baudrate=2000000 --firmware=bl616-cklink-lite.bin
-```
 
 ## how to restore factory firmwares for M1S Dock
 
