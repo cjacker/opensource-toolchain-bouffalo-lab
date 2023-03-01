@@ -87,11 +87,12 @@ Check it according to your env.
 
 ## Receive hello world from 3 cores
 
-Use any serial terminal such as `tio` / `minicom` / `picocom`, set baudrate to 2000000 and 8N1,
-open 3 serial devices.
+Use any serial terminal such as `tio` / `minicom` / `picocom` / `cutecom`, etc.
+Set baudrate to 2000000, 8N1, and open 3 serial devices.
 
-And you will receive hello world from 3 cores.
+You will receive "hello world" from 3 cores.
 
+<img src="https://raw.githubusercontent.com/cjacker/opensource-toolchain-bouffalo-lab/main/triplecore_bl808/screenshot.png" width="60%" />
 
 ## More
 
