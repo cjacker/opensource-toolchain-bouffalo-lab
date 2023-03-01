@@ -205,8 +205,7 @@ After build successfully, these bin files will be generated:
 
 For more infomation about how to use this tripplecore demo, please refer to : https://github.com/cjacker/opensource-toolchain-bouffalo-lab/tree/main/triplecore_bl808
 
-
-Due to use 'out sdk build' and this is a tutorial, you may find the commond line is too long to input everytime. At least `BL_SDK_BASE` must be set for 'out sdk build'. If you copy all these demos to `bl_mcu_sdk/examples` dir, you can just type `make` to build them.
+Due to use 'out sdk build' and this is a tutorial, you may find the commond line is too long to input everytime. Acctually, some options can be omited, at least `BL_SDK_BASE` must be set for 'out sdk build'. If you copy all these demos to `bl_mcu_sdk/examples` dir, you could just type `make` to build them.
 
 If built successfully, the target '.bin / .elf' files should be generated in `build/build_out/` dir. you can modify the 'project' name in 'CMakeLists.txt' to change the target file name.
 
@@ -216,7 +215,7 @@ If you want to start a new project, you can either copy these demos from this re
 
 Bouffalolab bl_iot_sdk support BL602 Wi-Fi/BLE Combo RISC-V based Chip and BL70X Zigbee/BLE RISC-V based Chip.
 
-The full [bl_iot_sdk](https://github.com/bouffalolab/bl_iot_sdk) will occupy 14G disk space since it contains all prebuilt toolchains for Windows / MacOSX (ARM and X86) and Linux (ARM and X86). If the bandwidth and disk space is not a issue for you, you can `git clone https://github.com/bouffalolab/bl_iot_sdk` directly, since all toolchains included, it will be easy to use.
+The full [bl_iot_sdk](https://github.com/bouffalolab/bl_iot_sdk) will occupy 9G disk space since it contains all prebuilt toolchains for Windows / MacOSX (ARM and X86) and Linux (ARM and X86). If the bandwidth and disk space is not a issue for you, you can `git clone https://github.com/bouffalolab/bl_iot_sdk` directly, since all toolchains included in git, it will be easy to use.
 
 I suggest use [bl_iot_sdk_tiny](https://github.com/bouffalolab/bl_iot_sdk_tiny)
 
@@ -249,7 +248,7 @@ If all good, `build_out/blink.bin` will be generated.
 
 The official GUI programming tool is BLDevCube, it support Windows / MacOSX and Linux. 
 
-The official command line programming utility shipped in 'bl_mcu_sdk' is 'BLFlashCommand', it is commited into the 'bl_mcu_sdk' repo recently.
+The official command line programming tool shipped in 'bl_mcu_sdk' is 'BLFlashCommand', it is commited into the 'bl_mcu_sdk' repo recently.
 
 There are also '[bflb-mcu-tool](https://pypi.org/project/bflb-mcu-tool/)' and '[bflb-iot-tool](https://pypi.org/project/bflb-iot-tool/) with official support and [blisp](https://github.com/pine64/blisp)  from Pine64 can be used.
 
@@ -315,9 +314,9 @@ To program BL chips, you need enter UART programming mode first.
 - For BL602, I have a 'XT-BL12' devboard, **Plug it in PC USB port, Hold the 'D8' (GPIO8) button down, press and release 'EN' button, then release 'D8' (GPIO8) button.**
 - For BL808, such as Sipeed M1S Dock, **Use 'UART' typec port to plug in PC USB Port, Hold 'BOOT' button down, press and release 'RESET' button, then release 'BOOT' button.*
 
-Then you can download the firmware:
+Then you can program the firmware:
 
-### Option 1 : with `BLFlashCommand` (recommended)
+### with `BLFlashCommand` (recommended)
 
 Since 'BLFlashCommand' already integrated in bl_mcu_sdk, we can treat it as the default and officially recommended tool to program BL chips.
 
@@ -327,11 +326,11 @@ Since 'BLFlashCommand' already integrated in bl_mcu_sdk, we can treat it as the 
 make flash
 ```
 
-You may need set 'BL_SDK_BASE' to your bl_mcu_sdk dir if useing 'out sdk build'. 
+You may need to set 'BL_SDK_BASE' to your bl_mcu_sdk dir if using 'out sdk build'. 
 
 All demos include triple core demo for BL808 in this repo can be programmed by 'BLFlashComand'.
 
-### Option 2 : with `bflb-mcu-tool` :
+### Option 1 : with `bflb-mcu-tool` :
 
 For new firmware format (with .fw_header). If you rebuild your project with updated 'bl_mcu_sdk', it should be always new firmware.
 
@@ -345,7 +344,7 @@ For old firmware format (without .fw_header). Usually, old firmwares are some pr
 bflb-mcu-tool --chipname=bl702 --interface=uart --port=/dev/ttyACM0 --baudrate=2000000 --firmware=build/build_out/sipeed_debugger_plus_blink_bl702.bin
 ```
 
-### Option 3 : with `blisp`
+### Option 2 : with `blisp`
 
 For new firmware (with .fw_header). If you rebuild your project with updated 'bl_mcu_sdk', it should be always new firmware.
 
@@ -379,7 +378,10 @@ Don't forget enter programming mode first by **Hold the 'D8' (GPIO8) button down
 After programming finished, you need repower the device to blink the LED connect to GPIO 5.
 
 
+
 ## Debugging
+
+**to be written**
 
 Default JTAG pin:
 
@@ -390,10 +392,8 @@ Default JTAG pin:
 |TDO            |     GPIO11    |      GPIO9         |    GPIO2    |   GPIO7  |
 |TDI            |     GPIO17    |      GPIO1         |    GPIO3    |   GPIO13 |
 
-**To be written**
 
-
-# Off topic
+# Misc
 
 ## how to build and program uartjtag and dualuart firmware for Sipeed RV Debugger Plus
 
@@ -435,7 +435,7 @@ Or
 blisp iot -c bl70x --reset -s <firmware.bin> -l 0x2000
 ```
 
-## M1S Dock BL808 programming
+## M1S Dock BL808 programming notes
 
 Since BL808 has 3 cores, the programming process of BL808 will be a little bit complex, it depend on devboard design and bsp codes. 
 
@@ -445,7 +445,7 @@ You can use 'BLDevCube' Linux version to make things easier, Sipeed already have
 
 Here will explain how to program BL808 by command line:
 
-#### To program on-board BL702 of M1S Dock
+### To program on-board BL702 of M1S Dock
 
 Usually, it's useful to fix or restore the factory 'dualuart' firmware.
 
@@ -460,7 +460,7 @@ Or
 $ blisp iot -c bl70x --reset -s usb2dualuart_bl702_221118.bin -l 0x2000
 ```
 
-#### To program E907 core of BL808 for M1S Dock 
+### To program E907 core of BL808 for M1S Dock 
 
 You need activate BL808 UART programming mode first, please refer to above sections on how to activate it.
 
@@ -472,7 +472,7 @@ bflb-iot-tool --chipname=bl808 --port=/dev/ttyUSB1 --baudrate=2000000 --firmware
 
 For partion table and boot2 files, you can find it from https://github.com/sipeed/M1s_BL808_example and BLDevCube. There also has a [m1s_factory_firmware copy](https://github.com/cjacker/opensource-toolchain-bouffalo-lab/tree/main/m1s_dock_factory_firmware) in this repo.
 
-#### To program C906 core of BL808 for M1S Dock 
+### To program C906 core of BL808 for M1S Dock 
 
 M1S dock implement U-Disk programming mode for C906 core, to activate U-Disk programming mode:
 - connect the 'OTP' typec port of M1S Dock with PC USB port
