@@ -435,8 +435,7 @@ blisp iot -c bl70x --reset -s <firmware.bin> -l 0x2000
 
 Since BL808 has 3 cores, the programming process of BL808 will be a little bit complex, it depend on devboard design and bsp codes. 
 
-Using Sipeed M1S Dock as example, except BL808 chip, it also have another standalone BL702 chip integrated on board to emulate 2 UART interfaces.
-
+Using Sipeed M1S Dock as example, except BL808 chip, it also have a standalone BL702 chip integrated on board to emulate 2 UART interfaces.
 
 ```
          +--------------+                  +----------------+
@@ -446,23 +445,22 @@ Using Sipeed M1S Dock as example, except BL808 chip, it also have another standa
                 |                              |        |
          +------V-------+                      V        V
          |3M USB storage|               +---------------------+
-         |to program D0 |               | BL702,emulate 2 UART| <- to program BL702
-         |              |               |   +-----+  +-----+  |    Hold 'BOOT' button down and power it.
+         |to program D0 |               | BL702,emulate 2 UART| <- to program BL702,
+         |              |               |   +-----+  +-----+  |    hold 'BOOT' button and power it.
          |Hold S1+S2    |               |   |UART0|  |UART1|  |
          |Toggle 'RST'  |               |   +---^-+  +-^---+  |
          |Mount         |               +-------|------|---|--+
-         +--------------+                     RX|TX  RX|TX | <- to program BL808, power it and hold 'BOOT',
-                                                |      |   |    toggle 'RST'.
-                               +----------------+------|---+----------+
-                               |  BL808         |      |              |
-                               |        +-------V-+  +-V-------+      |
-                               |        | D0 Core |  | M0 Core |      |
+         +----+---------+                     RX|TX  RX|TX | <- to program BL808 by UART Mode, power it and
+              |                                 |      |   |    hold 'BOOT' button, toggle 'RST'.
+              |To program      +----------------|------|---+----------+
+              |D0 Core         |  BL808         |      |              |
+              |by Udisk mode   |        +-------V-+  +-V-------+      |
+              +-------------------------> D0 Core |  | M0 Core |      |
      +------------+            |        +---------+  +---------+      |
      | Standalone |           D18 (TX)  +---------+                   |
      |UART adapter|<--------------------+ LP Core |                   |
      |   UART2    |           D19 (RX)  +---------+                   |
      +------------+            +--------------------------------------+
-
 ```
 
 You can use 'BLDevCube' Linux version to make things easier, Sipeed already have a [good tutorial](https://wiki.sipeed.com/hardware/en/maix/m1s/other/start.html) here, please refer to [sipeed tutorial](https://wiki.sipeed.com/hardware/en/maix/m1s/other/start.html) on how to use 'BLDevCube' to program M1S Dock.
@@ -496,7 +494,9 @@ bflb-iot-tool --chipname=bl808 --port=/dev/ttyUSB1 --baudrate=2000000 --firmware
 
 For partion table and boot2 files, you can find it from https://github.com/sipeed/M1s_BL808_example and BLDevCube. There also has a [m1s_factory_firmware copy](https://github.com/cjacker/opensource-toolchain-bouffalo-lab/tree/main/m1s_dock_factory_firmware) in this repo.
 
-### To program C906 core of BL808 for M1S Dock 
+The UART programming mode can be used to program all 3 cores by BLDevCube and BLFlashCommand.
+
+### To program C906 core of BL808 for M1S Dock (M1S Dock specific)
 
 M1S dock implement U-Disk programming mode for C906 core, to activate U-Disk programming mode:
 - connect the 'OTP' typec port of M1S Dock with PC USB port
