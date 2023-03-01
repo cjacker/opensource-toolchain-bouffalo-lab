@@ -13,7 +13,7 @@ In short, this company produce a series RISC-V based MCU which focused on Wi-Fi,
 - BL808 series, 3 cores + 1 npu
   + T-HEAD C906 RV64GCV 480MHz (D0)
   + T-HEAD E907 RV32GCP 320MHz (M0)
-  + T-HEAD E902 RV32EMC 160MHz (LP) , not supported by SDK up to now.
+  + T-HEAD E902 RV32EMC 160MHz (LP) , not supported by SDK up to now. it seems in [progress](https://github.com/bouffalolab/bl_mcu_sdk/issues/66)
   + BLAI-100
 
 This tutorial will try best to cover all these chips.
@@ -44,7 +44,7 @@ About the difference between bl_iot_sdk & bl_mcu_sdk, there is an answer [here](
 
 <img src="https://raw.githubusercontent.com/cjacker/opensource-toolchain-bouffalo-lab/main/misc/diff-iot-mcu.png" width="60%" />
 
-The answer is not very clear. In short, bl_iot_sdk support IOT-related programming, such as Wi-Fi/BLE, etc, and bl_mcu_sdk doesn't. I am a little bit confusing why they have 2 official SDKs and even differ a lot, but it already does. you can choose the sdk as your own need.
+The answer is not very clear. In short, bl_iot_sdk support IOT-related programming, such as Wi-Fi/BLE, etc, and bl_mcu_sdk doesn't (have BLE now). I am a little bit confusing why they have 2 official SDKs and even differ a lot, but it already does and seems plan to be merged together to mcu sdk in futrue. For now, you can choose the sdk as your own need.
 
 # Compiler
 
