@@ -437,6 +437,34 @@ Since BL808 has 3 cores, the programming process of BL808 will be a little bit c
 
 Using Sipeed M1S Dock as example, except BL808 chip, it also have another standalone BL702 chip integrated on board to emulate 2 UART interfaces.
 
+
+```
+         +--------------+                  +----------------+
+         |OTP TypeC Port|                  |UART TypeC Port |
+         +--------------+                  +----------------+
+                |                              |        |
+                |                              |        |
+         +------V-------+                      V        V
+         |3M USB storage|               +---------------------+
+         |to program D0 |               | BL702,emulate 2 UART| <- to program BL702
+         |              |               |   +-----+  +-----+  |    Hold 'BOOT' button down and power it.
+         |Hold S1+S2    |               |   |UART0|  |UART1|  |
+         |Toggle 'RST'  |               |   +---^-+  +-^---+  |
+         |Mount         |               +-------|------|---|--+
+         +--------------+                     RX|TX  RX|TX | <- to program BL808, power it and hold 'BOOT',
+                                                |      |   |    toggle 'RST'.
+                               +----------------+------|---+----------+
+                               |  BL808         |      |              |
+                               |        +-------V-+  +-V-------+      |
+                               |        | D0 Core |  | M0 Core |      |
+     +------------+            |        +---------+  +---------+      |
+     | Standalone |           D18 (TX)  +---------+                   |
+     |UART adapter|<--------------------+ LP Core |                   |
+     |   UART2    |           D19 (RX)  +---------+                   |
+     +------------+            +--------------------------------------+
+
+```
+
 You can use 'BLDevCube' Linux version to make things easier, Sipeed already have a [good tutorial](https://wiki.sipeed.com/hardware/en/maix/m1s/other/start.html) here, please refer to [sipeed tutorial](https://wiki.sipeed.com/hardware/en/maix/m1s/other/start.html) on how to use 'BLDevCube' to program M1S Dock.
 
 Here will explain how to program BL808 by command line:
