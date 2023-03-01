@@ -1,8 +1,10 @@
-# Triple core demo for BL808
+# Triple core demo for BL808 Sipeed M1S Dock
 
-This demo show how to use tripple core of BL808, you need connect 3 USB2TTL UART
-adatpers to BL808 to receive hello world msg from M0, D0, LP core.
+This demo show how to use tripple core of BL808. 
 
+If you use Sipeed M1S Dock, the BL702 chip on board emulate 2 UARTS, you need another UART adapter to talk with LP Core.
+
+<strike>
 ## Apply patch to bl_mcu_sdk
 
 Up to now, bl_mcu_sdk did not support use LP core of BL808.
@@ -19,7 +21,7 @@ $ cat bl_mcu_sdk-enable-bl808-lp-core-and-example.patch | patch -p1
 The patch should work with latest bl_mcu_sdk git, but I diff the patch with `ff125a583cd20b189b7a384bf12fb7340f499ea1` (now it is the latest master), it's safe to `git checkout` to ensure the patch always can be applied.
 
 If you use latest git, you may need to tune the patch.
-
+</strike>
 ## Build this triplecore demo
 
 I put `bl_mcu_sdk` at home dir, if not, change this line in Makefile to your sdk path:
@@ -61,22 +63,11 @@ After programmed, you need re-power M1S Dock and program firmwares for d0 and lp
 
 ## Wire up 
 
-After all three firmware programmed, Wire 3 USB2TTL adapter as:
-
-- UART0 for D0 core
-  + GPIO 14 (TX) -> USB2TTL RX
-  + GPIO 15 (RX) -> USB2TTL TX
-
-- UART1 for M0 core
-  + GPIO 16 (TX) -> USB2TTL RX
-  + GPIO 17 (RX) -> USB2TTL TX
-
-- UART2 for LP core
-  + GPIO 18 (TX) -> USB2TTL RX
-  + GPIO 19 (RX) -> USB2TTL TX
-
 For M1S Dock, since it already have 2 UARTs connect to D0 and M0, you only need wire 
-another USB2TTL adapter to GPIO 18 and GPIO 19 for LP core.
+one UART adapter to GPIO 18 and GPIO 19 for LP core as: 
+
+- GPIO 18 (TX) -> adapter RX
+- GPIO 19 (RX) -> adapter TX
 
 For my env, the 3 serial devices are : 
 - '/dev/ttyUSB0' for D0
@@ -85,11 +76,17 @@ For my env, the 3 serial devices are :
 
 Check it according to your env.
 
-## Receive hello world from 3 cores
+## Receive "hello world" from 3 cores
 
 Use any serial terminal such as `tio` / `minicom` / `picocom` / `cutecom`, etc.
 
-Set baudrate to 2000000, 8N1, and open 3 serial devices.
+Set baudrate to 2000000, 8N1, and open 3 serial devices, here use `tio`, run below command in 3 terminals:
+
+```
+tio -b 2000000 /dev/ttyUSB0
+tio -b 2000000 /dev/ttyUSB1
+tio -b 2000000 /dev/ttyACM0
+```
 
 You will receive "hello world" from 3 cores.
 
