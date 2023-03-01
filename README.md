@@ -62,16 +62,17 @@ For BL60x/70x, it's 32bit RISC-V MCU, as usual RISC-V based MCU, it require RISC
 
 - riscv 32bit embed toolchain
 - riscv 64bit embed toolchain
-- optional riscv 64bit linux toolchain
+- **optional** riscv 64bit linux toolchain
 
 You may find some 'riscv64-unknown-elf' toolchain can with 32bit RISC-V mcu, just like x86_64 toolchain, it can generate object codes for x86 and x86_64, so we can reduce the toolchain to 2: 
 
 - riscv64 embeded toolchain to generate 32bit and 64bit codes
-- optional riscv64 linux toolchain if you want to work with linux on C906.
+- **optional** riscv64 linux toolchain if you want to work with linux on C906.
 
-I prefer to use Xpack prebuilt toolchains, but Xpack only provide rv32 embed toolchain up to now. In this tutorial, we will and have to use prebuilt T-Head Xuantie toolchains.
+I prefer to use Xpack prebuilt toolchains, but Xpack only provide rv32 embed toolchain up to now and not compatible with some Xuantie extentions. In this tutorial, we will and have to use prebuilt T-Head Xuantie toolchains.
 
 ## T-Head Xuantie RISC-V embeded gcc
+
 T-Head provide RISC-V embed toolchain (gcc v10.2.0) to work with 32bit and 64bit RISC-V, it can be download from [here](https://occ-oss-prod.oss-cn-hangzhou.aliyuncs.com/resource//1663142243961/Xuantie-900-gcc-elf-newlib-x86_64-V2.6.1-20220906.tar.gz).
 
 After download:
@@ -87,6 +88,8 @@ and add `/opt/xuantie-riscv64-embed-toolchain/bin` to PATH env according to your
 **NOTE 2**, you may already know, the 64bit toolchain is able to generate 32bit codes.
 
 ## T-Head XuanTie RISC-V linux gcc [Optional]
+
+**If you want to work with C906 Linux, you may need this toolchain. It can be ignored now**
 
 T-Head provide RISC-V 64bit linux toolchain (gcc v10.2.0), it can be download from [here](https://occ-oss-prod.oss-cn-hangzhou.aliyuncs.com/resource//1663142514282/Xuantie-900-gcc-linux-5.10.4-glibc-x86_64-V2.6.1-20220906.tar.gz).
 
