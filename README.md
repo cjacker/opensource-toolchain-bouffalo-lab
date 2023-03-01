@@ -13,7 +13,7 @@ In short, this company produce a series RISC-V based MCU which focused on Wi-Fi,
 - BL808 series, 3 cores + 1 npu
   + T-HEAD C906 RV64GCV 480MHz (D0)
   + T-HEAD E907 RV32GCP 320MHz (M0)
-  + T-HEAD E902 RV32EMC 160MHz (LP) , not supported by SDK up to now. it seems in [progress](https://github.com/bouffalolab/bl_mcu_sdk/issues/66)
+  + T-HEAD E902 RV32EMC 160MHz (LP) , my work to enable LP core already upstreamed.
   + BLAI-100
 
 All datasheets and user manuals can be found in [bl_docs](https://github.com/bouffalolab/bl_docs) repo.
