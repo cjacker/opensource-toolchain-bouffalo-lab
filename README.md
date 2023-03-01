@@ -119,7 +119,7 @@ Or you can download the sifive toolchain from : https://dev.bouffalolab.com/medi
 
 And setup it manually (**not recommended** since they all provide 'riscv64-unknown-elf-gcc' command and may have confilict with other RISC-V toolchains).
 
-In this tutorial, I mentioned a little for bl_iot_sdk, and mostly focused on bl_mcu_sdk.
+In this tutorial, I mentioned a little about bl_iot_sdk, and mostly focused on bl_mcu_sdk.
 
 # SDK
 
@@ -213,9 +213,9 @@ If you want to start a new project, you can either copy these demos from this re
 
 Bouffalolab bl_iot_sdk support BL602 Wi-Fi/BLE Combo RISC-V based Chip and BL70X Zigbee/BLE RISC-V based Chip.
 
-The full [bl_iot_sdk](https://github.com/bouffalolab/bl_iot_sdk) will occupy 9G disk space since it contains all prebuilt toolchains for Windows / MacOSX (ARM and X86) and Linux (ARM and X86). If the bandwidth and disk space is not a issue for you, you can `git clone https://github.com/bouffalolab/bl_iot_sdk` directly, since all toolchains included in git, it will be easy to use.
+The full [bl_iot_sdk](https://github.com/bouffalolab/bl_iot_sdk) will occupies 9G disk space since it contains all prebuilt toolchains for Windows / MacOSX (ARM and X86) and Linux (ARM and X86). If the bandwidth and disk space is not a issue for you, you can `git clone https://github.com/bouffalolab/bl_iot_sdk` directly, since toolchains for all supported platform included in it, it will be easy to use.
 
-I suggest use [bl_iot_sdk_tiny](https://github.com/bouffalolab/bl_iot_sdk_tiny)
+I recommend use [bl_iot_sdk_tiny](https://github.com/bouffalolab/bl_iot_sdk_tiny).
 
 ```
 git clone https://github.com/bouffalolab/bl_iot_sdk_tiny
@@ -226,7 +226,7 @@ cd tools && git checkout
 cd docs && git checkout
 cd customer_app && git checkout
 ```
-As mentions above, bl_iot_sdk works with SiFive GCC toolchain, you need to install it as :
+As mentions above, bl_iot_sdk only works with SiFive GCC toolchain, you need install it as :
 
 ```
 cd bl_iot_sdk_tiny
@@ -244,7 +244,7 @@ If all good, `build_out/blink.bin` will be generated.
 
 # Programming
 
-The official GUI programming tool is BLDevCube, it support Windows / MacOSX and Linux. 
+The official GUI programming tool is 'BLDevCube', it support Windows / MacOSX and Linux. 
 
 The official command line programming tool shipped in 'bl_mcu_sdk' is 'BLFlashCommand', it is commited into the 'bl_mcu_sdk' repo recently.
 
