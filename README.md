@@ -165,7 +165,7 @@ demo dir
 └── readme.md
 ```
 
-#### Blink Demo for BL702:
+### Blink Demo for BL702:
 
 here use 'blink_bl702' with Sipeed RV Debugger Plus, 'blink_bl602' demo is almost same except you need change '702' to '602' for CHIP and BOARD:
 
@@ -174,7 +174,7 @@ cd blink_bl702
 make CHIP=bl702 BOARD=bl702dk CROSS_COMPILE=riscv64-unknown-elf- BL_SDK_BASE=<path to bl_mcu_sdk>
 ```
 
-#### Blink Demo for BL616
+### Blink Demo for BL616
 Here use 'blink_bl616' with Sipeed M0S Dock:
 
 ```
@@ -184,29 +184,13 @@ make CHIP=bl616 BOARD=bl616dk CROSS_COMPILE=riscv64-unknown-elf- BL_SDK_BASE=<bl
 
 The CHIP / BOARD / CROSS_COMPILE / BL_SDK_BASE options can be set in 'Makefile'. Refer to 'README.md' in each demo dir to find more command usage.
 
-#### Triple Core Demo for BL808
-Here use 'triplecore_bl808' example with Sipeed M1S Dock, This demo show how to use 3 cores of BL808.
+### Triple Core Demo for BL808
 
-**Apply patch to bl_mcu_sdk**
+Here use 'triplecore_bl808' example with Sipeed M1S Dock, This demo show how to use all 3 cores of BL808.
 
-Up to now, bl_mcu_sdk did not support use LP core of BL808.
+The patch to bl_mcu_sdk was [already upstreamed](https://github.com/bouffalolab/bl_mcu_sdk/commit/ab70ccc953269bb4a35279000beea9013da5ac1c).
 
-You need apply 'bl_mcu_sdk-enable-bl808-lp-core-and-example.patch' to enable it.
-
-```
-$ git clone https://github.com/bouffalolab/bl_mcu_sdk
-$ cd bl_mcu_sdk
-$ git checkout ff125a583cd20b189b7a384bf12fb7340f499ea1
-$ cat bl_mcu_sdk-enable-bl808-lp-core-and-example.patch | patch -p1
-```
-
-The patch should work with latest bl_mcu_sdk git, but I diff the patch with `ff125a583cd20b189b7a384bf12fb7340f499ea1` (now it is the latest master), it's safe to `git checkout` to ensure the patch always can be applied.
-
-If you use latest git, you may need to tune the patch.
-
-**Build this triplecore demo**
-
-I put `bl_mcu_sdk` at home dir, if not, change this line in Makefile to your sdk path:
+I put `bl_mcu_sdk` at home dir, if not, change this line in `Makefile` to your sdk path:
 ```
 make -C $@ BL_SDK_BASE=$(HOME)/bl_mcu_sdk
 ```
@@ -219,7 +203,7 @@ After build successfully, these bin files will be generated:
 - ./helloworld_lp/build/build_out/helloworld_bl808_lp.bin : firmware for lp
 - ./helloworld_d0/build/build_out/helloworld_bl808_d0.bin : firmware for d0
 
-For more infomation about this tripplecore demo, please refer to : https://github.com/cjacker/opensource-toolchain-bouffalo-lab/tree/main/triplecore_bl808
+For more infomation about how to use this tripplecore demo, please refer to : https://github.com/cjacker/opensource-toolchain-bouffalo-lab/tree/main/triplecore_bl808
 
 
 Due to use 'out sdk build' and this is a tutorial, you may find the commond line is too long to input everytime. At least `BL_SDK_BASE` must be set for 'out sdk build'. If you copy all these demos to `bl_mcu_sdk/examples` dir, you can just type `make` to build them.
@@ -325,43 +309,37 @@ cmake --build .
 
 ### for bl_mcu_sdk
 
-Use above 'blink_bl702' demo as example, the target file if 'build/build_out/sipeed_debugger_plus_blink_bl702.bin'.
+To program BL chips, you need enter UART programming mode first.
 
-**Hold the Boot button down and plug sipeed rv debugger plus to PC Host USB port**, it's same for Sipeed M0S Dock (BL616).
-
-And run `lsusb`, you will find:
-
-```
-Bus 001 Device 067: ID ffff:ffff BLIOT CDC Virtual ComPort
-```
-
-At the same time, there should be a serial device `/dev/ttyACM0` created.
-
-**NOTE:** 
-
-For BL602, I only found one devboard named 'XT-BL12'. to enter program mode, it need to **Hold the 'D8' (GPIO8) button down, press and release 'EN' button, then release 'D8' (GPIO8) button.**
+- For BL702 / BL616, such as Sipeed RV Debugger Plus and Sipeed M0S Dock, **Hold the Boot button down and plug sipeed rv debugger plug to PC Host USB port**.
+- For BL602, I have a 'XT-BL12' devboard, **Plug it in PC USB port, Hold the 'D8' (GPIO8) button down, press and release 'EN' button, then release 'D8' (GPIO8) button.**
+- For BL808, such as Sipeed M1S Dock, **Use 'UART' typec port to plug in PC USB Port, Hold 'BOOT' button down, press and release 'RESET' button, then release 'BOOT' button.*
 
 Then you can download the firmware:
 
-### Option 1 : with `BLFlashCommand`
+### Option 1 : with `BLFlashCommand` (recommended)
 
-`BLFlashCommand` read the 'flash_prog_cfg.ini' as config file, please setup this file correctly, and use blink demos in this repo, just type:
+Since 'BLFlashCommand' already integrated in bl_mcu_sdk, we can treat it as the default and officially recommended tool to program BL chips.
+
+`BLFlashCommand` read the 'flash_prog_cfg.ini' as config file, please setup this file correctly, and use demos in this repo, just type:
 
 ```
 make flash
 ```
 
-Since it already integrated in bl_mcu_sdk, we can treat it as the default and officially recommended tool to program BL chips.
+You may need set 'BL_SDK_BASE' to your bl_mcu_sdk dir if useing 'out sdk build'. 
+
+All demos include triple core demo for BL808 in this repo can be programmed by 'BLFlashComand'.
 
 ### Option 2 : with `bflb-mcu-tool` :
 
-For new firmware (with .fw_header). If you rebuild your project with updated 'bl_mcu_sdk', it should be always new firmware.
+For new firmware format (with .fw_header). If you rebuild your project with updated 'bl_mcu_sdk', it should be always new firmware.
 
 ```
 bflb-mcu-tool --chipname=bl702 --interface=uart --port=/dev/ttyACM0 --baudrate=2000000 --firmware=build/build_out/sipeed_debugger_plus_blink_bl702.bin --addr 0x1000
 ```
 
-For old firmware (without .fw_header). Usually, old firmwares are some pre-built and released bin files. please remove `--addr 0x1000` options from above command:
+For old firmware format (without .fw_header). Usually, old firmwares are some pre-built and released bin files. please remove `--addr 0x1000` options from above command:
 
 ```
 bflb-mcu-tool --chipname=bl702 --interface=uart --port=/dev/ttyACM0 --baudrate=2000000 --firmware=build/build_out/sipeed_debugger_plus_blink_bl702.bin
@@ -384,37 +362,7 @@ Or
 blisp iot -c bl70x -p /dev/ttyACM0 --reset -s build/build_out/sipeed_debugger_plus_blink_bl702.bin -l 0x0
 ```
 
-### Special case : M1S Dock BL808 programming
 
-Since BL808 has 3 cores, the programming process of BL808 will be a little bit complex. Using Sipeed M1S Dock as example, except BL808 chip, it also have another standalone BL702 chip integrated on board to emulate 2 UART interfaces.
-
-You can use 'BLDevCube' Linux version to make things easier, Sipeed already have a [good tutorial](https://wiki.sipeed.com/hardware/en/maix/m1s/other/start.html) here, please refer to [sipeed tutorial](https://wiki.sipeed.com/hardware/en/maix/m1s/other/start.html) on how to use 'BLDevCube' to program M1S Dock.
-
-Here will explain how to program BL808 by command line:
-
-**To program on-board BL702** 
-
-Usually, it's useful to fix or restore the 'dualuart' firmware.
-
-You need use UART typec port of M1S Dock, hold the 'BOOT' button and plug it in PC USB Port, it will enter UART programming mode of BL702, program it as:
-
-```
-$ bflb-iot-tool --chipname=bl702 --port=/dev/ttyACM0 --baudrate=2000000 --firmware=<dualuart factory firmware> --addr 0x2000 
-```
-
-Or 
-```
-$ blisp iot -c bl70x --reset -s usb2dualuart_bl702_221118.bin -l 0x2000
-```
-
-**To program E907 core of M1S Dock BL808**
-
-Connect the UART typec port to PC USB port, and hold 'BOOT' button down, press and release 'RESET' button, then release 'BOOT' button, it will enter E907 UART programming mode. use the larger number of 2 serial devices, here is '/dev/ttyUSB1'.
-
-
-```
-bflb-iot-tool --chipname=bl808 --port=/dev/ttyUSB1 --baudrate=2000000 --firmware=$E907_FIRMWARE_FILE --pt=$PARTITION_FILE --boot2=$BOOT2_FILE
-```
 
 ### for bl_iot_sdk
 
@@ -447,7 +395,7 @@ Default JTAG pin:
 
 # Off topic
 
-## how to build uartjtag and dualuart firmware for Sipeed RV Debugger Plus
+## how to build and program uartjtag and dualuart firmware for Sipeed RV Debugger Plus
 
 Upstream repo for Sipeed RV Debugger Plus is https://github.com/sipeed/RV-Debugger-BL702/, The build instruction in README.md is outdated.
 
@@ -487,7 +435,94 @@ Or
 blisp iot -c bl70x --reset -s <firmware.bin> -l 0x2000
 ```
 
+## M1S Dock BL808 programming
+
+Since BL808 has 3 cores, the programming process of BL808 will be a little bit complex, it depend on devboard design and bsp codes. 
+
+Using Sipeed M1S Dock as example, except BL808 chip, it also have another standalone BL702 chip integrated on board to emulate 2 UART interfaces.
+
+You can use 'BLDevCube' Linux version to make things easier, Sipeed already have a [good tutorial](https://wiki.sipeed.com/hardware/en/maix/m1s/other/start.html) here, please refer to [sipeed tutorial](https://wiki.sipeed.com/hardware/en/maix/m1s/other/start.html) on how to use 'BLDevCube' to program M1S Dock.
+
+Here will explain how to program BL808 by command line:
+
+#### To program on-board BL702 of M1S Dock
+
+Usually, it's useful to fix or restore the factory 'dualuart' firmware.
+
+You need activate BL808 UART programming mode first, please refer to above sections on how to activate it.
+
+```
+$ bflb-iot-tool --chipname=bl702 --port=/dev/ttyACM0 --baudrate=2000000 --firmware=<dualuart factory firmware> --addr 0x2000 
+```
+
+Or 
+```
+$ blisp iot -c bl70x --reset -s usb2dualuart_bl702_221118.bin -l 0x2000
+```
+
+#### To program E907 core of BL808 for M1S Dock 
+
+You need activate BL808 UART programming mode first, please refer to above sections on how to activate it.
+
+And use the bigger number of 2 serial devices, here is '/dev/ttyUSB1'.
+
+```
+bflb-iot-tool --chipname=bl808 --port=/dev/ttyUSB1 --baudrate=2000000 --firmware=<firmware.bin> --pt=<partition table, if have> --boot2=<boot2 file from BLDevCub>
+```
+
+For partion table and boot2 files, you can find it from https://github.com/sipeed/M1s_BL808_example and BLDevCube. There also has a [m1s_factory_firmware copy](https://github.com/cjacker/opensource-toolchain-bouffalo-lab/tree/main/m1s_dock_factory_firmware) in this repo.
+
+#### To program C906 core of BL808 for M1S Dock 
+
+M1S dock implement U-Disk programming mode for C906 core, to activate U-Disk programming mode:
+- connect the 'OTP' typec port of M1S Dock with PC USB port
+- Hold 'S1' and 'S2' button down at the same time.
+- Press 'RESET' button and release
+- Release 'S1' and 'S2' button
+- find the usb storage device and mount it to somewhere
+- copy C906 firmware to mount point and umount it.
+
+It will programmed automatically and reset the device.
 
 
+## how to turn M0S Dock to CK-Link Lite
+
+The CK-Link Lite firmware for M0S Dock is in [m0s_dock_cklink-lite_firmware](https://github.com/cjacker/opensource-toolchain-bouffalo-lab/tree/main/m0s_dock_cklink-lite_firmware) dir.
+
+Hold the BOOT button down and power on M0S Dock by plug it in PC USB port, and program it as:
+```
+$ bflb-mcu-tool --chipname=bl616 --interface=uart --port=/dev/ttyACM0 --baudrate=2000000 --firmware=bl616-cklink-lite.bin
+```
+
+## how to restore factory firmwares for M1S Dock
+
+All factory firmwares for M1S Dock is in [m1s_dock_factory_firmware](https://github.com/cjacker/opensource-toolchain-bouffalo-lab/edit/main/m1s_dock_factory_firmware/README.md) dir.
+
+The files in this dir includes:
+
+- `01-restore-bl702-dualuart-firmware.sh` : script to restore BL702 factory firmware (dualuart) of M1S Dock.
+
+- `02-restore-bl808-factory-firmware.sh` : script to restore BL808 factory firmware of M1S Dock. include E907 core (M0) and C906 core (D0)
+
+- `usb2dualuart_bl702_221118.bin` : default dualuart firmware for BL702, from https://dl.sipeed.com/shareURL/MAIX/M1s/M1s_Dock/7_Firmware
+ 
+- `boot2_isp_debug.bin` and `boot2_isp_release.bin` : from Dev Cube
+
+- `d0fw_20221212.bin` : factory firmware for C906 core (D0)
+
+- `firmware_20230227.bin` : factory firmware for E907 core (m0)
+
+- `partition_cfg_16M_m1sdock.toml` : partition table for M1S Dock
 
 
+`01-restore-bl702-dualuart-firmware.sh` and `02-restore-bl808-factory-firmware.sh` can be used to restore the factory formware for Sipeed M1S Dock. It will guide you step by step to activate the UART programming mode and program the firmware to target device.
+
+To restore or fix dualuart firmware for BL702:
+```
+./01-restore-bl702-dualuart-firmware.sh
+```
+
+To restore factory firmwares for BL808:
+```
+./02-restore-bl808-factory-firmware.sh
+```
