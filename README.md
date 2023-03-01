@@ -156,7 +156,7 @@ If you put the bl_mcu_sdk to other dir, please change above `export` to point to
 The bl_mcu_sdk use cmake and make to manage the project, and have it's own project management style, use blink demos in this repo as example, the dir structure looks like:
 
 ```
-blink_demo
+demo dir
 ├── CMakeLists.txt : manage sources list, build flags and target name.
 ├── flash_prog_cfg.ini : used by BLFlashCommand.
 ├── main.c : source file(s).
@@ -165,22 +165,64 @@ blink_demo
 └── readme.md
 ```
 
-To build it:
+#### Blink Demo for BL702:
 
-For 'blink_bl702' (blink_bl602 demo is almost same except you need change '702' to '602' for CHIP and BOARD), here use Sipeed RV Debugger Plus:
+here use 'blink_bl702' with Sipeed RV Debugger Plus, 'blink_bl602' demo is almost same except you need change '702' to '602' for CHIP and BOARD:
+
 ```
 cd blink_bl702
 make CHIP=bl702 BOARD=bl702dk CROSS_COMPILE=riscv64-unknown-elf- BL_SDK_BASE=<path to bl_mcu_sdk>
 ```
 
-For 'blink_bl616', here is Sipeed M0S Dock:
+#### Blink Demo for BL616
+Here use 'blink_bl616' with Sipeed M0S Dock:
+
 ```
 cd blink_bl616
 make CHIP=bl616 BOARD=bl616dk CROSS_COMPILE=riscv64-unknown-elf- BL_SDK_BASE=<bl_mcu_sdk path>
 ```
+
 The CHIP / BOARD / CROSS_COMPILE / BL_SDK_BASE options can be set in 'Makefile'. Refer to 'README.md' in each demo dir to find more command usage.
 
-You may find the commond line is too long to input everytime. Since we use out sdk build, we had to specify these options to invoke `make`, if you copy all these demos to `bl_mcu_sdk/examples` dir, you can just type `make` to build them.
+#### Triple Core Demo for BL808
+Here use 'triplecore_bl808' example with Sipeed M1S Dock, This demo show how to use 3 cores of BL808.
+
+**Apply patch to bl_mcu_sdk**
+
+Up to now, bl_mcu_sdk did not support use LP core of BL808.
+
+You need apply 'bl_mcu_sdk-enable-bl808-lp-core-and-example.patch' to enable it.
+
+```
+$ git clone https://github.com/bouffalolab/bl_mcu_sdk
+$ cd bl_mcu_sdk
+$ git checkout ff125a583cd20b189b7a384bf12fb7340f499ea1
+$ cat bl_mcu_sdk-enable-bl808-lp-core-and-example.patch | patch -p1
+```
+
+The patch should work with latest bl_mcu_sdk git, but I diff the patch with `ff125a583cd20b189b7a384bf12fb7340f499ea1` (now it is the latest master), it's safe to `git checkout` to ensure the patch always can be applied.
+
+If you use latest git, you may need to tune the patch.
+
+**Build this triplecore demo**
+
+I put `bl_mcu_sdk` at home dir, if not, change this line in Makefile to your sdk path:
+```
+make -C $@ BL_SDK_BASE=$(HOME)/bl_mcu_sdk
+```
+
+And type `make` directly.
+
+After build successfully, these bin files will be generated:
+
+- ./helloworld_m0/build/build_out/helloworld_bl808_m0.bin : firmware for m0
+- ./helloworld_lp/build/build_out/helloworld_bl808_lp.bin : firmware for lp
+- ./helloworld_d0/build/build_out/helloworld_bl808_d0.bin : firmware for d0
+
+For more infomation about this tripplecore demo, please refer to : https://github.com/cjacker/opensource-toolchain-bouffalo-lab/tree/main/triplecore_bl808
+
+
+Due to use 'out sdk build' and this is a tutorial, you may find the commond line is too long to input everytime. At least `BL_SDK_BASE` must be set for 'out sdk build'. If you copy all these demos to `bl_mcu_sdk/examples` dir, you can just type `make` to build them.
 
 If built successfully, the target '.bin / .elf' files should be generated in `build/build_out/` dir. you can modify the 'project' name in 'CMakeLists.txt' to change the target file name.
 
@@ -241,8 +283,6 @@ Compare with old firmware before this commit, the final ELF has a section '.fw_h
 
 
 ## Programming tools installation
-
-### BLDevCube
 
 'BLDevCube' can be downloaded from : https://dev.bouffalolab.com/download
 
