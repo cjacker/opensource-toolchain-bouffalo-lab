@@ -34,7 +34,7 @@ then
         --chipname=bl702 \
         --port=/dev/ttyACM0 \
         --baudrate=2000000 \
-        --firmware=$FIRMWARE_FILE \
+        --firmware=$DUALUART_FIRMWARE \
 		--addr 0x2000
 	#blisp iot -c bl70x --reset -s usb2dualuart_bl702_221118.bin -l 0x2000	
 else
