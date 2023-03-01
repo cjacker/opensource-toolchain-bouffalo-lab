@@ -16,6 +16,8 @@ In short, this company produce a series RISC-V based MCU which focused on Wi-Fi,
   + T-HEAD E902 RV32EMC 160MHz (LP) , not supported by SDK up to now. it seems in [progress](https://github.com/bouffalolab/bl_mcu_sdk/issues/66)
   + BLAI-100
 
+All datasheets and user manuals can be found in [bl_docs](https://github.com/bouffalolab/bl_docs) repo.
+
 This tutorial will try best to cover all these chips.
 
 # Hardware prerequist:
