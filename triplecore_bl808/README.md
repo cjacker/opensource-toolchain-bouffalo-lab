@@ -5,7 +5,7 @@ adatpers to BL808 to receive hello world msg from M0, D0, LP core.
 
 ## Apply patch to bl_mcu_sdk
 
-Up to now, bl_mcu_sdk did not support enable LP core of BL808.
+Up to now, bl_mcu_sdk did not support use LP core of BL808.
 
 You need apply 'bl_mcu_sdk-enable-bl808-lp-core-and-example.patch' to enable it.
 
@@ -16,7 +16,7 @@ $ git checkout ff125a583cd20b189b7a384bf12fb7340f499ea1
 $ cat bl_mcu_sdk-enable-bl808-lp-core-and-example.patch | patch -p1
 ```
 
-The patch should work with latest bl_mcu_sdk git, but I diff the patch with `ff125a583cd20b189b7a384bf12fb7340f499ea1`, it's safe to git checkout to ensure the patch always can be applied.
+The patch should work with latest bl_mcu_sdk git, but I diff the patch with `ff125a583cd20b189b7a384bf12fb7340f499ea1` (now it is the latest master), it's safe to `git checkout` to ensure the patch always can be applied.
 
 If you use latest git, you may need to tune the patch.
 
@@ -88,6 +88,7 @@ Check it according to your env.
 ## Receive hello world from 3 cores
 
 Use any serial terminal such as `tio` / `minicom` / `picocom` / `cutecom`, etc.
+
 Set baudrate to 2000000, 8N1, and open 3 serial devices.
 
 You will receive "hello world" from 3 cores.
