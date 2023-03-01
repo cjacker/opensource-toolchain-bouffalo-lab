@@ -186,9 +186,9 @@ The CHIP / BOARD / CROSS_COMPILE / BL_SDK_BASE options can be set in 'Makefile'.
 
 ### Triple Core Demo for BL808
 
-Here use 'triplecore_bl808' example with Sipeed M1S Dock, This demo show how to use all 3 cores of BL808.
+Here use 'triplecore_bl808' example with Sipeed M1S Dock, This demo show how to use all 3 cores of BL808 and receive hello world msg from M0 / D0 and LP cores.
 
-The patch to bl_mcu_sdk was [already upstreamed](https://github.com/bouffalolab/bl_mcu_sdk/commit/ab70ccc953269bb4a35279000beea9013da5ac1c).
+The patch I made for bl_mcu_sdk was [already upstreamed](https://github.com/bouffalolab/bl_mcu_sdk/commit/ab70ccc953269bb4a35279000beea9013da5ac1c).
 
 I put `bl_mcu_sdk` at home dir, if not, change this line in `Makefile` to your sdk path:
 ```
@@ -310,7 +310,7 @@ cmake --build .
 
 To program BL chips, you need enter UART programming mode first.
 
-- For BL702 / BL616, such as Sipeed RV Debugger Plus and Sipeed M0S Dock, **Hold the Boot button down and plug sipeed rv debugger plug to PC Host USB port**.
+- For BL702 / BL616, such as Sipeed RV Debugger Plus / M0Sense (702) and Sipeed M0S Dock (616), **Hold the Boot button down and plug sipeed rv debugger plug to PC Host USB port**.
 - For BL602, I have a 'XT-BL12' devboard, **Plug it in PC USB port, Hold the 'D8' (GPIO8) button down, press and release 'EN' button, then release 'D8' (GPIO8) button.**
 - For BL808, such as Sipeed M1S Dock, **Use 'UART' typec port to plug in PC USB Port, Hold 'BOOT' button down, press and release 'RESET' button, then release 'BOOT' button.*
 
@@ -361,8 +361,6 @@ Or
 blisp iot -c bl70x -p /dev/ttyACM0 --reset -s build/build_out/sipeed_debugger_plus_blink_bl702.bin -l 0x0
 ```
 
-
-
 ### for bl_iot_sdk
 
 Too many options make things complex, let's keep it as simple as possible.
@@ -376,8 +374,6 @@ bflb-iot-tool --chipname=bl602 --port=/dev/ttyUSB0 --baudrate=2000000 --firmware
 Don't forget enter programming mode first by **Hold the 'D8' (GPIO8) button down, press and release 'EN' button, then release 'D8' (GPIO8) button.**
 
 After programming finished, you need repower the device to blink the LED connect to GPIO 5.
-
-
 
 ## Debugging
 
