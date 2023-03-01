@@ -1,0 +1,2 @@
+/opt/riscv64-unknown-elf/bin/riscv64-unknown-elf-ar qc build_out/lib/libapp.a CMakeFiles/app.dir/home/cjacker/bl_mcu_sdk/bsp/board/bl808dk/board.c.obj CMakeFiles/app.dir/home/cjacker/bl_mcu_sdk/bsp/board/bl808dk/fw_header.c.obj
+/opt/riscv64-unknown-elf/bin/riscv64-unknown-elf-ranlib build_out/lib/libapp.a
