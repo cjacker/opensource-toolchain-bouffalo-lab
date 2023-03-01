@@ -3,7 +3,7 @@
 used to restore the factory formware for Sipeed M1S Dock.
 
 ## Usage
-To restore dualuart firmware for BL702:
+To restore or fix dualuart firmware for BL702:
 ```
 ./01-restore-bl702-dualuart-firmware.sh
 ```
