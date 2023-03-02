@@ -507,7 +507,7 @@ cd m0s_dock_cklink-lite_firmware
 ```
 You need refer to below table for M0S Dock, since at the back of M0S Dock, only 'IOxx' is printed.
 
-
+<img src="https://raw.githubusercontent.com/cjacker/opensource-toolchain-bouffalo-lab/main/m0s_dock_cklink-lite_firmware/m0sdock-cklink-lite-pinmap.png" width="60%" />
 
 After programmed, re-power it and using `lsusb`, you will find:
 ```
