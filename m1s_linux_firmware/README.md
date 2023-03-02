@@ -33,11 +33,11 @@ This is a good news. actually it is not necessary to program 2 low_load firmware
 5. M0 Group[Group0] Image Addr [0x58000000] [PATH to low_load_bl808_m0.bin]
 6. D0 Group[Group1] Image Addr [0x58000000] [PATH to low_load_bl808_d0.bin]
 7. Click 'Create & Download' and wait until it's done
-   <img src="./mcu.png" />
+   <img src="./mcu.png" width=60% />
 8. Switch to [IOT] page
 9. Enable 'Single Download', set Address with 0xD2000, choose [PATH to whole_image_linux.bin]
 10. Click 'Create & Download' again and wait until it's done
-   <img src="./iot.png" />
+   <img src="./iot.png" width=50% />
 
 
 ## To run Linux
