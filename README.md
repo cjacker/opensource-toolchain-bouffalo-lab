@@ -43,6 +43,7 @@ This tutorial will try best to cover all these chips.
   + [Install C-Sky Debug Server](https://github.com/cjacker/opensource-toolchain-bouffalo-lab/blob/main/README.md#install-c-sky-debug-server)
   + [Option 1 : Use T-Head / HLK CK-Link Lite Debugger](https://github.com/cjacker/opensource-toolchain-bouffalo-lab/blob/main/README.md#option-1--use-t-head-or-hlk-ck-link-debugger)
   + [Option 2 : Use Sipeed RV Debugger Plus or M0S Dock with cklink-lite firmware](https://github.com/cjacker/opensource-toolchain-bouffalo-lab/blob/main/README.md#option-2--use-sipeed-rv-debugger-plus-or-m0s-dock-with-cklink-lite-firmware)
+  + [Option 3 : Make your own CK-Link Lite debugger with STM32F103](https://github.com/cjacker/opensource-toolchain-w80x#option-3--make-your-own-ck-link-lite-debugger-with-stm32f103)
   + [Launch C-Sky debug server](https://github.com/cjacker/opensource-toolchain-bouffalo-lab/blob/main/README.md#launch-c-sky-debug-server)
   + [Debugging](https://github.com/cjacker/opensource-toolchain-bouffalo-lab/blob/main/README.md#debugging-1)
 - [Misc](https://github.com/cjacker/opensource-toolchain-bouffalo-lab/blob/main/README.md#misc)
@@ -512,7 +513,7 @@ Then connect the target board with RV Debugger Plus / M0S Dock as same as CK-Lin
 
 
 
-## Option 4 : Make your own CK-Link Lite debugger with STM32F103
+## Option 3 : Make your own CK-Link Lite debugger with STM32F103
 
 C-Sky debug server contains a set of cklink firmware files, if you have a STM32F103 devboard, you can use 'cklink_lite.hex' shipped with C-Sky debug server to make your own CK-Link debugger. 
 
