@@ -1,4 +1,4 @@
-# Linux firmware for M1S Dock
+# Linux firmware for Sipeed M1S Dock
 This is default Linux firmware for Sipeed M1S Dock.
 
 And I didn't find a way to program two "low_load" firmwares from command line, `bflb-mcu-tool` always erase and re-write bootinfo when programming second firmware. I keep 2 correct log files 'log.mcu' and 'log.iot' here, these log files it copy from BLDevCube.
@@ -11,7 +11,6 @@ From the log:
 - `low_load_bl808_d0@0x58000000.bin` programmed to 0x52000
 
 Currently, `bflb-mcu-tool` did not support group setting and can not generate 'bootinfo_group0.bin' and 'bootinfo_group1.bin'.
-
 
 For `whole_img_linux@0xD2000.bin`, it can be programmbed from command line by:
 ```
@@ -39,6 +38,11 @@ This is a good news. actually it is not necessary to program 2 low_load firmware
 10. Click 'Create & Download' again and wait until it's done
    <img src="./iot.png" width=50% />
 
+You may wonder why the ADDR of M0 / D0 low_load firmwares is same, they all are 0x58000000.
+
+I think it's a trick of BLDevCube, actually ADDR for M0 is 0x2000 and ADDR for D0 is 0x52000.
+
+To understand mem layout and bootrom better, please refer to : https://btashton.github.io/bl808-notes/
 
 ## To run Linux
 
