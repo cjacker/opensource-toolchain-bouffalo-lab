@@ -57,11 +57,10 @@ This tutorial will try best to cover all these chips.
   + [Sipeed M1s Dock](https://wiki.sipeed.com/hardware/en/maix/m1s/m1s_module.html) or [Pine64 Ox64](https://wiki.pine64.org/wiki/Ox64) : BL808. M1s Dock is really a "dock".
   + various other devboards, for example XT-ZB1 (BL702) and XT-BL12 (BL602) devboards from Aliexpress.
 
-- A JTAG or CK-Link Lite debugger
+- A CK-Link Lite debugger
   + Option 1: T-Head or HLK CK-Link Lite debugger from Aliexpress (a little bit expensive)
   + Option 2: Sipeed RV Debugger Plus with [ck-link lite firmware for bl702](https://github.com/cjacker/opensource-toolchain-bouffalo-lab/raw/main/sipeed_rv_debugger_plus_factory_firmware/bl702_cklink_whole_img_v2.2.bin)
   + Option 3: Sipeed M0S Dock with [ck-link lite firmware for bl616](https://github.com/cjacker/opensource-toolchain-bouffalo-lab/raw/main/m0s_dock_cklink-lite_firmware/bl616-cklink-lite-2023-02-27.bin)
-  + Various JTAG debuggers
 
 
 # Toolchain overview:
@@ -396,9 +395,81 @@ After programming finished, you need repower the device to blink the LED connect
 
 ## Debugging
 
-**to be written**
+Debugging of BL series chips are only supported by C-Sky Debug Server with CK-Link debugger. There are some cfgs for riscv-openocd, it looks like jtag already supported, but it not works.
 
-Default JTAG pin:
+You can buy a T-Head or HLK CK-Link Lite debugger from Aliexpress, or make it yourself using Sipeed RV Debugger plus or Sipeed M0S Dock.
+
+## Install C-Sky debug server
+
+The T-Head debug server can be downlowed from https://occ-oss-prod.oss-cn-hangzhou.aliyuncs.com/resource//1673423345494/T-Head-DebugServer-linux-x86_64-V5.16.7-20230109.sh.tar.gz
+
+After download finished:
+
+```
+tar xf T-Head-DebugServer-linux-x86_64-V5.16.7-20230109.sh.tar.gz
+tail -n +282 T-Head-DebugServer-linux-x86_64-V5.16.7-20230109.sh >csky-debug-server.tar.gz
+```
+Then extract the 'csky-debug-server.tar.gz' to somewhere, for example:
+```
+mkdir -p /opt/csky-debug-server
+sudo tar zxf csky-debug-server.tar.gz -C /opt/csky-debug-server
+```
+
+The command of csky-debug-server is `DebugServerConsole.elf`, it depend on some libraries installed at `/opt/csky-debug-server` dir,you have to run it as:
+
+```
+cd /opt/csky-debug-server
+./DebugServerConsole.elf
+```
+
+Or
+
+```
+LD_LIBRARY_PATH=/opt/csky-debug-server /opt/csky-debug-server/DebugServerConsole.elf
+```
+
+You can save below wrapper script as `csky-debug-server` and put it to `/usr/bin`:
+
+```
+#!/usr/bin/bash
+cd /opt/csky-debug-server
+export LD_LIBRARY_PATH=/opt/csky-debug-server
+./DebugServerConsole.elf $@
+```
+
+You may also need to create a udev rule '/etc/udev/rules.d/99-csky-cklink.rules' with below contents to set device permission correctly (allow normal user read / write the CK-Link device).
+
+```
+# For Hi-Link CK-Link lite
+SUBSYSTEM=="usb", ATTR{idVendor}="32bf", ATTR{idProduct}=="b210", MODE="666"
+```
+
+After this udev rules saved, please run:
+```
+udevadm trigger
+udevadm control --reload
+```
+
+## Option 1 : Use T-Head or HLK CK-Link debugger
+
+The Ck-Link pinout:
+
+```
+ +-------------+
+ | TDI ▪ • GND |
+ | TDO • • GND |
+   TCK • • GND |
+    -- • • --  |
+  nRST • • TMS |
+ |  -- • • --  |
+ |VREF • • TRST|
+ +-------------+
+```
+
+Official CK-Link debugger from T-Head or HLK do not supply power to target board, you need supply power to target board with another USB cable.
+
+Connect target board to CK-Link (refer to below table) and plug CK-Link to PC USB port:
+
 
 |   CHIP/Pin    |  BL602/BL604  |  BL702/BL704/BL706 | BL616/BL618 |   BL808  |
 |:-------------:|:-------------:|:------------------:|:-----------:|:--------:|
@@ -408,7 +479,43 @@ Default JTAG pin:
 |TDI            |     GPIO17    |      GPIO1         |    GPIO3    |   GPIO13 |
 
 
+## Option 2 : Use Sipeed RV Debugger Plus or M0S Dock with cklink-lite firmware
 
+The cklink-lite firmware for RV Debugger Plus and M0S Dock are provided in this repo:
+- sipeed_rv_debugger_plus_factory_firmware/bl702_cklink_whole_img_v2.2.bin : for Sipeed RV Debugger Plus
+- m0s_dock_cklink-lite_firmware/bl616-cklink-lite-2023-02-27.bin : for Sipeed M0S Dock
+
+To program Sipeed RV Debugger Plus, hold 'BOOT' down and plug it in PC USB port:
+```
+cd sipeed_rv_debugger_plus_factory_firmware
+./01-program-cklink-lite.sh
+```
+
+To program Sipeed M0S Dock, hold 'BOOT' down and plug it in PC USB port:
+```
+cd m0s_dock_cklink-lite_firmware
+./01-program-cklink-lite.sh
+```
+
+After programmed, re-power it and using `lsusb`, you will find:
+```
+42bf:b210 Bouffalo C-Sky CKLink-Lite
+```
+
+Then connect the target board with RV Debugger Plus / M0S Dock as same as CK-Link Lite Debugger.
+
+
+## Launch C-Sky debug server
+
+
+Then invoke C-Sky debug server as mentioned above:
+
+```
+# here I use wrapper script
+csky-debug-server
+```
+
+If all good, the output looks like:
 ```
 +---                                                    ---+
 |  T-Head Debugger Server (Build: Jan  9 2023, Linux)      |
@@ -438,11 +545,15 @@ help/h
 DebuggerServer$
 ```
 
+## Debugging
+Use blink_bl702 as example, After build successfully, open new terminal window, and run:
 
 ```
 riscv64-unknown-elf-gdb build/build_out/sipeed_debugger_plus_blink_bl702.elf
 ```
 
+
+After '(gdb)' prompt showed:
 ```
 (gdb) target remote :1025
 Remote debugging using :1025
