@@ -7,8 +7,8 @@ From the log:
 
 - `bootinfo_group0.bin` programmed to 0x0000
 - `bootinfo_group1.bin` programmed to 0x1000
-- 'low_load_bl808_m0@0x58000000.bin' programmed to 0x2000
-- 'low_load_bl808_d0@0x58000000.bin' programmed to 0x52000
+- `low_load_bl808_m0@0x58000000.bin` programmed to 0x2000
+- `low_load_bl808_d0@0x58000000.bin` programmed to 0x52000
 
 Currently, `bflb-mcu-tool` did not support group setting and can not generate 'bootinfo_group0.bin' and 'bootinfo_group1.bin'.
 
