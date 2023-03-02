@@ -18,6 +18,36 @@ All datasheets and user manuals can be found in [bl_docs](https://github.com/bou
 
 This tutorial will try best to cover all these chips.
 
+# Table of contents
+- [Hardware prerequist](https://github.com/cjacker/opensource-toolchain-bouffalo-lab/blob/main/README.md#hardware-prerequist)
+- [Toolchain overview](https://github.com/cjacker/opensource-toolchain-bouffalo-lab/blob/main/README.md#toolchain-overview)
+- [Compiler](https://github.com/cjacker/opensource-toolchain-bouffalo-lab/blob/main/README.md#compiler)
+  + [For bl_mcu_sdk](https://github.com/cjacker/opensource-toolchain-bouffalo-lab/blob/main/README.md#for-bl_mcu_sdk)
+    - [T-Head RISC-V embeded gnu toolchain](https://github.com/cjacker/opensource-toolchain-bouffalo-lab/blob/main/README.md#t-head-xuantie-risc-v-embeded-gcc)
+    - [T-Head RISC-V Linux toolchain](https://github.com/cjacker/opensource-toolchain-bouffalo-lab/blob/main/README.md#t-head-xuantie-risc-v-linux-gcc-optional)
+  + [For bl_iot_sdk](https://github.com/cjacker/opensource-toolchain-bouffalo-lab/blob/main/README.md#for-bl_iot_sdk)
+- [SDK](https://github.com/cjacker/opensource-toolchain-bouffalo-lab/blob/main/README.md#sdk)
+  + [bl_mcu_sdk](https://github.com/cjacker/opensource-toolchain-bouffalo-lab/blob/main/README.md#bl_mcu_sdk)
+    - [sdk installation](https://github.com/cjacker/opensource-toolchain-bouffalo-lab/blob/main/README.md#sdk-installation)
+    - [demo projects](https://github.com/cjacker/opensource-toolchain-bouffalo-lab/blob/main/README.md#demo-project)
+  + [bl_iot_sdk](https://github.com/cjacker/opensource-toolchain-bouffalo-lab/blob/main/README.md#bl_iot_sdk)
+- [Programming](https://github.com/cjacker/opensource-toolchain-bouffalo-lab/blob/main/README.md#programming)
+  + [programming tools installation](https://github.com/cjacker/opensource-toolchain-bouffalo-lab/blob/main/README.md#programming-tools-installation)
+  + [programming](https://github.com/cjacker/opensource-toolchain-bouffalo-lab/blob/main/README.md#programming-1)
+    - [for bl_mcu_sdk](https://github.com/cjacker/opensource-toolchain-bouffalo-lab/blob/main/README.md#for-bl_mcu_sdk-1)
+      + [with BLFlashCommand](https://github.com/cjacker/opensource-toolchain-bouffalo-lab/blob/main/README.md#with-blflashcommand-recommended)
+      + [with bflb-mcu-tool](https://github.com/cjacker/opensource-toolchain-bouffalo-lab/blob/main/README.md#option-1--with-bflb-mcu-tool-)
+      + [with blisp](https://github.com/cjacker/opensource-toolchain-bouffalo-lab/blob/main/README.md#option-2--with-blisp)
+    - [for bl_iot_sdk](https://github.com/cjacker/opensource-toolchain-bouffalo-lab/blob/main/README.md#for-bl_iot_sdk-1)
+- [Debugging]
+- [Misc](https://github.com/cjacker/opensource-toolchain-bouffalo-lab/blob/main/README.md#misc)
+  + [Use Sipeed RV Debugger Plus as JTAG or CK-Link Lite debugger](https://github.com/cjacker/opensource-toolchain-bouffalo-lab/blob/main/README.md#how-to-build-and-program-uartjtag-and-dualuart-firmware-for-sipeed-rv-debugger-plus)
+  + [Use M0S Dock as CK-Link Lite debugger](https://github.com/cjacker/opensource-toolchain-bouffalo-lab/blob/main/README.md#how-to-turn-m0s-dock-to-ck-link-lite)
+  + [Sipeed M0sense programming notes](https://github.com/cjacker/opensource-toolchain-bouffalo-lab/blob/main/README.md#m0sense-board-bl702-programming-notes)
+  + [Sipeed M1S Dock programming notes](https://github.com/cjacker/opensource-toolchain-bouffalo-lab/blob/main/README.md#m1s-dock-bl808-programming-notes)
+  + [How to restore factory firmware of M1S Dock](https://github.com/cjacker/opensource-toolchain-bouffalo-lab/blob/main/README.md#how-to-restore-factory-firmwares-for-m1s-dock)
+  
+
 # Hardware prerequist:
 
 - A devboard with BL chips
