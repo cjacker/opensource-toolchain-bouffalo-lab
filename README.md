@@ -66,6 +66,7 @@ This tutorial will try best to cover all these chips.
   + Option 1: T-Head or HLK CK-Link Lite debugger from Aliexpress (a little bit expensive)
   + Option 2: Sipeed RV Debugger Plus with [ck-link lite firmware for bl702](https://github.com/cjacker/opensource-toolchain-bouffalo-lab/raw/main/sipeed_rv_debugger_plus_factory_firmware/bl702_cklink_whole_img_v2.2.bin)
   + Option 3: Sipeed M0S Dock with [ck-link lite firmware for bl616](https://github.com/cjacker/opensource-toolchain-bouffalo-lab/raw/main/m0s_dock_cklink-lite_firmware/bl616-cklink-lite-2023-02-27.bin)
+  + Option 4: A STM32F103 bluepill with [this modified cklink-lite official firmware](https://github.com/cjacker/cklink-lite-fw-convertor)
 
 
 # Toolchain overview:
@@ -508,6 +509,35 @@ After programmed, re-power it and using `lsusb`, you will find:
 ```
 
 Then connect the target board with RV Debugger Plus / M0S Dock as same as CK-Link Lite Debugger.
+
+
+
+## Option 4 : Make your own CK-Link Lite debugger with STM32F103
+
+C-Sky debug server contains a set of cklink firmware files, if you have a STM32F103 devboard, you can use 'cklink_lite.hex' shipped with C-Sky debug server to make your own CK-Link debugger. 
+
+'cklink_lite_iap.hex' (address range from 0x0800_0000 to 0x0800_4000) is the bootloader and 'cklink_lite.hex' (address range start from 0x0800_4000) is the firmware. the IAP firmware not works with STM32F103 bluepill (due to the circuit differences between CKLink Lite debugger and STM32F103 bluepill), we need modify the 'cklink_lite.hex' first to copy the vector table to the beginning of the flash:
+
+- open 'cklink_lite.hex' in your favorite editor.
+- copy the lines before address 0x4100 and paste them to the start of file.
+- modify address of all lines just copied, from 0x40XX to 0x00XX.
+- fix the checksum of all lines just modified.
+
+I wrote a tool to convert it automatically, you can find it in [cklink-lite-fw-convertor](https://github.com/cjacker/cklink-lite-fw-convertor) repo.
+
+And the pre-converted '[cklink-lite-2.36_for-stm32f103.hex](https://raw.githubusercontent.com/cjacker/cklink-lite-fw-convertor/main/cklink_lite-2.36_for-stm32f103.hex) can programmed to STM32F103 directly. If the firmware version is outdated, you can use `cklink-lite-fw-convertor` to convert the latest firmware yourself.
+
+After STM32F103 programmed, refer to below table to connect STM32F103 with your target devboard and plug STM32F103 to PC USB port.
+
+| STM32F103 | CK-Link  |
+|-----------|----------|
+| A0        | TRST     |
+| A1        | TCK      |
+| A4        | TDO      |
+| A5        | TMS      |
+| B9        | TDI      |
+| 3V3       | 3V3      |
+| GND       | GND      |
 
 
 ## Launch C-Sky debug server
