@@ -408,6 +408,57 @@ Default JTAG pin:
 |TDI            |     GPIO17    |      GPIO1         |    GPIO3    |   GPIO13 |
 
 
+
+```
++---                                                    ---+
+|  T-Head Debugger Server (Build: Jan  9 2023, Linux)      |
+   User   Layer Version : 5.16.07
+   Target Layer version : 2.0
+|  Copyright (C) 2022 T-HEAD Semiconductor Co.,Ltd.        |
++---                                                    ---+
+T-HEAD: CKLink_Lite_V2, App_ver 2.36, Bit_ver null, Clock 2526.316KHz,
+       5-wire, With DDC, Cache Flush On, SN CKLink_Lite_V2-650763C7D6.
++--  Debug Arch is RVDM.  --+
++--  CPU 0  --+
+RISCV CPU Info:
+        MARCHID: 0x00000000
+        MISA   : 0x40801125
+Target Chip Info:
+        HWBKPT number is 4, HWWP number is 4.
+        MISA: (RV32IMAFCX, Imp M-mode)
+
+GDB connection command for CPUs(CPU0):
+        target remote 127.0.0.1:1025
+        target remote xxx.xxx.xxx.xxx:1025
+
+****************  DebuggerServer Commands List **************
+help/h
+        Show help informations.
+*************************************************************
+DebuggerServer$
+```
+
+
+```
+riscv64-unknown-elf-gdb build/build_out/sipeed_debugger_plus_blink_bl702.elf
+```
+
+```
+(gdb) target remote :1025
+Remote debugging using :1025
+main () at /home/cjacker/work/opensource-toolchain-bouffalo-lab/blink_bl702/main.c:18
+18              bflb_gpio_reset(gpio, GPIO_PIN_25);
+(gdb) b main
+Breakpoint 1 at 0x23002350: file /home/cjacker/work/opensource-toolchain-bouffalo-lab/blink_bl702/main.c, line 9.
+(gdb) b main.c:9
+Note: breakpoint 1 also set at pc 0x23002350.
+Breakpoint 2 at 0x23002350: file /home/cjacker/work/opensource-toolchain-bouffalo-lab/blink_bl702/main.c, line 9.
+(gdb) n
+19              bflb_mtimer_delay_ms(200);
+(gdb)
+```
+
+
 # Misc
 
 ## how to build and program uartjtag and dualuart firmware for Sipeed RV Debugger Plus
