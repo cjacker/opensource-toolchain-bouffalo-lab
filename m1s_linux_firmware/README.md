@@ -1,5 +1,5 @@
 # Linux firmware for M1S Dock
-This is default linux firmware for Sipeed M1S Dock.
+This is default Linux firmware for Sipeed M1S Dock.
 
 And I didn't find a way to program two "low_load" firmwares from command line, `bflb-mcu-tool` always erase and re-write bootinfo when programming second firmware. I keep 2 correct log files 'log.mcu' and 'log.iot' here, these log files it copy from BLDevCube.
 
@@ -86,10 +86,9 @@ Runtime SBI Version    : 0.2
 
 --------Start Local Services--------
 ********************************
-********************************
 
 Linux login: root
-login[41]: root login on 'ttyS0'
+login[40]: root login on 'ttyS0'
 Processing /etc/profile ...
 Set search library path in /etc/profile
 Set user path in /etc/profile
