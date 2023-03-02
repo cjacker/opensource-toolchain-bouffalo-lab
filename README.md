@@ -20,17 +20,19 @@ This tutorial will try best to cover all these chips.
 
 # Hardware prerequist:
 
-- A dev board with BL chips from Bouffalo Lab
+- A devboard with BL chips
   + [Sipeed RV Debugger Plus](https://github.com/sipeed/RV-Debugger-BL702) : BL702, this so called "debugger" is a mini BL702 devboard actually.
-  + [Sipeed M0sense](https://wiki.sipeed.com/hardware/en/maixzero/sense/maix_zero_sense.html) : BL702, M0sense is 'NOT M0S'.
-  + [Sipeed M0S and M0S Dock](https://wiki.sipeed.com/hardware/en/maixzero/m0s/m0s.html) : BL616, this so called "dock" can also be a "debugger" actually.
+  + [Sipeed M0sense](https://wiki.sipeed.com/hardware/en/maixzero/sense/maix_zero_sense.html) : BL702, M0sense is 'NOT' M0S, you can treat it as 'M0'.
+  + [Sipeed M0S and M0S Dock](https://wiki.sipeed.com/hardware/en/maixzero/m0s/m0s.html) : BL616, this so called "dock" can also be a "debugger".
   + [Sipeed M1s Dock](https://wiki.sipeed.com/hardware/en/maix/m1s/m1s_module.html) or [Pine64 Ox64](https://wiki.pine64.org/wiki/Ox64) : BL808. M1s Dock is really a "dock".
-  + various other devboards, for example XT-ZB1 (bl702) and XT-BL12 (bl602) devboards from Aliexpress.
+  + various other devboards, for example XT-ZB1 (BL702) and XT-BL12 (BL602) devboards from Aliexpress.
 
-- A CK-Link Lite debugger
-  + Option 1: T-Head or HLK CK-Link Lite debugger from Aliexpress (expensive hardware)
+- A JTAG or CK-Link Lite debugger
+  + Option 1: T-Head or HLK CK-Link Lite debugger from Aliexpress (a little bit expensive)
   + Option 2: Sipeed RV Debugger Plus with [ck-link lite firmware for bl702](https://github.com/cjacker/opensource-toolchain-bouffalo-lab/raw/main/sipeed_rv_debugger_plus_factory_firmware/bl702_cklink_whole_img_v2.2.bin)
   + Option 3: Sipeed M0S Dock with [ck-link lite firmware for bl616](https://github.com/cjacker/opensource-toolchain-bouffalo-lab/raw/main/m0s_dock_cklink-lite_firmware/bl616-cklink-lite-2023-02-27.bin)
+  + Various JTAG debuggers
+
 
 # Toolchain overview:
 - Compiler : RISC-V 32/64 embed and linux toolchain
@@ -40,34 +42,34 @@ This tutorial will try best to cover all these chips.
 
 **NOTE:**
 
-About the difference between bl_iot_sdk & bl_mcu_sdk, there is an answer [here](https://bbs.bouffalolab.com/d/124-difference-bl-iot-sdk-bl-mcu-sdk).
+**About the difference between bl_iot_sdk & bl_mcu_sdk**, there is an answer [here](https://bbs.bouffalolab.com/d/124-difference-bl-iot-sdk-bl-mcu-sdk).
 
 <img src="https://raw.githubusercontent.com/cjacker/opensource-toolchain-bouffalo-lab/main/misc/diff-iot-mcu.png" width="60%" />
 
-The answer is not very clear. In short, bl_iot_sdk support IOT-related programming, such as Wi-Fi/BLE, etc, and bl_mcu_sdk doesn't (have BLE now). I am a little bit confusing why they have 2 official SDKs and even differ a lot, but it already does and seems plan to be merged together to mcu sdk in futrue. For now, you can choose the sdk as your own need.
+The answer is not very clear. In short, bl_iot_sdk focus on IOT-related programming, such as Wi-Fi/BLE, etc, and bl_mcu_sdk doesn't have these support. I am a little bit confusing why they have 2 official SDKs and even differ a lot, but it already does and seems plan to be merge together into bl_mcu_sdk in futrue. For now, you can choose the sdk as your own need.
 
 # Compiler
 
-Not like usual RISC-V based MCU (such as CH32V / GD32V, etc), The toolchain setup for BL chips from Bouffalo Lab is a little bit complex. Different cores may requires different toolchain, and different sdk (bl_mcu_sdk and bl_iot_sdk) requires different toolchain...
+Not like usual RISC-V based MCU (such as CH32V / GD32V, etc), the toolchain setup for BL chips is a little bit complex. Different cores and Different sdk may requires different toolchain...
 
 ## For bl_mcu_sdk
 
-For BL60x/70x, it's 32bit RISC-V MCU, as usual RISC-V based MCU, it require RISC-V toolchain to generate 32bit RISC-V object code. 
+For BL60x/70x, it's 32bit RISC-V MCU, as usual RISC-V MCU, it require RISC-V toolchain to generate 32bit object code. 
 
-**For BL616**, bl_mcu_sdk set `-mtune` to `e907`, it can not supported by general RISC-V toolchain, you had to use T-Head RISC-V toolchain.
+For BL616, bl_mcu_sdk set `-mtune` to `e907`, it can not supported by general RISC-V toolchain, you had to use T-Head RISC-V toolchain. Or you can change the `-mtune=e907` to `-mtune=size` and will lost some optimizations when compiling.
 
-**For BL808**, since it has 3 cores include a RV64GCV 480MHz core based on T-Head C906. It's 64bit general purpose CPU and have MMU, that means, it can run as baremetal and also able to run ordinary RISC-V Linux OS. Thus, For BL808, it need setup 3 toolchains:
+For BL808, it has 3 different cores: two 32bit RISCV-V MCU (M0 / LP), one general purpose 64biy CPU (D0, based on T-Head C906). Since D0 core has MMU, that means it can run baremetal or run a RISC-V Linux OS. Thus, it need to setup 3 toolchains:
 
-- riscv 32bit embed toolchain
-- riscv 64bit embed toolchain
-- **optional** riscv 64bit linux toolchain
+- riscv 32bit embed toolchain for M0 / LP core
+- riscv 64bit embed toolchain for D0 core
+- **optional** riscv 64bit linux toolchain for D0 core
 
-You may find some 'riscv64-unknown-elf' toolchain can with 32bit RISC-V mcu, just like x86_64 toolchain, it can generate object codes for x86 and x86_64, so we can reduce the toolchain to 2: 
+You may already find some 'riscv64-unknown-elf' toolchains can work with 32bit RISC-V mcu. just like x86_64 toolchain, it can generate object codes for x86 and x86_64, so we can reduce toolchains to 2: 
 
 - riscv64 embeded toolchain to generate 32bit and 64bit codes
 - **optional** riscv64 linux toolchain if you want to work with linux on C906.
 
-I prefer to use Xpack prebuilt toolchains, but Xpack only provide rv32 embed toolchain up to now and not compatible with some Xuantie extentions. In this tutorial, we will and have to use prebuilt T-Head Xuantie toolchains.
+Usually I prefer to use Xpack prebuilt toolchains, but Xpack only provide rv32 embed toolchain up to now and not compatible with some Xuantie extentions. In this tutorial, we will and have to use prebuilt T-Head Xuantie toolchains.
 
 ## T-Head Xuantie RISC-V embeded gcc
 
@@ -82,14 +84,13 @@ sudo tar xf Xuantie-900-gcc-elf-newlib-x86_64-V2.6.1-20220906.tar.gz -C /opt/xua
 
 and add `/opt/xuantie-riscv64-embed-toolchain/bin` to PATH env according to your shell.
 
-**NOTE 1**, the triplet of prebuilt Xuantie rv64 embed toolchain is **`riscv64-unknown-elf`**.
-**NOTE 2**, you may already know, the 64bit toolchain is able to generate 32bit codes.
+**NOTE**, the triplet of prebuilt Xuantie rv64 embed toolchain is **`riscv64-unknown-elf`**, make sure it is not conflict with toolchains you already installed, otherwise you have to handle PATH env yourself.
 
 ## T-Head XuanTie RISC-V linux gcc [Optional]
 
-**If you want to work with C906 Linux, you may need this toolchain. It can be ignored now**
+**You need this toolchain to work with Linux. if you have no need to run a Linux on C906 core of BL808, just ignore this section.**
 
-T-Head provide RISC-V 64bit linux toolchain (gcc v10.2.0), it can be download from [here](https://occ-oss-prod.oss-cn-hangzhou.aliyuncs.com/resource//1663142514282/Xuantie-900-gcc-linux-5.10.4-glibc-x86_64-V2.6.1-20220906.tar.gz).
+T-Head provide pre-built RISC-V 64bit linux toolchain (gcc v10.2.0), it can be download from [here](https://occ-oss-prod.oss-cn-hangzhou.aliyuncs.com/resource//1663142514282/Xuantie-900-gcc-linux-5.10.4-glibc-x86_64-V2.6.1-20220906.tar.gz).
 
 After download:
 
@@ -100,13 +101,13 @@ sudo tar xf Xuantie-900-gcc-linux-5.10.4-glibc-x86_64-V2.6.1-20220906.tar.gz -C 
 
 and add `/opt/xuantie-riscv64-linux-toolchain/bin` to PATH env according to your shell.
 
-**NOTE 1**, the triplet of prebuilt Xuantie rv64 linux toolchain is **`riscv64-unknown-linux-gnu`**.
-**NOTE 2**, the sysroot is at '/opt/xuantie-riscv64-linux-toolchain/sysroot'.
+**NOTE 1 :** the triplet of prebuilt Xuantie linux toolchain is **`riscv64-unknown-linux-gnu`**.
+**NOTE 2 :** the sysroot is at '/opt/xuantie-riscv64-linux-toolchain/sysroot'.
 
 
 ## For bl_iot_sdk
 
-You can not use above toolchains with bl_iot_sdk, bl_iot_sdk only works with SiFive GCC Toolchain. you can either use the full '[bl_iot_sdk](https://github.com/bouffalolab/bl_iot_sdk)' repo, it contains Windows / MacOSX / Linux toolchains and occupies about **14G** disk space. or use '[bl_iot_sdk_tiny](https://github.com/bouffalolab/bl_iot_sdk_tiny) and setup toolchain as:
+You can not use above toolchains with bl_iot_sdk, bl_iot_sdk only works with SiFive GCC Toolchain. you can either use the full '[bl_iot_sdk](https://github.com/bouffalolab/bl_iot_sdk)' repo, it contains pre-built Windows / MacOSX / Linux toolchains and occupies about **14G** disk space. or use '[bl_iot_sdk_tiny](https://github.com/bouffalolab/bl_iot_sdk_tiny) and setup toolchain as : 
 
 ```
 cd bl_iot_sdk_tiny
@@ -115,11 +116,6 @@ sudo bash ./scripts/setup.sh
 
 It will download the sifive gcc toolchain and setup it automatically.
 
-Or you can download the sifive toolchain from : https://dev.bouffalolab.com/media/upload/download/toolchain_riscv_sifive_linux64.zip
-
-And setup it manually (**not recommended** since they all provide 'riscv64-unknown-elf-gcc' command and may have confilict with other RISC-V toolchains).
-
-In this tutorial, I mentioned a little about bl_iot_sdk, and mostly focused on bl_mcu_sdk.
 
 # SDK
 
