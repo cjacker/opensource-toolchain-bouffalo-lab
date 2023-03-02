@@ -99,7 +99,7 @@ You may already find some 'riscv64-unknown-elf' toolchains can work with 32bit R
 - riscv64 embeded toolchain to generate 32bit and 64bit codes
 - **optional** riscv64 linux toolchain if you want to work with linux on C906.
 
-Usually I prefer to use Xpack prebuilt toolchains, but Xpack only provide rv32 embed toolchain up to now and not compatible with some Xuantie extentions. In this tutorial, we will and have to use prebuilt T-Head Xuantie toolchains.
+Usually I prefer to use [Xpack prebuilt RISC-V toolchains](https://github.com/xpack-dev-tools/riscv-none-elf-gcc-xpack/), but Xpack only provide rv32 embed toolchain up to now and not compatible with some Xuantie extentions. In this tutorial, we will and have to use prebuilt T-Head Xuantie toolchains.
 
 ## T-Head Xuantie RISC-V embeded gcc
 
@@ -114,7 +114,7 @@ sudo tar xf Xuantie-900-gcc-elf-newlib-x86_64-V2.6.1-20220906.tar.gz -C /opt/xua
 
 and add `/opt/xuantie-riscv64-embed-toolchain/bin` to PATH env according to your shell.
 
-**NOTE**, the triplet of prebuilt Xuantie rv64 embed toolchain is **`riscv64-unknown-elf`**, make sure it is not conflict with toolchains you already installed, otherwise you have to handle PATH env yourself.
+**NOTE**, the triplet of prebuilt Xuantie rv64 embed toolchain is **`riscv64-unknown-elf`**, make sure it is not conflict with other toolchains you already installed.
 
 ## T-Head XuanTie RISC-V linux gcc [Optional]
 
@@ -144,7 +144,7 @@ cd bl_iot_sdk_tiny
 sudo bash ./scripts/setup.sh
 ```
 
-It will download the sifive gcc toolchain and setup it automatically.
+It will download the SiFive gcc toolchain from bouffalo lab's official website and setup it automatically.
 
 
 # SDK
@@ -160,24 +160,24 @@ It will download the sifive gcc toolchain and setup it automatically.
 
 ### SDK installation
 
-The installation process of bl_mcu_sdk is very simple, just fetch it and put it somewhere, for example:
+The installation process of bl_mcu_sdk is very simple, just git clone it and put it somewhere, for example:
 ```
-# fetch it
+# clone it
 git clone https://github.com/bouffalolab/bl_mcu_sdk.git
 # move it to home dir if not, you should have write permission to sdk dir.
 mv bl_mcu_sdk <where your home dir>
 ```
 
-And, set env as:
+And, set env to export BL_SDK_BASE:
 ```
 export BL_SDK_BASE=<path to>/bl_mcu_sdk
 ```
 
-If you put the bl_mcu_sdk to other dir, please change above `export` to point to your sdk dir. if did not export the `BL_SDK_BASE` env, you need supply it when invoke 'make'.
+'Out of SDK' building will use this env var to find bl_mcu_sdk.
 
 ### Demo project
 
-The bl_mcu_sdk use cmake and make to manage the project, and have it's own project management style, use blink demos in this repo as example, the dir structure looks like:
+The bl_mcu_sdk use 'cmake' and 'make' to manage whole project, use blink demos in this repo as example, the dir structure looks like:
 
 ```
 demo dir
@@ -191,22 +191,15 @@ demo dir
 
 ### Blink Demo for BL702
 
-here use 'blink_bl702' with Sipeed RV Debugger Plus, 'blink_bl602' demo is almost same except you need change '702' to '602' for CHIP and BOARD:
+Here use 'blink_bl702' demo with Sipeed RV Debugger Plus, 'blink_bl602' and 'blink_bl616' demo is almost same.
 
 ```
 cd blink_bl702
-make CHIP=bl702 BOARD=bl702dk CROSS_COMPILE=riscv64-unknown-elf- BL_SDK_BASE=<path to bl_mcu_sdk>
+make
 ```
+If you did not export BL_SDK_BASE env var before, an error will happened here. 
 
-### Blink Demo for BL616
-Here use 'blink_bl616' with Sipeed M0S Dock:
-
-```
-cd blink_bl616
-make CHIP=bl616 BOARD=bl616dk CROSS_COMPILE=riscv64-unknown-elf- BL_SDK_BASE=<bl_mcu_sdk path>
-```
-
-The CHIP / BOARD / CROSS_COMPILE / BL_SDK_BASE options can be set in 'Makefile'. Refer to 'README.md' in each demo dir to find more command usage.
+Please look at the contents of 'Makefile' to figure out how to define 'CHIP', 'BOARD' etc.
 
 ### Triple Core Demo for BL808
 
