@@ -39,7 +39,12 @@ This tutorial will try best to cover all these chips.
       + [with bflb-mcu-tool](https://github.com/cjacker/opensource-toolchain-bouffalo-lab/blob/main/README.md#option-1--with-bflb-mcu-tool-)
       + [with blisp](https://github.com/cjacker/opensource-toolchain-bouffalo-lab/blob/main/README.md#option-2--with-blisp)
     - [for bl_iot_sdk](https://github.com/cjacker/opensource-toolchain-bouffalo-lab/blob/main/README.md#for-bl_iot_sdk-1)
-- [Debugging]
+- [Debugging](https://github.com/cjacker/opensource-toolchain-bouffalo-lab/blob/main/README.md#debugging)
+  + [Install C-Sky Debug Server](https://github.com/cjacker/opensource-toolchain-bouffalo-lab/blob/main/README.md#install-c-sky-debug-server)
+  + [Option 1 : Use T-Head / HLK CK-Link Lite Debugger](https://github.com/cjacker/opensource-toolchain-bouffalo-lab/blob/main/README.md#option-1--use-t-head-or-hlk-ck-link-debugger)
+  + [Option 2 : Use Sipeed RV Debugger Plus or M0S Dock with cklink-lite firmware](https://github.com/cjacker/opensource-toolchain-bouffalo-lab/blob/main/README.md#option-2--use-sipeed-rv-debugger-plus-or-m0s-dock-with-cklink-lite-firmware)
+  + [Launch C-Sky debug server](https://github.com/cjacker/opensource-toolchain-bouffalo-lab/blob/main/README.md#launch-c-sky-debug-server)
+  + [Debugging](https://github.com/cjacker/opensource-toolchain-bouffalo-lab/blob/main/README.md#debugging-1)
 - [Misc](https://github.com/cjacker/opensource-toolchain-bouffalo-lab/blob/main/README.md#misc)
   + [Use Sipeed RV Debugger Plus as JTAG or CK-Link Lite debugger](https://github.com/cjacker/opensource-toolchain-bouffalo-lab/blob/main/README.md#how-to-build-and-program-uartjtag-and-dualuart-firmware-for-sipeed-rv-debugger-plus)
   + [Use M0S Dock as CK-Link Lite debugger](https://github.com/cjacker/opensource-toolchain-bouffalo-lab/blob/main/README.md#how-to-turn-m0s-dock-to-ck-link-lite)
