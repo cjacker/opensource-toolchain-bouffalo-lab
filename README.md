@@ -80,7 +80,7 @@ This tutorial will try best to cover all these chips.
 
 **About the difference between bl_iot_sdk & bl_mcu_sdk**, there is an answer [here](https://bbs.bouffalolab.com/d/124-difference-bl-iot-sdk-bl-mcu-sdk).
 
-<img src="https://raw.githubusercontent.com/cjacker/opensource-toolchain-bouffalo-lab/main/misc/diff-iot-mcu.png" width="60%" />
+<img src="./misc/diff-iot-mcu.png" width="60%" />
 
 The answer is not very clear. In short, bl_iot_sdk focus on IOT-related programming, such as Wi-Fi/BLE, etc, and bl_mcu_sdk doesn't have these support. I am a little bit confusing why they have 2 official SDKs and even differ a lot, but it already does and seems plan to be merge together into bl_mcu_sdk in futrue. For now, you can choose the sdk as your own need.
 
@@ -497,7 +497,8 @@ To program Sipeed RV Debugger Plus, hold 'BOOT' down and plug it in PC USB port:
 cd sipeed_rv_debugger_plus_factory_firmware
 ./01-program-cklink-lite.sh
 ```
-The pinmap was already printed at the back of Sipeed RV Debugger Plus.
+The pinmap was already printed at the back of Sipeed RV Debugger Plus:
+<img src="./misc/rv-debugger.png" width="60%" />
 
 
 To program Sipeed M0S Dock, hold 'BOOT' down and plug it in PC USB port:
@@ -507,7 +508,7 @@ cd m0s_dock_cklink-lite_firmware
 ```
 You need refer to below table for M0S Dock, since at the back of M0S Dock, only 'IOxx' is printed.
 
-<img src="https://raw.githubusercontent.com/cjacker/opensource-toolchain-bouffalo-lab/main/m0s_dock_cklink-lite_firmware/m0sdock-cklink-lite-pinmap.png" width="60%" />
+<img src="./m0s_dock_cklink-lite_firmware/m0sdock-cklink-lite-pinmap.png" width="60%" />
 
 After programmed, re-power it and using `lsusb`, you will find:
 ```
