@@ -610,6 +610,62 @@ Breakpoint 2 at 0x23002350: file /home/cjacker/work/opensource-toolchain-bouffal
 (gdb)
 ```
 
+# Build linux kernel for BL808
+
+The linux kernel building for C906 core of BL808 is worth a seperate section.
+
+When we setup toolchain, I alreay mentioned the XuanTie RISC-V linux toolchain, and it never used in above sections. The RISC-V linux toolchain is only useful for building a linux kernel for C906 core of BL808.
+
+Although there are still some drivers missing, but linux kernel can boot and work with BL808 already.
+
+Before building the linux kernel, make sure you setup toolchains correctly.
+
+## Building linux kernel
+
+- Clone bl808_linux.
+
+Upstream git is https://github.com/bouffalolab/bl808_linux, but the 'build.sh' need some changes to work better, you can use my fork now.
+
+```
+git clone https://github.com/cjacker/bl808_linux.git
+git checkout for_tutorial
+```
+- Build bl808_linux.
+
+If you use Sipeed M1S Dock, please run :
+```
+./switch_to_m1sdock.sh
+```
+It will apply a patch to setup UART pins for M1S Dock.
+
+Then build it step by step:
+
+```
+./build.sh opensbi
+./build.sh kernel_config
+./build.sh kernel
+./build.sh dtb
+./build.sh low_load
+./build.sh whole_bin
+```
+Or 
+```
+./build.sh all
+```
+When `./build.sh kernel_config`, it will launch kernel menuconfig, just exit directly or change kernel configuration if you really understand what you changed.
+
+If all good, the result firmwares will be generated at 'out' dir:
+- low_load_bl808_m0.bin : you can treat it as kernel loader.
+- low_load_bl808_d0.bin : you can treat it as kernel loader.
+- whole_img_linux.bin : the linux file system.
+
+I put all pre-built firmwares at '[m1s_linux_firmware](https://github.com/cjacker/opensource-toolchain-bouffalo-lab/tree/main/m1s_linux_firmware)' this repo.
+
+## Flash linux kernel and Run
+
+Please refer to https://github.com/cjacker/opensource-toolchain-bouffalo-lab/blob/main/m1s_linux_firmware/README.md.
+
+
 
 # Misc
 
