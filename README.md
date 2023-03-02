@@ -497,12 +497,17 @@ To program Sipeed RV Debugger Plus, hold 'BOOT' down and plug it in PC USB port:
 cd sipeed_rv_debugger_plus_factory_firmware
 ./01-program-cklink-lite.sh
 ```
+The pinmap was already printed at the back of Sipeed RV Debugger Plus.
+
 
 To program Sipeed M0S Dock, hold 'BOOT' down and plug it in PC USB port:
 ```
 cd m0s_dock_cklink-lite_firmware
 ./01-program-cklink-lite.sh
 ```
+You need refer to below table for M0S Dock, since at the back of M0S Dock, only 'IOxx' is printed.
+
+
 
 After programmed, re-power it and using `lsusb`, you will find:
 ```
