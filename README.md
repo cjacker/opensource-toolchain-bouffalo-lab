@@ -66,11 +66,12 @@ This tutorial will try best to cover all these chips.
   + [Sipeed M1s Dock](https://wiki.sipeed.com/hardware/en/maix/m1s/m1s_module.html) or [Pine64 Ox64](https://wiki.pine64.org/wiki/Ox64) : BL808. M1s Dock is really a "dock".
   + various other devboards, for example XT-ZB1 (BL702) and XT-BL12 (BL602) devboards from Aliexpress.
 
-- A CK-Link Lite debugger
+- A JTAG or CK-Link Lite debugger
   + Option 1: T-Head or HLK CK-Link Lite debugger from Aliexpress (a little bit expensive)
   + Option 2: Sipeed RV Debugger Plus with [ck-link lite firmware for bl702](https://github.com/cjacker/opensource-toolchain-bouffalo-lab/raw/main/sipeed_rv_debugger_plus_factory_firmware/bl702_cklink_whole_img_v2.2.bin)
   + Option 3: Sipeed M0S Dock with [ck-link lite firmware for bl616](https://github.com/cjacker/opensource-toolchain-bouffalo-lab/raw/main/m0s_dock_cklink-lite_firmware/bl616-cklink-lite-2023-02-27.bin)
   + Option 4: A STM32F103 bluepill with [this modified cklink-lite official firmware](https://github.com/cjacker/cklink-lite-fw-convertor)
+  + Any JTAG debugger, such as ftdi, jlink, etc, which can be supported by OpenOCD
 
 
 # Toolchain overview:
@@ -405,7 +406,9 @@ After programming finished, you need repower the device to blink the LED connect
 
 ## Debugging
 
-Debugging of BL series chips are only supported by C-Sky Debug Server with CK-Link debugger. There are some cfgs for riscv-openocd, it looks like jtag already supported, but it not works.
+Debugging of BL series chips are supported by OpenOCD with JTAG debugger and C-Sky Debug Server with CK-Link debugger. 
+
+**OpenOCD part to be written.**
 
 You can buy a T-Head or HLK CK-Link Lite debugger from Aliexpress, or make it yourself using Sipeed RV Debugger plus or Sipeed M0S Dock.
 
