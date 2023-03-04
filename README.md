@@ -431,13 +431,13 @@ Not like STM32, OpenOCD does not support programming BL chips directly. Before d
 
 After target device programmed, wire up any JTAG adapter as above table with Target device, and launch RISC-V OpenOCD as:
 ```
-riscv-openocd -f <interface config file> -f tgt_602.cfg
+riscv-openocd -f <interface config file> -f tgt_702.cfg
 ```
 
 If everything OK, the output looks like:
 ```
-Info : clock speed 2000 kHz
-Info : JTAG tap: riscv.cpu tap/device found: 0x20000c05 (mfg: 0x602 (Open HW Group), part: 0x0000, ver: 0x2)
+Info : clock speed 4000 kHz
+Info : JTAG tap: riscv.cpu tap/device found: 0x20000e05 (mfg: 0x702 (<unknown>), part: 0x0000, ver: 0x2)
 Info : [riscv.cpu.0] datacount=1 progbufsize=2
 Info : Disabling abstract command reads from CSRs.
 Info : Disabling abstract command writes to CSRs.
@@ -446,7 +446,7 @@ Info : [riscv.cpu.0]  XLEN=32, misa=0x40801125
 [riscv.cpu.0] Target successfully examined.
 Info : starting gdb server for riscv.cpu.0 on 3333
 Info : Listening on port 3333 for gdb connections
-Info : JTAG tap: riscv.cpu tap/device found: 0x20000c05 (mfg: 0x602 (Open HW Group), part: 0x0000, ver: 0x2)
+Info : JTAG tap: riscv.cpu tap/device found: 0x20000e05 (mfg: 0x702 (<unknown>), part: 0x0000, ver: 0x2)
 reset-assert-pre
 reset-deassert-post
 reset-init
@@ -461,18 +461,25 @@ After '(gdb)' prompt showed:
 ```
 (gdb) target remote :3333
 Remote debugging using :3333
-0x28ffff90 in ?? ()
-(gdb) set $pc = 0x21000000
-(gdb) set $mie = 0
-(gdb) set $mstatus = 0x1880
-(gdb) b main
-Breakpoint 1 at 0x23002350: file <path>/blink_bl602/main.c, line 10.
+...
+(gdb) set $pc=0x21000000
+(gdb) set $mie=0x00
+(gdb) set $mstatus=0x1880
+(gdb) list main 15
+15          while (1) {
+16              bflb_gpio_set(gpio, GPIO_PIN_25);
+17              bflb_mtimer_delay_ms(200);
+18              bflb_gpio_reset(gpio, GPIO_PIN_25);
+19              bflb_mtimer_delay_ms(200);
+20          }
+21      }
+(gdb) hb 17
+Hardware assisted breakpoint 1 at 0x2300238e: file /home/cjacker/work/opensource-toolchain-bouffalo-lab/blink_bl702/main.c, line 17.
 (gdb) c
 Continuing.
-[riscv.cpu.0] Found 4 triggers
 
-Breakpoint 1, main () at <path>/blink_bl602/main.c:10
-10          board_init();
+Breakpoint 1, main () at /home/cjacker/work/opensource-toolchain-bouffalo-lab/blink_bl702/main.c:17
+17              bflb_mtimer_delay_ms(200);
 (gdb)
 ```
 
@@ -489,9 +496,6 @@ There are something need to be explained here:
 > set $mstatus = 0x1880
 
 For more infomation about OpenOCD and gdb usage, please refer to official document "[Introduction of OpenOCD and GDB.pdf](https://github.com/bouffalolab/bl_docs/blob/main/BL602_Openocd%26GDB/en/Introduction%20of%20OpenOCD%20and%20GDB.pdf)".
-
-As I verified, 'continue' does not work with BL702, it can not stop at breakpoint and I have to use 'n' or 's' instead of 'continue'
-
 
 ## With C-Sky debug server and CK-Link Lite
 
@@ -629,7 +633,6 @@ After STM32F103 programmed, refer to below table to connect STM32F103 with your 
 
 ### Launch C-Sky debug server
 
-
 Then invoke C-Sky debug server as mentioned above:
 
 ```
@@ -688,8 +691,6 @@ Note: breakpoint 1 also set at pc 0x23002350.
 Breakpoint 2 at 0x23002350: file /home/cjacker/work/opensource-toolchain-bouffalo-lab/blink_bl702/main.c, line 9.
 (gdb) c
 ```
-
-As I verified, 'continue' does not work with BL702, it can not stop at breakpoint and I have to use 'n' or 's' instead of 'continue'
 
 # Build linux kernel for BL808
 
