@@ -455,7 +455,7 @@ Info : Listening on port 4444 for telnet connections
 ```
 Then open another terminal and run gdb as:
 ```
-riscv64-unknown-elf-gdb build/build_out/blink_xt_bl12_bl602.elf
+riscv64-unknown-elf-gdb build/build_out/blink_bl702.elf
 ```
 After '(gdb)' prompt showed:
 ```
@@ -474,11 +474,11 @@ Remote debugging using :3333
 20          }
 21      }
 (gdb) hb 17
-Hardware assisted breakpoint 1 at 0x2300238e: file /home/cjacker/work/opensource-toolchain-bouffalo-lab/blink_bl702/main.c, line 17.
+Hardware assisted breakpoint 1 at 0x2300238e: file <path>/blink_bl702/main.c, line 17.
 (gdb) c
 Continuing.
 
-Breakpoint 1, main () at /home/cjacker/work/opensource-toolchain-bouffalo-lab/blink_bl702/main.c:17
+Breakpoint 1, main () at <path>/blink_bl702/main.c:17
 17              bflb_mtimer_delay_ms(200);
 (gdb)
 ```
