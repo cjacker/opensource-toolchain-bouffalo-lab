@@ -366,13 +366,13 @@ All demos include triple core demo for BL808 in this repo can be programmed by '
 For new firmware format (with .fw_header). If you rebuild your project with updated 'bl_mcu_sdk', it should be always new firmware.
 
 ```
-bflb-mcu-tool --chipname=bl702 --interface=uart --port=/dev/ttyACM0 --baudrate=2000000 --firmware=build/build_out/sipeed_debugger_plus_blink_bl702.bin --addr 0x1000
+bflb-mcu-tool --chipname=bl702 --interface=uart --port=/dev/ttyACM0 --baudrate=2000000 --firmware=build/build_out/blink_bl702.bin --addr 0x1000
 ```
 
 For old firmware format (without .fw_header). Usually, old firmwares are some pre-built and released bin files. please remove `--addr 0x1000` options from above command:
 
 ```
-bflb-mcu-tool --chipname=bl702 --interface=uart --port=/dev/ttyACM0 --baudrate=2000000 --firmware=build/build_out/sipeed_debugger_plus_blink_bl702.bin
+bflb-mcu-tool --chipname=bl702 --interface=uart --port=/dev/ttyACM0 --baudrate=2000000 --firmware=build/build_out/blink_bl702.bin
 ```
 
 ### Option 2 : with `blisp`
@@ -380,16 +380,16 @@ bflb-mcu-tool --chipname=bl702 --interface=uart --port=/dev/ttyACM0 --baudrate=2
 For new firmware (with .fw_header). If you rebuild your project with updated 'bl_mcu_sdk', it should be always new firmware.
 
 ```
-blisp iot -c bl70x -p /dev/ttyACM0 --reset -s build/build_out/sipeed_debugger_plus_blink_bl702.bin -l 0x1000
+blisp iot -c bl70x -p /dev/ttyACM0 --reset -s build/build_out/blink_bl702.bin -l 0x1000
 ```
 
 For old firmware (without .fw_header).
 ```
-blisp write -c bl70x -p /dev/ttyACM0 --reset build/build_out/sipeed_debugger_plus_blink_bl702.bin
+blisp write -c bl70x -p /dev/ttyACM0 --reset build/build_out/blink_bl702.bin
 ```
 Or
 ```
-blisp iot -c bl70x -p /dev/ttyACM0 --reset -s build/build_out/sipeed_debugger_plus_blink_bl702.bin -l 0x0
+blisp iot -c bl70x -p /dev/ttyACM0 --reset -s build/build_out/blink_bl702.bin -l 0x0
 ```
 
 ### for bl_iot_sdk
@@ -674,7 +674,7 @@ DebuggerServer$
 Use blink_bl702 as example, After build successfully, open new terminal window, and run:
 
 ```
-riscv64-unknown-elf-gdb build/build_out/sipeed_debugger_plus_blink_bl702.elf
+riscv64-unknown-elf-gdb build/build_out/blink_bl702.elf
 ```
 
 
