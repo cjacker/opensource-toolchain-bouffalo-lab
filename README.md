@@ -406,13 +406,96 @@ After programming finished, you need repower the device to blink the LED connect
 
 ## Debugging
 
-Debugging of BL series chips are supported by OpenOCD with JTAG debugger and C-Sky Debug Server with CK-Link debugger. 
+Debugging of BL series chips are supported by OpenOCD with JTAG debugger or C-Sky Debug Server with CK-Link debugger. 
 
-**OpenOCD part to be written.**
+The pinmap for JTAG or CK-Link is same:
 
-You can buy a T-Head or HLK CK-Link Lite debugger from Aliexpress, or make it yourself using Sipeed RV Debugger plus or Sipeed M0S Dock.
+|   CHIP/Pin    |  BL602/BL604  |  BL702/BL704/BL706 | BL616/BL618 |   BL808  |
+|:-------------:|:-------------:|:------------------:|:-----------:|:--------:|
+|TMS            |     GPIO12    |      GPIO0         |    GPIO0    |   GPIO6  |
+|TCK            |     GPIO14    |      GPIO2         |    GPIO1    |   GPIO12 |
+|TDO            |     GPIO11    |      GPIO9         |    GPIO2    |   GPIO7  |
+|TDI            |     GPIO17    |      GPIO1         |    GPIO3    |   GPIO13 |
 
-## Install C-Sky debug server
+## With OpenOCD and JTAG debugger
+
+There are some target config for OpenOCD in `bl_mcu_sdk`, you can use them directly:
+- tools/openocd/target/tgt_602.cfg : for BL602
+- tools/openocd/target/tgt_702.cfg : for BL702 
+- tools/openocd/target/tgt_e907.cfg : for E907 core of BL808
+- tools/openocd/target/tgt_c906.cfg : for C906 core of BL808
+
+Not like STM32, OpenOCD does not support programming BL chips directly. Before debugging with OpenOCD, you have to program the target device using ISP mode.
+
+After target device programmed, wire up any JTAG adapter as above table with Target device, and launch RISC-V OpenOCD as:
+```
+riscv-openocd -f <interface config file> -f tgt_602.cfg
+```
+
+If everything OK, the output looks like:
+```
+Info : clock speed 2000 kHz
+Info : JTAG tap: riscv.cpu tap/device found: 0x20000c05 (mfg: 0x602 (Open HW Group), part: 0x0000, ver: 0x2)
+Info : [riscv.cpu.0] datacount=1 progbufsize=2
+Info : Disabling abstract command reads from CSRs.
+Info : Disabling abstract command writes to CSRs.
+Info : [riscv.cpu.0] Examined RISC-V core; found 1 harts
+Info : [riscv.cpu.0]  XLEN=32, misa=0x40801125
+[riscv.cpu.0] Target successfully examined.
+Info : starting gdb server for riscv.cpu.0 on 3333
+Info : Listening on port 3333 for gdb connections
+Info : JTAG tap: riscv.cpu tap/device found: 0x20000c05 (mfg: 0x602 (Open HW Group), part: 0x0000, ver: 0x2)
+reset-assert-pre
+reset-deassert-post
+reset-init
+Info : Listening on port 6666 for tcl connections
+Info : Listening on port 4444 for telnet connections
+```
+Then open another terminal and run gdb as:
+```
+riscv64-unknown-elf-gdb build/build_out/blink_xt_bl12_bl602.elf
+```
+After '(gdb)' prompt showed:
+```
+(gdb) target remote :3333
+Remote debugging using :3333
+0x28ffff90 in ?? ()
+(gdb) set $pc = 0x21000000
+(gdb) set $mie = 0
+(gdb) set $mstatus = 0x1880
+(gdb) b main
+Breakpoint 1 at 0x23002350: file <path>/blink_bl602/main.c, line 10.
+(gdb) c
+Continuing.
+[riscv.cpu.0] Found 4 triggers
+
+Breakpoint 1, main () at <path>/blink_bl602/main.c:10
+10          board_init();
+(gdb)
+```
+
+There are something need to be explained here:
+> For the code running on XIP, load is unnecessary and cannot be used, because XIP programs need to be
+> programmed with a programming tool before debugging, and writing to the XIP area may cause unknown
+> errors. In addition, the XIP program needs to rely on ROM code (0x21000000) to initialize the related software
+> and hardware, so the following configuration is required:
+> 
+> set $pc = 0x21000000
+> 
+> set $mie = 0
+> 
+> set $mstatus = 0x1880
+
+For more infomation about OpenOCD and gdb usage, please refer to official document "[Introduction of OpenOCD and GDB.pdf](https://github.com/bouffalolab/bl_docs/blob/main/BL602_Openocd%26GDB/en/Introduction%20of%20OpenOCD%20and%20GDB.pdf)".
+
+As I verified, 'continue' does not work with BL702, it can not stop at breakpoint and I have to use 'n' or 's' instead of 'continue'
+
+
+## With C-Sky debug server and CK-Link Lite
+
+You can buy a T-Head or HLK CK-Link Lite debugger from Aliexpress, or make it yourself using Sipeed RV Debugger plus / Sipeed M0S Dock or STM32F103 blue pill.
+
+### Install C-Sky debug server
 
 The T-Head debug server can be downlowed from https://occ-oss-prod.oss-cn-hangzhou.aliyuncs.com/resource//1673423345494/T-Head-DebugServer-linux-x86_64-V5.16.7-20230109.sh.tar.gz
 
@@ -463,7 +546,7 @@ udevadm trigger
 udevadm control --reload
 ```
 
-## Option 1 : Use T-Head or HLK CK-Link debugger
+### Option 1 : Use T-Head or HLK CK-Link debugger
 
 The Ck-Link pinout:
 
@@ -481,18 +564,7 @@ The Ck-Link pinout:
 
 Official CK-Link debugger from T-Head or HLK do not supply power to target board, you need supply power to target board with another USB cable.
 
-Connect target board to CK-Link (refer to below table) and plug CK-Link to PC USB port:
-
-
-|   CHIP/Pin    |  BL602/BL604  |  BL702/BL704/BL706 | BL616/BL618 |   BL808  |
-|:-------------:|:-------------:|:------------------:|:-----------:|:--------:|
-|TMS            |     GPIO12    |      GPIO0         |    GPIO0    |   GPIO6  |
-|TCK            |     GPIO14    |      GPIO2         |    GPIO1    |   GPIO12 |
-|TDO            |     GPIO11    |      GPIO9         |    GPIO2    |   GPIO7  |
-|TDI            |     GPIO17    |      GPIO1         |    GPIO3    |   GPIO13 |
-
-
-## Option 2 : Use Sipeed RV Debugger Plus or M0S Dock with cklink-lite firmware
+### Option 2 : Use Sipeed RV Debugger Plus or M0S Dock with cklink-lite firmware
 
 The cklink-lite firmware for RV Debugger Plus and M0S Dock are provided in this repo:
 - sipeed_rv_debugger_plus_factory_firmware/bl702_cklink_whole_img_v2.2.bin : for Sipeed RV Debugger Plus
@@ -525,7 +597,7 @@ Then connect the target board with RV Debugger Plus / M0S Dock as same as CK-Lin
 
 
 
-## Option 3 : Make your own CK-Link Lite debugger with STM32F103
+### Option 3 : Make your own CK-Link Lite debugger with STM32F103
 
 C-Sky debug server contains a set of cklink firmware files, if you have a STM32F103 devboard, you can use 'cklink_lite.hex' shipped with C-Sky debug server to make your own CK-Link debugger. 
 
@@ -553,7 +625,7 @@ After STM32F103 programmed, refer to below table to connect STM32F103 with your 
 | GND       | GND      |
 
 
-## Launch C-Sky debug server
+### Launch C-Sky debug server
 
 
 Then invoke C-Sky debug server as mentioned above:
@@ -593,7 +665,7 @@ help/h
 DebuggerServer$
 ```
 
-## Debugging
+### Debugging
 Use blink_bl702 as example, After build successfully, open new terminal window, and run:
 
 ```
@@ -612,10 +684,10 @@ Breakpoint 1 at 0x23002350: file /home/cjacker/work/opensource-toolchain-bouffal
 (gdb) b main.c:9
 Note: breakpoint 1 also set at pc 0x23002350.
 Breakpoint 2 at 0x23002350: file /home/cjacker/work/opensource-toolchain-bouffalo-lab/blink_bl702/main.c, line 9.
-(gdb) n
-19              bflb_mtimer_delay_ms(200);
-(gdb)
+(gdb) c
 ```
+
+As I verified, 'continue' does not work with BL702, it can not stop at breakpoint and I have to use 'n' or 's' instead of 'continue'
 
 # Build linux kernel for BL808
 
