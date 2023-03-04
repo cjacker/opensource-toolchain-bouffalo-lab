@@ -77,10 +77,21 @@ This tutorial will try best to cover all these chips.
 
 
 # Toolchain overview:
-- Compiler : RISC-V 32/64 embed and linux toolchain
-- SDK : official [bl_iot_sdk](https://github.com/bouffalolab/bl_iot_sdk_tiny) and [bl mcu sdk](https://github.com/bouffalolab/bl_mcu_sdk)
-- Programming tool : Dev Cube Linux Version / BLFlashCommand (integrated in bl_mcu_sdk) / bflb-iot-tool / bflb-mcu-tool / blisp
-- Debugger : OpenOCD / C-Sky Debug Server and gdb. You should know that C-Sky Debug Server is close source software from T-Head.
+- Compiler : 
+  + RISC-V 32/64 bit embed toolchain 
+  + RISC-V linux toolchain
+- SDK : 
+  + [bl mcu sdk](https://github.com/bouffalolab/bl_mcu_sdk)
+  + [bl_iot_sdk](https://github.com/bouffalolab/bl_iot_sdk_tiny)
+- Programming tool : 
+  + BLDevCube Linux Version. **close source**
+  + BLFlashCommand (integrated in bl_mcu_sdk). **close source**
+  + bflb-iot-tool
+  + bflb-mcu-tool
+  + blisp and various
+- Debugger : 
+  + OpenOCD and gdb
+  + T-Head C-Sky Debug Server and gdb. **close source**
 
 **NOTE:**
 
