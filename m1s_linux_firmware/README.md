@@ -1,23 +1,59 @@
 # Linux firmware for Sipeed M1S Dock
+
 This is default Linux firmware for Sipeed M1S Dock.
 
-And I didn't find a way to program two "low_load" firmwares from command line, `bflb-mcu-tool` always erase and re-write bootinfo when programming second firmware. I keep 2 correct log files 'log.mcu' and 'log.iot' here, these log files it copy from BLDevCube.
+## To program Linux firmwares with bf-mcu-tool and / or bf-iot-tool
+
+At first, I didn't find a way to program two "low_load" firmwares from command line, `bflb-mcu-tool` always erase and re-write bootinfo when programming second firmware. I keep 2 correct log files 'log.mcu' and 'log.iot' here, these log files is copied from BLDevCube.
 
 From the log:
 
-- `bootinfo_group0.bin` programmed to 0x0000
-- `bootinfo_group1.bin` programmed to 0x1000
+- `bootinfo_group0.bin` generated for 'low_load_bl808_m0@0x58000000.bin' and programmed to 0x0000
+- `bootinfo_group1.bin` generated for 'low_load_bl808_d0@0x58000000.bin' and programmed to 0x1000
 - `low_load_bl808_m0@0x58000000.bin` programmed to 0x2000
 - `low_load_bl808_d0@0x58000000.bin` programmed to 0x52000
 
-Currently, `bflb-mcu-tool` did not support group setting and can not generate 'bootinfo_group0.bin' and 'bootinfo_group1.bin'.
+The root cause we can not use `bflb-mcu-tool` is `bflb-mcu-tool` did not export group1 related args.
 
-For `whole_img_linux@0xD2000.bin`, it can be programmbed from command line by:
+After reading the codes of `bflb-mcu-tool`, I found it's very easy to enable group1 support with a few changes.
+
+The patch `bflb_mcu_tool-1.8.3-enable-group1.patch` is for bflb_mcu_tool v1.8.3, since `bflb_mcu_tool` can be installed by pip, you should install it as:
+
 ```
-bflb-mcu-tool --chipname bl808 --interface uart --port /dev/ttyUSB1 --baudrate 2000000 --firmware whole_img_linux@0xD2000.bin --addr 0xD2000
+pip install 'bflb-mcu-tool==1.8.3' --force-reinstall
 ```
 
-This is a good news. actually it is not necessary to program 2 low_load firmwares every time if you not erase them.
+Then patch it:
+
+```
+cd $HOME/.local/lib/python?.?/site-packages/bflb_mcu_tool/core/
+cat <path>/bflb_mcu_tool-1.8.3-enable-group1.patch |patch -p0
+```
+Then `bflb-mcu-tool` will support 2 new args: `--group1-firmware GROUP1_FIRMWARE [--group1-addr GROUP1_ADDR`
+
+Program 2 low_load firmwares as:
+
+```
+bflb-mcu-tool --chipname bl808 --interface uart --port /dev/ttyUSB1 --baudrate 2000000 --firmware low_load_bl808_m0@0x58000000.bin --addr 0x58000000 --group1-firmware low_load_bl808_d0@0x58000000.bin --group1-addr 0x58000000
+```
+
+For `whole_img_linux@0xD2000.bin`, it can be programmed from command line by:
+
+```
+bflb-iot-tool --chipname bl808 --interface uart --port /dev/ttyUSB1 --baudrate 2000000 --firmware whole_img_linux@0xD2000.bin --addr 0xD2000 --single
+```
+Or
+```
+bflb-mcu-tool --chipname bl808 --interface uart --port /dev/ttyUSB1 --baudrate 2000000 --firmware whole_img_linux@0xD2000.bin --addr 0xD0000
+```
+
+Note `--addr 0xD0000` for `bflb-mcu-tool` and `--addr 0xD2000 --single` for `bflb-iot-tool`.
+
+When using `bflb-mcu-tool` to program the 'whole_img_linux@0xD2000.bin', 'bootinfo_group0.bin' will generated again and program to 0x0000, it will erase and replace the 'bootinfo_group0' of 'low_load_bl808_m0@0x58000000.bin', you need program 2 low_load firmwares again:
+
+```
+bflb-mcu-tool --chipname bl808 --interface uart --port /dev/ttyUSB1 --baudrate 2000000 --firmware low_load_bl808_m0@0x58000000.bin --addr 0x58000000 --group1-firmware low_load_bl808_d0@0x58000000.bin --group1-addr 0x58000000
+```
 
 ## To program Linux firmwares with BLDevCube
 
@@ -51,7 +87,7 @@ To understand mem layout and bootrom better, please refer to : https://btashton.
 tio -b 2000000 /dev/ttyUSB0
 ```
 
-2. Reset M1S Dock by pressing RST key, you will receive boot msgs.
+2. Reset M1S Dock by pressing RST button, you will receive boot msgs.
 
 3. Login as `root`.
 

@@ -1,0 +1,70 @@
+--- bflb_mcu_tool.py.orig	2023-03-07 01:00:54.175808455 +0800
++++ bflb_mcu_tool.py	2023-03-07 00:56:35.977075903 +0800
+@@ -2349,6 +2349,13 @@
+         bflb_utils.printf("firmware is not existed")
+         sys.exit(1)
+ 
++    if args.group1_firmware:
++        group1_firmware = args.group1_firmware.replace('~', expanduser("~"))
++    else:
++        group1_firmware = None
++    if not group1_firmware or not os.path.exists(group1_firmware):
++        bflb_utils.printf("group1 firmware is not existed")
++
+     if args.dts:
+         dts = args.dts.replace('~', expanduser("~"))
+         if not os.path.exists(dts):
+@@ -2524,10 +2531,13 @@
+         config["public_key_cfg-group1"] = ''
+         config["private_key_cfg-group1"] = ''
+         config["img1_group"] = "group0"
+-        config["img2_group"] = "unused"
++        if not args.group1_firmware:
++            config["img2_group"] = "unused"
++        else:
++            config["img2_group"] = "group1"
+         config["img3_group"] = "unused"
+-        config["img2_file"] = ""
+-        config["img2_addr"] = ""
++        config["img2_file"] = group1_firmware
++        config["img2_addr"] = args.group1_addr
+         config["img3_file"] = ""
+         config["img3_addr"] = ""
+         config["img1_file"] = firmware
+@@ -2538,6 +2548,14 @@
+                 config["img1_addr"] = "0x" + args.addr.replace("0x", "")
+         else:
+             config["img1_addr"] = "0x58000000"
++
++        if args.group1_addr:
++            if args.group1_addr == "0x2000" or args.group1_addr == "2000":
++                config["img2_addr"] = "0x58000000"
++            else:
++                config["img2_addr"] = "0x" + args.group1_addr.replace("0x", "")
++        else:
++            config["img2_addr"] = "0x58000000"
+     else:
+         bflb_utils.printf("Chip type is not correct")
+         sys.exit(1)
+@@ -2581,6 +2599,11 @@
+                         default=firmware_default,
+                         help="image to write")
+     parser.add_argument("--addr", dest="addr", default="0x2000", help="address to write")
++    parser.add_argument("--group1-firmware",
++                        dest="group1_firmware",
++                        default=None,
++                        help="group1 image to write")
++    parser.add_argument("--group1-addr", dest="group1_addr", default="0x2000", help="address to write")
+     parser.add_argument("--dts", dest="dts", help="device tree")
+     parser.add_argument("--build", dest="build", action="store_true", help="build image")
+     parser.add_argument("--erase", dest="erase", action="store_true", help="chip erase")
+@@ -2604,6 +2627,9 @@
+         bflb_utils.printf("Serial port is not found")
+     bflb_utils.printf("Baudrate is " + str(args.baudrate))
+     bflb_utils.printf("Firmware is " + str(args.firmware))
++    if args.group1_firmware:
++        bflb_utils.printf("Group1 Firmware is " + str(args.group1_firmware))
++        bflb_utils.printf("Group1 Addr is " + str(args.group1_addr))
+     bflb_utils.printf("Device Tree is " + str(args.dts))
+     bflb_utils.printf("==================================================")
+     config = get_value(args)
