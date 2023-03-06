@@ -82,7 +82,7 @@ This tutorial will try best to cover all these chips.
   + RISC-V linux toolchain
 - SDK : 
   + [bl mcu sdk](https://github.com/bouffalolab/bl_mcu_sdk)
-  + [bl_iot_sdk](https://github.com/bouffalolab/bl_iot_sdk_tiny)
+  + [bl_iot_sdk](https://github.com/bouffalolab/bl_iot_sdk_tiny), it is stalled and will be abandoned.
 - Programming tool : 
   + BLDevCube Linux Version. **close source**
   + BLFlashCommand (integrated in bl_mcu_sdk). **close source**
@@ -99,7 +99,14 @@ This tutorial will try best to cover all these chips.
 
 <img src="./misc/diff-iot-mcu.png" width="60%" />
 
-The answer is not very clear. In short, bl_iot_sdk focus on IOT-related programming, such as Wi-Fi/BLE, etc, and bl_mcu_sdk doesn't have these support. I am a little bit confusing why they have 2 official SDKs and even differ a lot, but it already does and seems plan to be merge together into bl_mcu_sdk in futrue. For now, you can choose the sdk as your own need.
+The answer is not very clear. In short, bl_iot_sdk focused on IOT-related programming, such as Wi-Fi/BLE, etc, and bl_mcu_sdk didn't have these support before. 
+
+From the comments from upstream : https://github.com/bouffalolab/bl_mcu_sdk/issues/115
+
+> Iot sdk does not update at all, please use mcu sdk(it will be named bouffalosdk)
+
+You should bf_mcu_sdk from now.
+
 
 # Compiler
 
