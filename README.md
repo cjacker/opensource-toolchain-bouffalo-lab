@@ -86,6 +86,7 @@ This tutorial will try best to cover all these chips.
 - Programming tool : 
   + BLDevCube Linux Version. **close source**
   + BLFlashCommand (integrated in bl_mcu_sdk). **close source**
+  + BLFlashCube (gui version of BLFlashCommand, integrated in bl_mcu_sdk). **close source**
   + bflb-iot-tool
   + bflb-mcu-tool
   + blisp and various
