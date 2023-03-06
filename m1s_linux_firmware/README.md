@@ -68,17 +68,16 @@ bflb-mcu-tool --chipname bl808 --interface uart --port /dev/ttyUSB1 --baudrate 2
 5. M0 Group[Group0] Image Addr [0x58000000] [PATH to low_load_bl808_m0.bin]
 6. D0 Group[Group1] Image Addr [0x58000000] [PATH to low_load_bl808_d0.bin]
 7. Click 'Create & Download' and wait until it's done
-   <img src="./mcu.png" width=60% />
+
+   <img src="./mcu.png" width=50% />
+
 8. Switch to [IOT] page
 9. Enable 'Single Download', set Address with 0xD2000, choose [PATH to whole_image_linux.bin]
 10. Click 'Create & Download' again and wait until it's done
+
    <img src="./iot.png" width=50% />
 
-You may wonder why the ADDR of M0 / D0 low_load firmwares is same, they all are 0x58000000.
-
-I think it's a trick of BLDevCube, actually ADDR for M0 is 0x2000 and ADDR for D0 is 0x52000.
-
-To understand mem layout and bootrom better, please refer to : https://btashton.github.io/bl808-notes/
+You may wonder why the ADDR of M0 / D0 low_load firmwares is same, they all are 0x58000000, actually ADDR for M0 is 0x2000 and ADDR for D0 is 0x52000. To understand mem layout and bootrom better, please refer to : https://btashton.github.io/bl808-notes/
 
 ## To run Linux
 

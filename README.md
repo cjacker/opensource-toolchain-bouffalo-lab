@@ -837,7 +837,7 @@ bflb-mcu-tool --chipname bl808 --interface uart --port /dev/ttyUSB1 --baudrate 2
 6. D0 Group[Group1] Image Addr [0x58000000] [PATH to low_load_bl808_d0.bin]
 7. Click 'Create & Download' and wait until it's done
 
-   <img src="./m1s_linux_firmware/mcu.png" width=60% />
+   <img src="./m1s_linux_firmware/mcu.png" width=50% />
 
 8. Switch to [IOT] page
 9. Enable 'Single Download', set Address with 0xD2000, choose [PATH to whole_image_linux.bin]
