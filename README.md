@@ -102,11 +102,11 @@ This tutorial will try best to cover all these chips.
 
 The answer is not very clear. In short, bl_iot_sdk focused on IOT-related programming, such as Wi-Fi/BLE, etc, and bl_mcu_sdk didn't have these support before. 
 
-From the comments from upstream : https://github.com/bouffalolab/bl_mcu_sdk/issues/115
+According to the comment from upstream : https://github.com/bouffalolab/bl_mcu_sdk/issues/115
 
 > Iot sdk does not update at all, please use mcu sdk(it will be named bouffalosdk)
 
-You should bf_mcu_sdk from now.
+**You should bf_mcu_sdk from now.**
 
 **NOTE 2:**
 
