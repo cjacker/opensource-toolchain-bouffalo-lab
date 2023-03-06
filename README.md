@@ -768,7 +768,7 @@ I put all pre-built firmwares at '[m1s_linux_firmware](https://github.com/cjacke
 
 ## Program linux kernel
 
-### with bflb-mcu-tool and / or bflb-iot-tool
+### with bflb-mcu-tool
 At first, I didn't find a way to program two "low_load" firmwares from command line, `bflb-mcu-tool` always erase and re-write bootinfo when programming second firmware. I keep 2 correct log files 'log.mcu' and 'log.iot' in [m1s_linux_firmware](./m1s_linux_firmware) dir, these log files is copied from BLDevCube.
 
 From the log:
@@ -833,10 +833,13 @@ bflb-mcu-tool --chipname bl808 --interface uart --port /dev/ttyUSB1 --baudrate 2
 5. M0 Group[Group0] Image Addr [0x58000000] [PATH to low_load_bl808_m0.bin]
 6. D0 Group[Group1] Image Addr [0x58000000] [PATH to low_load_bl808_d0.bin]
 7. Click 'Create & Download' and wait until it's done
+
    <img src="./m1s_linux_firmware/mcu.png" width=60% />
+
 8. Switch to [IOT] page
 9. Enable 'Single Download', set Address with 0xD2000, choose [PATH to whole_image_linux.bin]
-10. Click 'Create & Download' again and wait until it's done
+10. Click 'Create & Download' again and wait until it's done.
+
    <img src="./m1s_linux_firmware/iot.png" width=50% />
 
 You may wonder why the ADDR of M0 / D0 low_load firmwares is same, they all are 0x58000000. To understand memory layout and bootrom better, please refer to : https://btashton.github.io/bl808-notes/
