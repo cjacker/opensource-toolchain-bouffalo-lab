@@ -93,7 +93,7 @@ This tutorial will try best to cover all these chips.
   + OpenOCD and gdb
   + T-Head C-Sky Debug Server and gdb. **close source**
 
-**NOTE:**
+**NOTE 1:**
 
 **About the difference between bl_iot_sdk & bl_mcu_sdk**, there is an answer [here](https://bbs.bouffalolab.com/d/124-difference-bl-iot-sdk-bl-mcu-sdk).
 
@@ -106,6 +106,10 @@ From the comments from upstream : https://github.com/bouffalolab/bl_mcu_sdk/issu
 > Iot sdk does not update at all, please use mcu sdk(it will be named bouffalosdk)
 
 You should bf_mcu_sdk from now.
+
+**NOTE 2:**
+
+It seems upstream decide to close BLFlashCommand and BLFlashCube sources, if this is a issue for you, you should know that. 
 
 
 # Compiler
