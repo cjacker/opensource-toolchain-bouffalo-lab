@@ -49,8 +49,11 @@ This tutorial will try best to cover all these chips.
     - [Launch C-Sky debug server](https://github.com/cjacker/opensource-toolchain-bouffalo-lab/blob/main/README.md#launch-c-sky-debug-server)
     - [Debugging](https://github.com/cjacker/opensource-toolchain-bouffalo-lab/blob/main/README.md#debugging-1)
 - [Build Linux kernel for BL808](https://github.com/cjacker/opensource-toolchain-bouffalo-lab/blob/main/README.md#build-linux-kernel-for-bl808)
-  + [Building linux kernel](https://github.com/cjacker/opensource-toolchain-bouffalo-lab/blob/main/README.md#building-linux-kernel)
-  + [Flash and run](https://github.com/cjacker/opensource-toolchain-bouffalo-lab/blob/main/README.md#program-linux-kernel-and-run)
+  + [Build linux kernel](https://github.com/cjacker/opensource-toolchain-bouffalo-lab/blob/main/README.md#build-linux-kernel)
+  + [Program linux kernel](https://github.com/cjacker/opensource-toolchain-bouffalo-lab/blob/main/README.md#program-linux-kernel)
+    - [with bflb-mcu-tool](https://github.com/cjacker/opensource-toolchain-bouffalo-lab/blob/main/README.md#with-bflb-mcu-tool)
+    - [with BLDevCube](https://github.com/cjacker/opensource-toolchain-bouffalo-lab/blob/main/README.md#with-bldevcube)
+  + [Boot linux kernel](https://github.com/cjacker/opensource-toolchain-bouffalo-lab/blob/main/README.md#boot-linux-kernel)
 - [Misc](https://github.com/cjacker/opensource-toolchain-bouffalo-lab/blob/main/README.md#misc)
   + [Use Sipeed RV Debugger Plus as JTAG or CK-Link Lite debugger](https://github.com/cjacker/opensource-toolchain-bouffalo-lab/blob/main/README.md#how-to-build-and-program-uartjtag-and-dualuart-firmware-for-sipeed-rv-debugger-plus)
   + [Use M0S Dock as CK-Link Lite debugger](https://github.com/cjacker/opensource-toolchain-bouffalo-lab/blob/main/README.md#how-to-turn-m0s-dock-to-ck-link-lite)
@@ -725,7 +728,7 @@ Although there are still some drivers missing, but linux kernel can boot and wor
 
 Before building the linux kernel, make sure you setup toolchains correctly.
 
-## Building linux kernel
+## Build linux kernel
 
 - Clone bl808_linux.
 
@@ -844,7 +847,7 @@ bflb-mcu-tool --chipname bl808 --interface uart --port /dev/ttyUSB1 --baudrate 2
 
 You may wonder why the ADDR of M0 / D0 low_load firmwares is same, they all are 0x58000000. To understand memory layout and bootrom better, please refer to : https://btashton.github.io/bl808-notes/
 
-## run Linux
+## Boot Linux kernel
 
 1. Use any serial terminal such as `tio`, set baudrate to 2000000, and open "/dev/ttyUSB0".
 ```
