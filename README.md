@@ -280,9 +280,9 @@ If you want to start a new project, you can either copy these demos from this re
 
 ## M1s_BL808_SDK
 
-For Sipeed M1s, you can use bl_mcu_sdk without any problem. But the Sipeed official M1s_BL808_SDK also provide more features that bl_mcu_sdk lacks now, for example, M1s_BL808_SDK has freertos / wifi / video / blai support that bl_mcu_sdk don't have. And the project management for bl_mcu_sdk and M1s_BL808_SDK is also differ a lot.
+For Sipeed M1s, you can use bl_mcu_sdk without any problem. But Sipeed [M1s_BL808_SDK](https://github.com/sipeed/M1s_BL808_SDK) provide more features that bl_mcu_sdk lacks now, for example, [M1s_BL808_SDK](https://github.com/sipeed/M1s_BL808_SDK) has freertos / wifi / video / blai support that bl_mcu_sdk don't have (for now). And the project management styles of bl_mcu_sdk and M1s_BL808_SDK also differ a lot.
 
-**For Sipeed M1s dock, you should use 'M1s_BL808_SDK' instead of 'bl_mcu_sdk'.**
+**For Sipeed M1s dock, It's more convenient to use 'M1s_BL808_SDK' instead of 'bl_mcu_sdk'.**
 
 The installation of M1s_BL808_SDK is very simple:
 
@@ -316,6 +316,7 @@ cd M1s_BL808_example/c906_app
 
 After built successfully, 'lvgl_demo.bin' and 'lvgl_demo.elf' should be generated at `build_out` dir.
 
+There is a warning **'mis-matched ISA version 1.0 for 'v' extension, the output version is 2.0'** when link to some prebuilt binary libraries, such as 'libblai_npu_encoder.a', you can ignore it now.
 
 ## bl_iot_sdk
 
