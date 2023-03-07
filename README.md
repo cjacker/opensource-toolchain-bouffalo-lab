@@ -35,9 +35,6 @@ This tutorial will try best to cover all these chips.
   + [programming tools installation](https://github.com/cjacker/opensource-toolchain-bouffalo-lab/blob/main/README.md#programming-tools-installation)
   + [programming](https://github.com/cjacker/opensource-toolchain-bouffalo-lab/blob/main/README.md#programming-1)
     - [for bl_mcu_sdk](https://github.com/cjacker/opensource-toolchain-bouffalo-lab/blob/main/README.md#for-bl_mcu_sdk-1)
-      + [with BLFlashCommand](https://github.com/cjacker/opensource-toolchain-bouffalo-lab/blob/main/README.md#with-blflashcommand-recommended)
-      + [with bflb-mcu-tool](https://github.com/cjacker/opensource-toolchain-bouffalo-lab/blob/main/README.md#option-1--with-bflb-mcu-tool-)
-      + [with blisp](https://github.com/cjacker/opensource-toolchain-bouffalo-lab/blob/main/README.md#option-2--with-blisp)
     - [for bl_iot_sdk](https://github.com/cjacker/opensource-toolchain-bouffalo-lab/blob/main/README.md#for-bl_iot_sdk-1)
 - [Debugging](https://github.com/cjacker/opensource-toolchain-bouffalo-lab/blob/main/README.md#debugging)
   + [With OpenOCD and JTAG debugger](https://github.com/cjacker/opensource-toolchain-bouffalo-lab/blob/main/README.md#with-openocd-and-jtag-debugger)
@@ -310,11 +307,12 @@ If all good, `build_out/blink.bin` will be generated.
 
 # Programming
 
-The official GUI programming tool is 'BLDevCube', it support Windows / MacOSX and Linux. 
-
-The official command line programming tool shipped in 'bl_mcu_sdk' is 'BLFlashCommand', it is commited into the 'bl_mcu_sdk' repo recently.
-
-There are also '[bflb-mcu-tool](https://pypi.org/project/bflb-mcu-tool/)' and '[bflb-iot-tool](https://pypi.org/project/bflb-iot-tool/) with official support and [blisp](https://github.com/pine64/blisp)  from Pine64 can be used.
+There are various official programming tools for BL chips:
+- BLDevCube : Official full functionality and genenral purpose GUI programming tool which support Windows / Mac and Linux. **close source.**
+- BLFlashCommand / BLFlashCube : Official CLI and GUI programming tool only designed for and integrated in 'bl_mcu_sdk' and used by `make flash`. **close source.**
+- [bflb-mcu-tool](https://pypi.org/project/bflb-mcu-tool/) : Official CLI programming tool which can support most options in BLDevCube 'MCU' page.
+- [bflb-iot-tool](https://pypi.org/project/bflb-iot-tool/) : Official CLI programming tool which can support most options in BLDevCube 'IOT' page.
+- [blisp](https://github.com/pine64/blisp) : Simple BL60x/70x programming tool development by Pine64 community.
 
 **NOTE:**
 
@@ -324,10 +322,6 @@ After `BLFlashCommand` commited into official bl_mcu_sdk repo and with the commi
 - **The bad news:** It alter the firmware format, and not compatible with other opensource tools.
 
 Compare with old firmware before this commit, the final ELF has a section '.fw_header' added. you can use 'readelf -S build/build_out/xxx.elf' to verify it has a '.fw_header' section or not.
-
-- use 'BLFlashCommand' / 'blisp' / 'bflb-mcu-tool' / 'bflb-iot-tool' to program new firmware (firmware with .fw_header section).
-- use 'blisp' / 'bflb-mcu-tool' / 'bflb-iot-tool' to program old firmware (firmware without .fw_header section). or `git checkout 18408f971e3f8c2f82e79ec5fddd38c22f288c0d` to roll back the 'fw_header' commit and rebuild your project.
-
 
 ## Programming tools installation
 
@@ -341,6 +335,7 @@ unzip BouffaloLabDevCube-v1.8.3.zip
 chmod +x BLDevCube-ubuntu
 chmod +x bflb_iot_tool-ubuntu
 ```
+
 Actually, these tools are written in Python and packaged by pyinstaller, you can depackage and decompile them...
 
 'BLFlashCommand' and 'BLFlashCube' are already integreated into 'bl_mcu_ask', there is no additional installation required, it's also written in Python and packaged by pyinstaller.
@@ -380,11 +375,7 @@ To program BL chips, you need enter UART programming mode first.
 
 In short, if devboard has 'BOOT' button, "hold BOOT button down and power it" will enter UART programming mode. "hold BOOT button down and click RESET button" actually is equal to "hold BOOT button down and power it".
 
-Then you can program it:
-
-### with `BLFlashCommand` (recommended)
-
-Since 'BLFlashCommand' already integrated in bl_mcu_sdk, we can treat it as the default and officially recommended tool to program BL chips.
+Then you can program it with `BLFlashCommand`, Since 'BLFlashCommand' already integrated in bl_mcu_sdk, we can treat it as the default and officially recommended tool to program BL chips.
 
 `BLFlashCommand` read the 'flash_prog_cfg.ini' as config file, please setup this file correctly, and use demos in this repo, just type:
 
@@ -396,42 +387,13 @@ You may need to set 'BL_SDK_BASE' to your bl_mcu_sdk dir if using 'out sdk build
 
 All demos include triple core demo for BL808 in this repo can be programmed by 'BLFlashComand'.
 
-### Option 1 : with `bflb-mcu-tool` :
+**Update Mar 7 2023 : I removed all contents about how to use 'bflb-mcu-tool' / 'bflb-iot-tool' and 'blisp', it make things complex, the best way to programm firmware generated by bl_mcu_sdk is 'BLFlashCommand'. it is more simpler for beginners.**
 
-For new firmware format (with .fw_header). If you rebuild your project with updated 'bl_mcu_sdk', it should be always new firmware.
-
-```
-bflb-mcu-tool --chipname=bl702 --interface=uart --port=/dev/ttyACM0 --baudrate=2000000 --firmware=build/build_out/blink_bl702.bin --addr 0x1000
-```
-
-For old firmware format (without .fw_header). Usually, old firmwares are some pre-built and released bin files. please remove `--addr 0x1000` options from above command:
-
-```
-bflb-mcu-tool --chipname=bl702 --interface=uart --port=/dev/ttyACM0 --baudrate=2000000 --firmware=build/build_out/blink_bl702.bin
-```
-
-### Option 2 : with `blisp`
-
-For new firmware (with .fw_header). If you rebuild your project with updated 'bl_mcu_sdk', it should be always new firmware.
-
-```
-blisp iot -c bl70x -p /dev/ttyACM0 --reset -s build/build_out/blink_bl702.bin -l 0x1000
-```
-
-For old firmware (without .fw_header).
-```
-blisp write -c bl70x -p /dev/ttyACM0 --reset build/build_out/blink_bl702.bin
-```
-Or
-```
-blisp iot -c bl70x -p /dev/ttyACM0 --reset -s build/build_out/blink_bl702.bin -l 0x0
-```
+If you use M1S Dock, refer to [Sipeed M1S Dock programming notes](https://github.com/cjacker/opensource-toolchain-bouffalo-lab/blob/main/README.md#m1s-dock-bl808-programming-notes) section about how to program M1S Dock by various command line utilities.
 
 ### for bl_iot_sdk
 
 **bl_iot_sdk was deprecated**
-
-Too many options make things complex, let's keep it as simple as possible.
 
 Use `bl_iot_sdk/customer_app/get-start/blink` as example, after `build_out/blink.bin` generated as mentioned in 'SDK' section, program it to XT-BL12 devboard by :
 
@@ -684,8 +646,6 @@ After programmed, re-power it and using `lsusb`, you will find:
 ```
 
 Then connect the target board with RV Debugger Plus / M0S Dock as same as CK-Link Lite Debugger.
-
-
 
 ### Option 3 : Make your own CK-Link Lite debugger with STM32F103
 
@@ -1151,7 +1111,7 @@ To restore factory firmwares for BL808:
 ./02-restore-bl808-factory-firmware.sh
 ```
 
-To program other firmwares for D0 of BL808 (no matter factory demos or build from M1S SDK):
+To program other firmwares for D0 of BL808 (no matter factory demos or firmwares built from M1S SDK):
 ```
 ./03-program-d0-firmware.sh <firmware>
 ```
