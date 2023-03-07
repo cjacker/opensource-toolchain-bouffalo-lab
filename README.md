@@ -59,6 +59,11 @@ This tutorial will try best to cover all these chips.
   + [Use M0S Dock as CK-Link Lite debugger](https://github.com/cjacker/opensource-toolchain-bouffalo-lab/blob/main/README.md#how-to-turn-m0s-dock-to-ck-link-lite)
   + [Sipeed M0sense programming notes](https://github.com/cjacker/opensource-toolchain-bouffalo-lab/blob/main/README.md#m0sense-board-bl702-programming-notes)
   + [Sipeed M1S Dock programming notes](https://github.com/cjacker/opensource-toolchain-bouffalo-lab/blob/main/README.md#m1s-dock-bl808-programming-notes)
+    - [To program on-board BL702 of M1S Dock](https://github.com/cjacker/opensource-toolchain-bouffalo-lab/blob/main/README.md#to-program-on-board-bl702-of-m1s-dock)
+    - [To program E907 core of BL808 for M1S Dock](https://github.com/cjacker/opensource-toolchain-bouffalo-lab/blob/main/README.md#to-program-e907-core-of-bl808-for-m1s-dock)
+    - [To program C906 core of BL808 for M1S Dock](https://github.com/cjacker/opensource-toolchain-bouffalo-lab/blob/main/README.md#to-program-c906-core-of-bl808-for-m1s-dock)
+      + [Option 1 : with U-Disk mode (M1S Specific)](https://github.com/cjacker/opensource-toolchain-bouffalo-lab/blob/main/README.md#option-1--with-u-disk-mode-m1s-specific)
+      + [Option 2 : with bflb-iot-tool from commandline](https://github.com/cjacker/opensource-toolchain-bouffalo-lab/blob/main/README.md#option-2--with-bflb-iot-tool-from-commandline)
   + [How to restore factory firmware of M1S Dock](https://github.com/cjacker/opensource-toolchain-bouffalo-lab/blob/main/README.md#how-to-restore-factory-firmwares-for-m1s-dock)
   
 
