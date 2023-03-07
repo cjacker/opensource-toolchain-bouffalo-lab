@@ -384,7 +384,7 @@ To program BL chips, you need enter UART programming mode first.
 - For BL602, I have a 'XT-BL12' devboard, **Plug it in PC USB port, Hold the 'D8' (GPIO8) button down, press and release 'EN' button, then release 'D8' (GPIO8) button.**
 - For BL808, such as Sipeed M1S Dock, **Use 'UART' typec port to plug in PC USB Port, Hold 'BOOT' button down, press and release 'RESET' button, then release 'BOOT' button.**
 
-In short, if devboard has 'BOOT' button, "hold BOOT button down and power it" will enter UART programming mode, actually it equals to "hold BOOT button down and power it".
+In short, if devboard has 'BOOT' button, "hold BOOT button down and power it" will enter UART programming mode, actually it equals to "hold BOOT button down and toggle RESET button".
 
 Then you can program it with `make flash`, it will invoke 'BLFlashCommand' to program BL chips.
 
@@ -400,7 +400,7 @@ You may need to set 'BL_SDK_BASE' to your bl_mcu_sdk dir if using 'out sdk build
 
 All demos include triple core demo for BL808 in this repo can be programmed by 'BLFlashComand'.
 
-**Update Mar 7 2023 : I removed all contents about how to use 'bflb-mcu-tool' / 'bflb-iot-tool' and 'blisp', it make things complex, the best way to program firmwares built with bl_mcu_sdk is 'BLFlashCommand'. it is more simpler for beginners.**
+**Update Mar 7 2023 : Finally I decided to remove all contents about how to use 'bflb-mcu-tool' / 'bflb-iot-tool' and 'blisp', it make things complex, the best way to program firmwares built with bl_mcu_sdk is 'BLFlashCommand'. it is more simpler for beginners.**
 
 If you use M1S Dock, refer to [Sipeed M1S Dock programming notes](https://github.com/cjacker/opensource-toolchain-bouffalo-lab/blob/main/README.md#m1s-dock-bl808-programming-notes) section about how to program M1S Dock by various command line utilities.
 
