@@ -35,6 +35,12 @@ This tutorial will try best to cover all these chips.
   + [programming tools installation](https://github.com/cjacker/opensource-toolchain-bouffalo-lab/blob/main/README.md#programming-tools-installation)
   + [programming](https://github.com/cjacker/opensource-toolchain-bouffalo-lab/blob/main/README.md#programming-1)
     - [for bl_mcu_sdk](https://github.com/cjacker/opensource-toolchain-bouffalo-lab/blob/main/README.md#for-bl_mcu_sdk-1)
+    - [Sipeed M1S Dock programming notes](https://github.com/cjacker/opensource-toolchain-bouffalo-lab/blob/main/README.md#m1s-dock-bl808-programming-notes)
+      + [To program on-board BL702 of M1S Dock](https://github.com/cjacker/opensource-toolchain-bouffalo-lab/blob/main/README.md#to-program-on-board-bl702-of-m1s-dock)
+      + [To program E907 core of BL808 for M1S Dock](https://github.com/cjacker/opensource-toolchain-bouffalo-lab/blob/main/README.md#to-program-e907-core-of-bl808-for-m1s-dock)
+      + [To program C906 core of BL808 for M1S Dock](https://github.com/cjacker/opensource-toolchain-bouffalo-lab/blob/main/README.md#to-program-c906-core-of-bl808-for-m1s-dock)
+        - [Option 1 : with U-Disk mode (M1S Specific)](https://github.com/cjacker/opensource-toolchain-bouffalo-lab/blob/main/README.md#option-1--with-u-disk-mode-m1s-specific)
+        - [Option 2 : with bflb-iot-tool from commandline](https://github.com/cjacker/opensource-toolchain-bouffalo-lab/blob/main/README.md#option-2--with-bflb-iot-tool-from-commandline)
     - [for bl_iot_sdk](https://github.com/cjacker/opensource-toolchain-bouffalo-lab/blob/main/README.md#for-bl_iot_sdk-1)
 - [Debugging](https://github.com/cjacker/opensource-toolchain-bouffalo-lab/blob/main/README.md#debugging)
   + [With OpenOCD and JTAG debugger](https://github.com/cjacker/opensource-toolchain-bouffalo-lab/blob/main/README.md#with-openocd-and-jtag-debugger)
@@ -54,12 +60,6 @@ This tutorial will try best to cover all these chips.
   + [Use Sipeed RV Debugger Plus as JTAG or CK-Link Lite debugger](https://github.com/cjacker/opensource-toolchain-bouffalo-lab/blob/main/README.md#how-to-build-and-program-uartjtag-and-dualuart-firmware-for-sipeed-rv-debugger-plus)
   + [Use M0S Dock as CK-Link Lite debugger](https://github.com/cjacker/opensource-toolchain-bouffalo-lab/blob/main/README.md#how-to-turn-m0s-dock-to-ck-link-lite)
   + [Sipeed M0sense programming notes](https://github.com/cjacker/opensource-toolchain-bouffalo-lab/blob/main/README.md#m0sense-board-bl702-programming-notes)
-  + [Sipeed M1S Dock programming notes](https://github.com/cjacker/opensource-toolchain-bouffalo-lab/blob/main/README.md#m1s-dock-bl808-programming-notes)
-    - [To program on-board BL702 of M1S Dock](https://github.com/cjacker/opensource-toolchain-bouffalo-lab/blob/main/README.md#to-program-on-board-bl702-of-m1s-dock)
-    - [To program E907 core of BL808 for M1S Dock](https://github.com/cjacker/opensource-toolchain-bouffalo-lab/blob/main/README.md#to-program-e907-core-of-bl808-for-m1s-dock)
-    - [To program C906 core of BL808 for M1S Dock](https://github.com/cjacker/opensource-toolchain-bouffalo-lab/blob/main/README.md#to-program-c906-core-of-bl808-for-m1s-dock)
-      + [Option 1 : with U-Disk mode (M1S Specific)](https://github.com/cjacker/opensource-toolchain-bouffalo-lab/blob/main/README.md#option-1--with-u-disk-mode-m1s-specific)
-      + [Option 2 : with bflb-iot-tool from commandline](https://github.com/cjacker/opensource-toolchain-bouffalo-lab/blob/main/README.md#option-2--with-bflb-iot-tool-from-commandline)
   + [How to restore factory firmware of M1S Dock](https://github.com/cjacker/opensource-toolchain-bouffalo-lab/blob/main/README.md#how-to-restore-factory-firmwares-for-m1s-dock)
 
 - [Deprecated topics]
@@ -93,6 +93,7 @@ This tutorial will try best to cover all these chips.
   + RISC-V linux toolchain
 - SDK : 
   + [bl mcu sdk](https://github.com/bouffalolab/bl_mcu_sdk)
+  + [M1s_BL808_SDK](https://github.com/sipeed/M1s_BL808_SDK) and [M1s_BL808_example](https://github.com/sipeed/M1s_BL808_example), Sipeed M1s specific.
   + [bl_iot_sdk](https://github.com/bouffalolab/bl_iot_sdk_tiny), it is stalled and will be abandoned.
 - Programming tool : 
   + BLDevCube Linux Version. **close source**
@@ -117,12 +118,11 @@ According to the comment from upstream : https://github.com/bouffalolab/bl_mcu_s
 
 > Iot sdk does not update at all, please use mcu sdk (it will be named bouffalosdk)
 
-**You should use bl_mcu_sdk from now.**
+**You should use bl_mcu_sdk or M1s_BL808_SDK for BL808 from now.**
 
 **NOTE 2:**
 
 BLFlashCommand and BLFlashCube is close source software up to now. If this is a issue for you, you should know that. 
-
 
 # Compiler
 
@@ -180,6 +180,7 @@ and add `/opt/xuantie-riscv64-linux-toolchain/bin` to PATH env according to your
 **NOTE 1 :** the triplet of prebuilt Xuantie linux toolchain is **`riscv64-unknown-linux-gnu`**.
 **NOTE 2 :** the sysroot is at '/opt/xuantie-riscv64-linux-toolchain/sysroot'.
 
+Above toolchain setup is also suite for [M1s_BL808_SDK](https://github.com/sipeed/M1s_BL808_SDK).
 
 ## For bl_iot_sdk
 
@@ -273,6 +274,46 @@ For more infomation about how to use this tripplecore demo, please refer to : ht
 
 
 If you want to start a new project, you can either copy these demos from this repo, or use various demos in `bl_mcu_sdk/examples` dir.
+
+
+## M1s_BL808_SDK
+
+For Sipeed M1s, you can use bl_mcu_sdk without any problem. But the Sipeed official M1s_BL808_SDK also provide more features that bl_mcu_sdk lacks now, for example, M1s_BL808_SDK has freertos / wifi / video / blai support that bl_mcu_sdk don't have. And the project management for bl_mcu_sdk and M1s_BL808_SDK is also differ a lot.
+
+**For Sipeed M1s dock, you should use 'M1s_BL808_SDK' instead of 'bl_mcu_sdk'.**
+
+The installation of M1s_BL808_SDK is very simple:
+
+```
+mkdir m1s && cd m1s
+git clone https://github.com/sipeed/M1s_BL808_SDK.git
+git clone https://github.com/sipeed/M1s_BL808_example.git
+```
+
+After git cloned, you need:
+
+- Export an env var as "export BL_SDK_PATH=<path to>/M1s_BL808_SDK"
+- According to the toolchain setup section, change `M1s_BL808_SDK/make_scripts_thead_riscv/toolchain.mk` 
+
+from 
+```
+CONFIG_TOOLPREFIX ?= $(BL_SDK_PATH)/toolchain/$(shell uname |cut -d '_' -f1)_$(shell uname -m)/bin/riscv64-unknown-elf-
+```
+to 
+```
+CONFIG_TOOLPREFIX ?= riscv64-unknown-elf-
+```
+
+
+Then build a demo using 'build.sh <demo dirname>':
+
+```
+cd M1s_BL808_example/c906_app
+./build.sh lvgl_demo
+```
+
+After built successfully, 'lvgl_demo.bin' and 'lvgl_demo.elf' should be generated at `build_out` dir.
+
 
 ## bl_iot_sdk
 
@@ -403,6 +444,98 @@ All demos include triple core demo for BL808 in this repo can be programmed by '
 **Update Mar 7 2023 : Finally I decided to remove all contents about how to use 'bflb-mcu-tool' / 'bflb-iot-tool' and 'blisp', it make things complex, the best way to program firmwares built with bl_mcu_sdk is 'BLFlashCommand'. it is more simpler for beginners.**
 
 If you use M1S Dock, refer to [Sipeed M1S Dock programming notes](https://github.com/cjacker/opensource-toolchain-bouffalo-lab/blob/main/README.md#m1s-dock-bl808-programming-notes) section about how to program M1S Dock by various command line utilities.
+
+
+### for M1s_BL808_SDK
+
+Beside BL808, Sipeed M1S Dock also have a standalone BL702 chip integrated on board to emulate 2 UART interfaces. you may need to:
+- program BL702 to fix/restore damage dualuart firmware.
+- program cores of BL808
+
+```
+         +--------------+                  +----------------+
+         |OTP TypeC Port|                  |UART TypeC Port |
+         +--------------+                  +----------------+
+                |                              |        |
+                |                              |        |
+         +------V-------+                      V        V
+         |3M USB storage|               +---------------------+
+         |to program D0 |               | BL702,emulate 2 UART| <- to program BL702,
+         |              |               |   +-----+  +-----+  |    hold 'BOOT' button and power it.
+         |Hold S1+S2    |               |   |UART0|  |UART1|  |
+         |Toggle 'RST'  |               |   +---^-+  +-^---+  |
+         |Mount         |               +-------|------|---|--+
+         +----+---------+                     RX|TX  RX|TX | <- to program BL808 by UART Mode, power it and
+              |                                 |      |   |    hold 'BOOT' button, toggle 'RST'.
+              |To program      +----------------|------|---+----------+
+              |D0 Core         |  BL808         |      |              |
+              |by Udisk mode   |        +-------V-+  +-V-------+      |
+              +-------------------------> D0 Core |  | M0 Core |      |
+     +------------+            |        +---------+  +---------+      |
+     | Standalone |           D18 (TX)  +---------+                   |
+     |UART adapter|<--------------------> LP Core |                   |
+     |   UART2    |           D19 (RX)  +---------+                   |
+     +------------+            +--------------------------------------+
+```
+
+You can use 'BLDevCube' Linux version to make things easier (but not easy for me), Sipeed already have a [good tutorial](https://wiki.sipeed.com/hardware/en/maix/m1s/other/start.html) here, please refer to [sipeed tutorial](https://wiki.sipeed.com/hardware/en/maix/m1s/other/start.html) on how to use 'BLDevCube' to program M1S Dock.
+
+Here will explain how to program M1s Dock by command line:
+
+#### To program on-board BL702 of M1S Dock
+
+Usually, it's useful to fix or restore the factory 'dualuart' firmware.
+
+You need activate BL702 UART programming mode first and : 
+
+```
+$ bflb-iot-tool --chipname=bl702 --port=/dev/ttyACM0 --baudrate=2000000 --firmware=<dualuart factory firmware> --addr 0x2000 
+```
+
+### To program E907 core of M1S Dock 
+
+You need activate BL808 UART programming mode first.
+
+And use the bigger number of 2 serial devices, here is '/dev/ttyUSB1'.
+
+```
+bflb-iot-tool --chipname=bl808 --port=/dev/ttyUSB1 --baudrate=2000000 --pt=partition_cfg_16M_m1sdock.toml --boot2=boot2_isp_debug.bin --firmware=<m0 firmware.bin> 
+```
+
+Partion table and boot2 file had been put into [m1s_factory_firmware copy](https://github.com/cjacker/opensource-toolchain-bouffalo-lab/tree/main/m1s_dock_factory_firmware) dir in this repo. you can also find them from https://github.com/sipeed/M1s_BL808_example and BLDevCube. 
+
+#### To program C906 core of BL808 for M1S Dock
+
+##### Option 1 : with U-Disk mode (M1S Specific)
+
+M1S dock implement U-Disk programming mode for C906 core, to activate U-Disk programming mode:
+- connect the 'OTP' typec port of M1S Dock with PC USB port
+- Hold 'S1' and 'S2' button down at the same time.
+- Press 'RESET' button and release
+- Release 'S1' and 'S2' button
+- find the usb storage device and mount it to somewhere
+- copy C906 firmware to mount point and umount it.
+
+It will programmed automatically and reset the device.
+
+##### Option 2 : with bflb-iot-tool from commandline
+
+I prefer this way, it's more convenient than U-Disk mode.
+
+All factory demo firmwares for D0 or firmwares you build from M1S SDK can be programmed this way, After UART programming mode activated :
+
+```
+bflb-iot-tool --chipname=bl808 --port=/dev/ttyUSB1 --baudrate=2000000 --firmware=<firmware file> --addr 0x101000 --single
+```
+
+NOTE `--addr 0x101000`, since all factory demo firmwares for D0 and firmwares build from M1S SDK did not include 4k bootinfo (0x1000) at the start of bin file. Here use `--addr 0x101000` to avoid replace bootinfo programmed by factory firmware.
+
+For example, using 'lvgl_demo', it can be programmed as :
+
+```
+bflb-iot-tool --chipname=bl808 --port=/dev/ttyUSB1 --baudrate=2000000 --firmware=build_out/lvgl_demo.bin --addr 0x101000 --single
+```
+
 
 ### for bl_iot_sdk
 
@@ -961,93 +1094,6 @@ It has 'BOOT' and 'RESET' buttons indeed, but NOT for entering UART programming 
 To enter UART programming mode I metioned above many times, you need to **short the 3v3 and boot pin**, then power it, the M0sense board will enter UART programming mode.
 
 After that, you can program it with `bflb-mcu-tool` etc.
-
-## M1S Dock (BL808) programming notes
-
-Since BL808 has 3 cores, the programming process of BL808 will be a little bit complex, it depend on devboard design and bsp codes. 
-
-Using Sipeed M1S Dock as example, beside BL808, it also have a standalone BL702 chip integrated on board to emulate 2 UART interfaces. you may need to:
-- program BL702 to fix/restore damage dualuart firmware.
-- program 3 cores of BL808
-
-```
-         +--------------+                  +----------------+
-         |OTP TypeC Port|                  |UART TypeC Port |
-         +--------------+                  +----------------+
-                |                              |        |
-                |                              |        |
-         +------V-------+                      V        V
-         |3M USB storage|               +---------------------+
-         |to program D0 |               | BL702,emulate 2 UART| <- to program BL702,
-         |              |               |   +-----+  +-----+  |    hold 'BOOT' button and power it.
-         |Hold S1+S2    |               |   |UART0|  |UART1|  |
-         |Toggle 'RST'  |               |   +---^-+  +-^---+  |
-         |Mount         |               +-------|------|---|--+
-         +----+---------+                     RX|TX  RX|TX | <- to program BL808 by UART Mode, power it and
-              |                                 |      |   |    hold 'BOOT' button, toggle 'RST'.
-              |To program      +----------------|------|---+----------+
-              |D0 Core         |  BL808         |      |              |
-              |by Udisk mode   |        +-------V-+  +-V-------+      |
-              +-------------------------> D0 Core |  | M0 Core |      |
-     +------------+            |        +---------+  +---------+      |
-     | Standalone |           D18 (TX)  +---------+                   |
-     |UART adapter|<--------------------> LP Core |                   |
-     |   UART2    |           D19 (RX)  +---------+                   |
-     +------------+            +--------------------------------------+
-```
-
-You can use 'BLDevCube' Linux version to make things easier (but not easy for me), Sipeed already have a [good tutorial](https://wiki.sipeed.com/hardware/en/maix/m1s/other/start.html) here, please refer to [sipeed tutorial](https://wiki.sipeed.com/hardware/en/maix/m1s/other/start.html) on how to use 'BLDevCube' to program M1S Dock.
-
-Here will explain how to program BL808 by command line:
-
-### To program on-board BL702 of M1S Dock
-
-Usually, it's useful to fix or restore the factory 'dualuart' firmware.
-
-You need activate BL702 UART programming mode first, please refer to above sections on how to activate it.
-
-```
-$ bflb-iot-tool --chipname=bl702 --port=/dev/ttyACM0 --baudrate=2000000 --firmware=<dualuart factory firmware> --addr 0x2000 
-```
-
-### To program E907 core of BL808 for M1S Dock 
-
-You need activate BL808 UART programming mode first by : hold 'BOOT' btn, toggle 'RESET' btn, then release 'BOOT' btn.
-
-And use the bigger number of 2 serial devices, here is '/dev/ttyUSB1'.
-
-```
-bflb-iot-tool --chipname=bl808 --port=/dev/ttyUSB1 --baudrate=2000000 --pt=partition_cfg_16M_m1sdock.toml --boot2=boot2_isp_debug.bin --firmware=<m0 firmware.bin> 
-```
-
-Partion table and boot2 file had been put into [m1s_factory_firmware copy](https://github.com/cjacker/opensource-toolchain-bouffalo-lab/tree/main/m1s_dock_factory_firmware) dir in this repo. you can also find them from https://github.com/sipeed/M1s_BL808_example and BLDevCube. 
-
-### To program C906 core of BL808 for M1S Dock
-
-#### Option 1 : with U-Disk mode (M1S Specific)
-
-M1S dock implement U-Disk programming mode for C906 core, to activate U-Disk programming mode:
-- connect the 'OTP' typec port of M1S Dock with PC USB port
-- Hold 'S1' and 'S2' button down at the same time.
-- Press 'RESET' button and release
-- Release 'S1' and 'S2' button
-- find the usb storage device and mount it to somewhere
-- copy C906 firmware to mount point and umount it.
-
-It will programmed automatically and reset the device.
-
-#### Option 2 : with bflb-iot-tool from commandline
-
-I prefer this mode, it's more convenient than U-Disk mode.
-
-All factory demo firmwares for D0 or firmwares you build from M1S SDK can be programmed this way, After UART programming mode activated :
-
-```
-bflb-iot-tool --chipname=bl808 --port=/dev/ttyUSB1 --baudrate=2000000 --firmware=<firmware file> --addr 0x101000 --single
-```
-
-NOTE `--addr 0x101000`, since all factory demo firmwares for D0 and firmwares build from M1S SDK did not include 4k bootinfo (0x1000) at the start of bin file. Here use `--addr 0x101000` to avoid replace bootinfo programmed by factory firmware.
-
 
 ## how to restore factory firmwares for M1S Dock
 
