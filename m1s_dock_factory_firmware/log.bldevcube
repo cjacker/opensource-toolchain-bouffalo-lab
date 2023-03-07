@@ -1,0 +1,310 @@
+[10:08:44.619] - ========= Interface is Uart =========
+[10:08:44.624] - eflash loader bin is eflash_loader_auto.bin
+[10:08:44.626] - ========= chip flash id: ef4016 =========
+[10:08:44.635] - create partition.bin, pt_new is True
+[10:08:44.647] - Create bootheader using /home/cjacker/devcube/chips/bl808/img_create_iot/efuse_bootheader_cfg.ini
+[10:08:44.647] - Updating data according to </home/cjacker/devcube/chips/bl808/img_create_iot/efuse_bootheader_cfg.ini[BOOTHEADER_GROUP0_CFG]>
+[10:08:44.651] - Created file len:352
+[10:08:44.654] - Create bootheader using /home/cjacker/devcube/chips/bl808/img_create_iot/efuse_bootheader_cfg.ini
+[10:08:44.654] - Updating data according to </home/cjacker/devcube/chips/bl808/img_create_iot/efuse_bootheader_cfg.ini[BOOTHEADER_GROUP1_CFG]>
+[10:08:44.658] - Created file len:352
+[10:08:44.660] - Create efuse using /home/cjacker/devcube/chips/bl808/img_create_iot/efuse_bootheader_cfg.ini
+[10:08:44.661] - Updating data according to </home/cjacker/devcube/chips/bl808/img_create_iot/efuse_bootheader_cfg.ini[EFUSE_CFG]>
+[10:08:44.666] - Created file len:256
+[10:08:44.669] - ========= sp image create =========
+[10:08:44.672] - Image hash is b'4b88a528901d745794c2a7b49ed070ae28772717a25d2c62b11a7137cc0d6a79'
+[10:08:44.685] - Hash ignored
+[10:08:44.686] - Header crc ignored
+[10:08:44.686] - Write flash img
+[10:08:44.702] - Create bootheader using /home/cjacker/devcube/chips/bl808/img_create_iot/efuse_bootheader_cfg.ini
+[10:08:44.702] - Updating data according to </home/cjacker/devcube/chips/bl808/img_create_iot/efuse_bootheader_cfg.ini[BOOTHEADER_GROUP0_CFG]>
+[10:08:44.706] - Created file len:352
+[10:08:44.709] - Create bootheader using /home/cjacker/devcube/chips/bl808/img_create_iot/efuse_bootheader_cfg.ini
+[10:08:44.709] - Updating data according to </home/cjacker/devcube/chips/bl808/img_create_iot/efuse_bootheader_cfg.ini[BOOTHEADER_GROUP1_CFG]>
+[10:08:44.712] - Created file len:352
+[10:08:44.714] - Create efuse using /home/cjacker/devcube/chips/bl808/img_create_iot/efuse_bootheader_cfg.ini
+[10:08:44.715] - Updating data according to </home/cjacker/devcube/chips/bl808/img_create_iot/efuse_bootheader_cfg.ini[EFUSE_CFG]>
+[10:08:44.719] - Created file len:256
+[10:08:44.722] - ========= sp image create =========
+[10:08:44.746] - Image hash is b'4a08929a7e7bbd559c1d4e81cb0537f12475ec43c8fabcb118c0e0aaab105352'
+[10:08:44.757] - Hash ignored
+[10:08:44.757] - Header crc ignored
+[10:08:44.758] - Write flash img
+[10:08:44.762] - FW Header is 1636, 2460 still needed
+[10:08:44.762] - FW OTA bin header is Done. Len is 4096
+[10:08:44.805] - BL60X_OTA_Ver1.0
+[10:08:44.851] - FW OTA bin is Done. Len is 495168
+[10:08:45.017] - OTA XZ file len = 285056
+[10:08:45.017] - Partiton len = 0
+[10:08:45.018] - Warn: fw1 xz bin size is overflow with partition table, don't create ota bin
+[10:08:45.018] - Warning: remove OTA directory
+[10:08:45.018] - FW OTA xz is Done
+[10:08:45.034] - Create bootheader using /home/cjacker/devcube/chips/bl808/img_create_iot/efuse_bootheader_cfg.ini
+[10:08:45.034] - Updating data according to </home/cjacker/devcube/chips/bl808/img_create_iot/efuse_bootheader_cfg.ini[BOOTHEADER_GROUP0_CFG]>
+[10:08:45.037] - Created file len:352
+[10:08:45.041] - Create bootheader using /home/cjacker/devcube/chips/bl808/img_create_iot/efuse_bootheader_cfg.ini
+[10:08:45.041] - Updating data according to </home/cjacker/devcube/chips/bl808/img_create_iot/efuse_bootheader_cfg.ini[BOOTHEADER_GROUP1_CFG]>
+[10:08:45.044] - Created file len:352
+[10:08:45.046] - Create efuse using /home/cjacker/devcube/chips/bl808/img_create_iot/efuse_bootheader_cfg.ini
+[10:08:45.048] - Updating data according to </home/cjacker/devcube/chips/bl808/img_create_iot/efuse_bootheader_cfg.ini[EFUSE_CFG]>
+[10:08:45.051] - Created file len:256
+[10:08:45.056] - ========= sp image create =========
+[10:08:45.067] - Image hash is b'4ab5b2abe8d27cd14a8e12510d3dbbb2ac2f179fec87f4e779f50890c0227de7'
+[10:08:45.079] - Hash ignored
+[10:08:45.080] - Header crc ignored
+[10:08:45.080] - Write flash img
+[10:08:45.083] - Warning: factory file is not programed to flash
+[10:08:45.083] - ========= eflash loader config =========
+[10:08:45.180] - Version: eflash_loader_v2.4.5
+[10:08:45.181] - Program Start
+[10:08:45.181] - ========= eflash loader cmd arguments =========
+[10:08:45.181] - /home/cjacker/devcube/chips/bl808/eflash_loader/eflash_loader_cfg.ini
+[10:08:45.181] - Config file: /home/cjacker/devcube/chips/bl808/eflash_loader/eflash_loader_cfg.ini
+[10:08:45.182] - serial port is /dev/ttyUSB1
+[10:08:45.183] - cpu_reset=False
+[10:08:45.184] - chiptype: bl808
+[10:08:45.184] - ========= Interface is uart =========
+[10:08:45.185] - com speed: 2000000
+[10:08:45.185] - Bootrom load
+[10:08:45.186] - ========= get_boot_info =========
+[10:08:45.186] - ========= image get bootinfo =========
+[10:08:47.190] - ack is
+[10:08:47.192] - Not ack OK
+[10:08:47.193] - result:
+[10:08:47.455] - tx rx and power off, press the machine!
+[10:08:47.457] - cutoff time is 0.05
+[10:08:47.508] - power on tx and rx
+[10:08:48.417] - reset cnt: 0, reset hold: 0.05, shake hand delay: 0.1
+[10:08:48.419] - clean buf
+[10:08:48.420] - send sync
+[10:08:48.923] - ack is 4f4b
+[10:08:48.956] - shake hand success
+[10:08:49.465] - data read is b'01000808000000000b14c102e7002ccf0eb45a002ff4fb18'
+[10:08:49.466] - ========= ChipID: b40ecf2c00e7 =========
+[10:08:49.466] - Get bootinfo time cost(ms): 4280.10546875
+[10:08:49.468] - clock para file: /home/cjacker/devcube/chips/bl808/efuse_bootheader/clock_para.bin
+[10:08:49.471] - change bdrate: 2000000
+[10:08:49.472] - Clock PLL set
+[10:08:49.472] - clock para:
+[10:08:49.472] - 5043464707040000030103000102000201010001010101010a894b86
+[10:08:49.481] - Set clock time cost(ms): 9.15283203125
+[10:08:49.593] - Read mac addr
+[10:08:49.609] - flash set para
+[10:08:49.610] - get flash pin cfg from bootinfo: 0x04
+[10:08:49.645] - set flash cfg: 14104
+[10:08:49.646] - Set flash config
+[10:08:49.657] - Set para time cost(ms): 10.40966796875
+[10:08:49.657] - ========= flash read jedec ID =========
+[10:08:49.673] - Read flash jedec ID
+[10:08:49.675] - flash jedec id: ef401800
+[10:08:49.675] - Finished
+[10:08:49.684] - Program operation
+[10:08:49.685] - Dealing Index 0
+[10:08:49.686] - ========= programming chips/bl808/img_create_iot/whole_img_boot2.bin to 0x00000000
+[10:08:49.693] - flash para file: /home/cjacker/devcube/chips/bl808/efuse_bootheader/flash_para.bin
+[10:08:49.694] - Set flash config
+[10:08:49.705] - Set para time cost(ms): 10.72998046875
+[10:08:49.705] - ========= flash load =========
+[10:08:49.706] - ========= flash read =========
+[10:08:49.744] - Read 4096/4096
+[10:08:49.744] - Flash read time cost(ms): 38.064697265625
+[10:08:49.744] - Finished
+[10:08:49.746] - ========= flash erase =========
+[10:08:49.746] - Erase flash from 0x0 to 0xde5f
+[10:08:50.209] - Erase time cost(ms): 462.71240234375
+[10:08:50.228] - decompress flash load 30324
+[10:08:50.257] - Load 4096/30324 {"progress":13}
+[10:08:50.289] - Load 8192/30324 {"progress":27}
+[10:08:50.321] - Load 12288/30324 {"progress":40}
+[10:08:50.353] - Load 16384/30324 {"progress":54}
+[10:08:50.385] - Load 20480/30324 {"progress":67}
+[10:08:50.417] - Load 24576/30324 {"progress":81}
+[10:08:50.449] - Load 28672/30324 {"progress":94}
+[10:08:50.481] - Load 30324/30324 {"progress":100}
+[10:08:50.482] - Load 30324/30324 {"progress":100}
+[10:08:50.485] - Write check
+[10:08:50.497] - Flash load time cost(ms): 287.300048828125
+[10:08:50.498] - Finished
+[10:08:50.501] - Sha caled by host: 757cb9e53f97935ab5f70c8df475f6b2c08ca445551e142ef345c0c3461e755a
+[10:08:50.502] - xip mode Verify
+[10:08:50.562] - Read Sha256/56928
+[10:08:50.562] - Flash xip readsha time cost(ms): 49.57275390625
+[10:08:50.563] - Finished
+[10:08:50.577] - Sha caled by dev: 757cb9e53f97935ab5f70c8df475f6b2c08ca445551e142ef345c0c3461e755a
+[10:08:50.578] - Verify success
+[10:08:50.581] - Dealing Index 1
+[10:08:50.582] - ========= programming chips/bl808/partition/partition.bin to 0x0000E000
+[10:08:50.592] - flash para file: /home/cjacker/devcube/chips/bl808/efuse_bootheader/flash_para.bin
+[10:08:50.593] - Set flash config
+[10:08:50.609] - Set para time cost(ms): 15.53125
+[10:08:50.609] - ========= flash load =========
+[10:08:50.612] - ========= flash erase =========
+[10:08:50.612] - Erase flash from 0xe000 to 0xe0eb
+[10:08:50.673] - Erase time cost(ms): 61.080322265625
+[10:08:50.689] - Load 236/236 {"progress":100}
+[10:08:50.691] - Load 236/236 {"progress":100}
+[10:08:50.692] - Write check
+[10:08:50.705] - Flash load time cost(ms): 31.0107421875
+[10:08:50.706] - Finished
+[10:08:50.708] - Sha caled by host: 05404ca9c81f9b19b98b6cb68d71baff02f9e27c9f15a09c8dded7c6e23bf1fe
+[10:08:50.709] - xip mode Verify
+[10:08:50.738] - Read Sha256/236
+[10:08:50.738] - Flash xip readsha time cost(ms): 16.94091796875
+[10:08:50.738] - Finished
+[10:08:50.753] - Sha caled by dev: 05404ca9c81f9b19b98b6cb68d71baff02f9e27c9f15a09c8dded7c6e23bf1fe
+[10:08:50.754] - Verify success
+[10:08:50.754] - Dealing Index 2
+[10:08:50.754] - ========= programming chips/bl808/partition/partition.bin to 0x0000F000
+[10:08:50.760] - flash para file: /home/cjacker/devcube/chips/bl808/efuse_bootheader/flash_para.bin
+[10:08:50.762] - Set flash config
+[10:08:50.769] - Set para time cost(ms): 6.865966796875
+[10:08:50.769] - ========= flash load =========
+[10:08:50.771] - ========= flash erase =========
+[10:08:50.772] - Erase flash from 0xf000 to 0xf0eb
+[10:08:50.833] - Erase time cost(ms): 61.5380859375
+[10:08:50.849] - Load 236/236 {"progress":100}
+[10:08:50.850] - Load 236/236 {"progress":100}
+[10:08:50.851] - Write check
+[10:08:50.866] - Flash load time cost(ms): 31.2275390625
+[10:08:50.866] - Finished
+[10:08:50.869] - Sha caled by host: 05404ca9c81f9b19b98b6cb68d71baff02f9e27c9f15a09c8dded7c6e23bf1fe
+[10:08:50.869] - xip mode Verify
+[10:08:50.898] - Read Sha256/236
+[10:08:50.899] - Flash xip readsha time cost(ms): 17.315185546875
+[10:08:50.899] - Finished
+[10:08:50.914] - Sha caled by dev: 05404ca9c81f9b19b98b6cb68d71baff02f9e27c9f15a09c8dded7c6e23bf1fe
+[10:08:50.914] - Verify success
+[10:08:50.918] - Dealing Index 3
+[10:08:50.919] - ========= programming chips/bl808/img_create_iot/whole_img.bin to 0x00010000
+[10:08:50.930] - flash para file: /home/cjacker/devcube/chips/bl808/efuse_bootheader/flash_para.bin
+[10:08:50.931] - Set flash config
+[10:08:50.945] - Set para time cost(ms): 13.6728515625
+[10:08:50.946] - ========= flash load =========
+[10:08:50.948] - ========= flash erase =========
+[10:08:50.948] - Erase flash from 0x10000 to 0x88e3f
+[10:08:52.853] - Erase time cost(ms): 1903.94384765625
+[10:08:52.958] - decompress flash load 285056
+[10:08:52.981] - Load 4096/285056 {"progress":1}
+[10:08:53.012] - Load 8192/285056 {"progress":2}
+[10:08:53.045] - Load 12288/285056 {"progress":4}
+[10:08:53.077] - Load 16384/285056 {"progress":5}
+[10:08:53.109] - Load 20480/285056 {"progress":7}
+[10:08:53.141] - Load 24576/285056 {"progress":8}
+[10:08:53.173] - Load 28672/285056 {"progress":10}
+[10:08:53.205] - Load 32768/285056 {"progress":11}
+[10:08:53.237] - Load 36864/285056 {"progress":12}
+[10:08:53.269] - Load 40960/285056 {"progress":14}
+[10:08:53.301] - Load 45056/285056 {"progress":15}
+[10:08:53.333] - Load 49152/285056 {"progress":17}
+[10:08:53.365] - Load 53248/285056 {"progress":18}
+[10:08:53.397] - Load 57344/285056 {"progress":20}
+[10:08:53.429] - Load 61440/285056 {"progress":21}
+[10:08:53.462] - Load 65536/285056 {"progress":22}
+[10:08:53.493] - Load 69632/285056 {"progress":24}
+[10:08:53.525] - Load 73728/285056 {"progress":25}
+[10:08:53.557] - Load 77824/285056 {"progress":27}
+[10:08:53.589] - Load 81920/285056 {"progress":28}
+[10:08:53.622] - Load 86016/285056 {"progress":30}
+[10:08:53.654] - Load 90112/285056 {"progress":31}
+[10:08:53.686] - Load 94208/285056 {"progress":33}
+[10:08:53.734] - Load 98304/285056 {"progress":34}
+[10:08:53.766] - Load 102400/285056 {"progress":35}
+[10:08:53.798] - Load 106496/285056 {"progress":37}
+[10:08:53.830] - Load 110592/285056 {"progress":38}
+[10:08:53.862] - Load 114688/285056 {"progress":40}
+[10:08:53.894] - Load 118784/285056 {"progress":41}
+[10:08:53.926] - Load 122880/285056 {"progress":43}
+[10:08:53.958] - Load 126976/285056 {"progress":44}
+[10:08:53.990] - Load 131072/285056 {"progress":45}
+[10:08:54.022] - Load 135168/285056 {"progress":47}
+[10:08:54.054] - Load 139264/285056 {"progress":48}
+[10:08:54.086] - Load 143360/285056 {"progress":50}
+[10:08:54.150] - Load 147456/285056 {"progress":51}
+[10:08:54.182] - Load 151552/285056 {"progress":53}
+[10:08:54.214] - Load 155648/285056 {"progress":54}
+[10:08:54.246] - Load 159744/285056 {"progress":56}
+[10:08:54.279] - Load 163840/285056 {"progress":57}
+[10:08:54.310] - Load 167936/285056 {"progress":58}
+[10:08:54.343] - Load 172032/285056 {"progress":60}
+[10:08:54.375] - Load 176128/285056 {"progress":61}
+[10:08:54.407] - Load 180224/285056 {"progress":63}
+[10:08:54.455] - Load 184320/285056 {"progress":64}
+[10:08:54.487] - Load 188416/285056 {"progress":66}
+[10:08:54.519] - Load 192512/285056 {"progress":67}
+[10:08:54.551] - Load 196608/285056 {"progress":68}
+[10:08:54.583] - Load 200704/285056 {"progress":70}
+[10:08:54.615] - Load 204800/285056 {"progress":71}
+[10:08:54.647] - Load 208896/285056 {"progress":73}
+[10:08:54.679] - Load 212992/285056 {"progress":74}
+[10:08:54.711] - Load 217088/285056 {"progress":76}
+[10:08:54.743] - Load 221184/285056 {"progress":77}
+[10:08:54.775] - Load 225280/285056 {"progress":79}
+[10:08:54.807] - Load 229376/285056 {"progress":80}
+[10:08:54.839] - Load 233472/285056 {"progress":81}
+[10:08:54.871] - Load 237568/285056 {"progress":83}
+[10:08:54.903] - Load 241664/285056 {"progress":84}
+[10:08:54.935] - Load 245760/285056 {"progress":86}
+[10:08:54.967] - Load 249856/285056 {"progress":87}
+[10:08:54.999] - Load 253952/285056 {"progress":89}
+[10:08:55.031] - Load 258048/285056 {"progress":90}
+[10:08:55.063] - Load 262144/285056 {"progress":91}
+[10:08:55.096] - Load 266240/285056 {"progress":93}
+[10:08:55.144] - Load 270336/285056 {"progress":94}
+[10:08:55.192] - Load 274432/285056 {"progress":96}
+[10:08:55.224] - Load 278528/285056 {"progress":97}
+[10:08:55.256] - Load 282624/285056 {"progress":99}
+[10:08:55.288] - Load 285056/285056 {"progress":100}
+[10:08:55.290] - Load 285056/285056 {"progress":100}
+[10:08:55.291] - Write check
+[10:08:55.320] - Flash load time cost(ms): 2465.9052734375
+[10:08:55.322] - Finished
+[10:08:55.328] - Sha caled by host: 4b96835238dfcff5fe9d96bf2804bd05082cffa3bf2f8b69f81cc261bd900960
+[10:08:55.330] - xip mode Verify
+[10:08:55.752] - Read Sha256/495168
+[10:08:55.753] - Flash xip readsha time cost(ms): 417.914306640625
+[10:08:55.755] - Finished
+[10:08:55.768] - Sha caled by dev: 4b96835238dfcff5fe9d96bf2804bd05082cffa3bf2f8b69f81cc261bd900960
+[10:08:55.769] - Verify success
+[10:08:55.770] - Dealing Index 4
+[10:08:55.770] - ========= programming chips/bl808/img_create_iot/whole_img_d0fw.bin to 0x00100000
+[10:08:55.782] - flash para file: /home/cjacker/devcube/chips/bl808/efuse_bootheader/flash_para.bin
+[10:08:55.783] - Set flash config
+[10:08:55.800] - Set para time cost(ms): 16.64111328125
+[10:08:55.800] - ========= flash load =========
+[10:08:55.802] - ========= flash erase =========
+[10:08:55.802] - Erase flash from 0x100000 to 0x130d4f
+[10:08:56.569] - Erase time cost(ms): 766.915771484375
+[10:08:56.616] - decompress flash load 72964
+[10:08:56.650] - Load 4096/72964 {"progress":5}
+[10:08:56.682] - Load 8192/72964 {"progress":11}
+[10:08:56.714] - Load 12288/72964 {"progress":16}
+[10:08:56.746] - Load 16384/72964 {"progress":22}
+[10:08:56.778] - Load 20480/72964 {"progress":28}
+[10:08:56.826] - Load 24576/72964 {"progress":33}
+[10:08:56.858] - Load 28672/72964 {"progress":39}
+[10:08:56.890] - Load 32768/72964 {"progress":44}
+[10:08:56.922] - Load 36864/72964 {"progress":50}
+[10:08:56.954] - Load 40960/72964 {"progress":56}
+[10:08:56.986] - Load 45056/72964 {"progress":61}
+[10:08:57.018] - Load 49152/72964 {"progress":67}
+[10:08:57.050] - Load 53248/72964 {"progress":72}
+[10:08:57.098] - Load 57344/72964 {"progress":78}
+[10:08:57.162] - Load 61440/72964 {"progress":84}
+[10:08:57.258] - Load 65536/72964 {"progress":89}
+[10:08:57.355] - Load 69632/72964 {"progress":95}
+[10:08:57.386] - Load 72964/72964 {"progress":100}
+[10:08:57.387] - Load 72964/72964 {"progress":100}
+[10:08:57.398] - Write check
+[10:08:57.418] - Flash load time cost(ms): 848.032470703125
+[10:08:57.419] - Finished
+[10:08:57.422] - Sha caled by host: da007dd5b131547d6570b75ea254239ac480417f68135d68a53bc29fa401a584
+[10:08:57.422] - xip mode Verify
+[10:08:57.611] - Read Sha256/200016
+[10:08:57.613] - Flash xip readsha time cost(ms): 178.687744140625
+[10:08:57.614] - Finished
+[10:08:57.626] - Sha caled by dev: da007dd5b131547d6570b75ea254239ac480417f68135d68a53bc29fa401a584
+[10:08:57.627] - Verify success
+[10:08:57.628] - Program Finished
+[10:08:57.629] - All time cost(ms): 12447.598388671875
+[10:08:57.731] - close interface
+[10:08:57.732] - [All Success]
