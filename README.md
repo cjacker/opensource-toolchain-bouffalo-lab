@@ -50,12 +50,6 @@ This tutorial will try best to cover all these chips.
   + [Program with bflb-iot-tool and flash a SD Card](https://github.com/cjacker/opensource-toolchain-bouffalo-lab/blob/main/README.md#program-with-bflb-iot-tool-and-flash-a-sd-card)
   + [Program with BLDevCube and flash a SD Card](https://github.com/cjacker/opensource-toolchain-bouffalo-lab/blob/main/README.md#program-with-bldevcube-and-flash-a-sd-card)
   + [Run OpenBouffalo Linux](https://github.com/cjacker/opensource-toolchain-bouffalo-lab/blob/main/README.md#run-openbouffalo-linux)
-- [Build Linux kernel for BL808](https://github.com/cjacker/opensource-toolchain-bouffalo-lab/blob/main/README.md#build-linux-kernel-for-bl808) **deprecated**
-  + [Build linux kernel](https://github.com/cjacker/opensource-toolchain-bouffalo-lab/blob/main/README.md#build-linux-kernel)
-  + [Program linux kernel](https://github.com/cjacker/opensource-toolchain-bouffalo-lab/blob/main/README.md#program-linux-kernel)
-    - [with bflb-mcu-tool](https://github.com/cjacker/opensource-toolchain-bouffalo-lab/blob/main/README.md#with-bflb-mcu-tool)
-    - [with BLDevCube](https://github.com/cjacker/opensource-toolchain-bouffalo-lab/blob/main/README.md#with-bldevcube)
-  + [Boot linux kernel](https://github.com/cjacker/opensource-toolchain-bouffalo-lab/blob/main/README.md#boot-linux-kernel)
 - [Misc](https://github.com/cjacker/opensource-toolchain-bouffalo-lab/blob/main/README.md#misc)
   + [Use Sipeed RV Debugger Plus as JTAG or CK-Link Lite debugger](https://github.com/cjacker/opensource-toolchain-bouffalo-lab/blob/main/README.md#how-to-build-and-program-uartjtag-and-dualuart-firmware-for-sipeed-rv-debugger-plus)
   + [Use M0S Dock as CK-Link Lite debugger](https://github.com/cjacker/opensource-toolchain-bouffalo-lab/blob/main/README.md#how-to-turn-m0s-dock-to-ck-link-lite)
@@ -67,7 +61,14 @@ This tutorial will try best to cover all these chips.
       + [Option 1 : with U-Disk mode (M1S Specific)](https://github.com/cjacker/opensource-toolchain-bouffalo-lab/blob/main/README.md#option-1--with-u-disk-mode-m1s-specific)
       + [Option 2 : with bflb-iot-tool from commandline](https://github.com/cjacker/opensource-toolchain-bouffalo-lab/blob/main/README.md#option-2--with-bflb-iot-tool-from-commandline)
   + [How to restore factory firmware of M1S Dock](https://github.com/cjacker/opensource-toolchain-bouffalo-lab/blob/main/README.md#how-to-restore-factory-firmwares-for-m1s-dock)
-  
+
+- [Deprecated topics]
+  + [Build Linux kernel for BL808](https://github.com/cjacker/opensource-toolchain-bouffalo-lab/blob/main/README.md#build-linux-kernel-for-bl808) **deprecated**
+    - [Build linux kernel](https://github.com/cjacker/opensource-toolchain-bouffalo-lab/blob/main/README.md#build-linux-kernel)
+    - [Program linux kernel](https://github.com/cjacker/opensource-toolchain-bouffalo-lab/blob/main/README.md#program-linux-kernel)
+      + [with bflb-mcu-tool](https://github.com/cjacker/opensource-toolchain-bouffalo-lab/blob/main/README.md#with-bflb-mcu-tool)
+      + [with BLDevCube](https://github.com/cjacker/opensource-toolchain-bouffalo-lab/blob/main/README.md#with-bldevcube)
+    - [Boot linux kernel](https://github.com/cjacker/opensource-toolchain-bouffalo-lab/blob/main/README.md#boot-linux-kernel)
 
 # Hardware prerequist:
 
@@ -116,11 +117,11 @@ According to the comment from upstream : https://github.com/bouffalolab/bl_mcu_s
 
 > Iot sdk does not update at all, please use mcu sdk (it will be named bouffalosdk)
 
-**You should use bf_mcu_sdk from now.**
+**You should use bl_mcu_sdk from now.**
 
 **NOTE 2:**
 
-It seems upstream decide to close BLFlashCommand and BLFlashCube sources, if this is a issue for you, you should know that. 
+BLFlashCommand and BLFlashCube is close source software up to now. If this is a issue for you, you should know that. 
 
 
 # Compiler
@@ -757,7 +758,7 @@ Breakpoint 1 at 0x23002350: file /home/cjacker/work/opensource-toolchain-bouffal
 
 [OpenBouffalo](https://github.com/openbouffalo/buildroot_bouffalo) provide a 'really work' Linux OS (not just a kernel) for BL808 CPU (M1S and Ox64), with [more drivers](https://github.com/orgs/openbouffalo/projects/3) developed and integrated, refer to [BL808 Linux Driver Status](https://github.com/orgs/openbouffalo/projects/3) for more info.
 
-If you want to try Linux with BL808, you should use this image instead of [bl808_linux](https://github.com/bouffalolab/bl808_linux) prototype since Bouffalo Lab have said they will not maintain their initial Linux release at the moment.
+If you want to try Linux with BL808, you should use this image instead of [bl808_linux](https://github.com/bouffalolab/bl808_linux) prototype since Bouffalo Lab have said they will not maintain their initial Linux release at the moment, It is understandable that Linux supporting is not the first goal of BL Lab. 
 
 ## Build OpenBouffalo Linux Image
 
@@ -898,194 +899,7 @@ After login prompt show, input 'root' and without password to login.
 
 Enjoy!
 
-# Build linux kernel for BL808
 
-**This section is deprecated since Bouffalo Lab have said they will not maintain their initial Linux release at the moment.**
-
-The linux kernel building for C906 core of BL808 is worth a seperate section.
-
-When we setup toolchain, I alreay mentioned the XuanTie RISC-V linux toolchain, and it never used in above sections. The RISC-V linux toolchain is only useful for building a linux kernel for C906 core of BL808.
-
-Although there are still some drivers missing, but linux kernel can boot and run with BL808 already.
-
-Before building the linux kernel, make sure you setup toolchains correctly.
-
-## Build linux kernel
-
-- Clone bl808_linux.
-
-Upstream git is https://github.com/bouffalolab/bl808_linux, but the 'build.sh' need some changes to work better, you can use my fork now.
-
-```
-git clone https://github.com/cjacker/bl808_linux.git
-git checkout for_tutorial
-```
-
-- Build bl808_linux.
-
-If you use Sipeed M1S Dock, please run :
-```
-./switch_to_m1sdock.sh
-```
-It will apply a patch to setup UART pins for M1S Dock.
-
-Then build it step by step:
-
-```
-./build.sh opensbi
-./build.sh kernel_config
-./build.sh kernel
-./build.sh dtb
-./build.sh low_load
-./build.sh whole_bin
-```
-Or 
-```
-./build.sh all
-```
-When `./build.sh kernel_config`, it will launch kernel menuconfig, just exit directly or change kernel configuration if you really understand what you changed.
-
-If all good, the result firmwares will be generated at 'out' dir:
-- low_load_bl808_m0.bin : you can treat it as kernel loader.
-- low_load_bl808_d0.bin : you can treat it as kernel loader.
-- whole_img_linux.bin : the linux file system.
-
-I put all pre-built firmwares at '[m1s_linux_firmware](https://github.com/cjacker/opensource-toolchain-bouffalo-lab/tree/main/m1s_linux_firmware)' dir in this repo.
-
-## Program linux kernel
-
-### with bflb-mcu-tool
-At first, I didn't find a way to program two "low_load" firmwares from command line, `bflb-mcu-tool` always erase and re-write bootinfo when programming second firmware. I keep 2 correct log files 'log.mcu' and 'log.iot' in [m1s_linux_firmware](./m1s_linux_firmware) dir, these log files is copied from BLDevCube.
-
-From the log:
-
-- `bootinfo_group0.bin` generated for `low_load_bl808_m0@0x58000000.bin` and programmed to 0x0000
-- `bootinfo_group1.bin` generated for `low_load_bl808_d0@0x58000000.bin` and programmed to 0x1000
-- `low_load_bl808_m0@0x58000000.bin` programmed to 0x2000
-- `low_load_bl808_d0@0x58000000.bin` programmed to 0x52000
-
-The root cause we can not use `bflb-mcu-tool` to program these 2 low_load firmwares is it did not export group1 related args.
-
-After reading the codes of `bflb-mcu-tool`, I found it's very easy to enable group1 support with a few code changes.
-
-The patch '[bflb_mcu_tool-1.8.3-enable-group1.patch](./m1s_linux_firmware/bflb_mcu_tool-1.8.3-enable-group1.patch)' is for bflb_mcu_tool v1.8.3 (latest version when writing this tutorial), since `bflb_mcu_tool` can be installed by pip, you should install it as:
-
-```
-pip install 'bflb-mcu-tool==1.8.3' --force-reinstall
-```
-
-Then patch it as:
-
-```
-cd $HOME/.local/lib/python?.?/site-packages/bflb_mcu_tool/core/
-cat <path>/bflb_mcu_tool-1.8.3-enable-group1.patch |patch -p0
-```
-After patched, `bflb-mcu-tool` will support 2 new args: `--group1-firmware GROUP1_FIRMWARE --group1-addr GROUP1_ADDR`
-
-Program 2 low_load firmwares as:
-
-```
-bflb-mcu-tool --chipname bl808 --interface uart --port /dev/ttyUSB1 --baudrate 2000000 --firmware low_load_bl808_m0@0x58000000.bin --addr 0x58000000 --group1-firmware low_load_bl808_d0@0x58000000.bin --group1-addr 0x58000000
-```
-
-For `whole_img_linux@0xD2000.bin`, it can be programmed from command line by:
-
-```
-bflb-iot-tool --chipname bl808 --interface uart --port /dev/ttyUSB1 --baudrate 2000000 --firmware whole_img_linux@0xD2000.bin --addr 0xD2000 --single
-```
-Or
-```
-bflb-mcu-tool --chipname bl808 --interface uart --port /dev/ttyUSB1 --baudrate 2000000 --firmware whole_img_linux@0xD2000.bin --addr 0xD0000
-```
-
-Note `--addr 0xD0000` for `bflb-mcu-tool` and `--addr 0xD2000 --single` for `bflb-iot-tool`.
-
-When using `bflb-mcu-tool` to program the 'whole_img_linux@0xD2000.bin', 'bootinfo_group0.bin' will generated again and program to 0x0000, it will erase and replace the 'bootinfo_group0' for 'low_load_bl808_m0@0x58000000.bin', you need program 2 low_load firmwares again:
-
-```
-bflb-mcu-tool --chipname bl808 --interface uart --port /dev/ttyUSB1 --baudrate 2000000 --firmware low_load_bl808_m0@0x58000000.bin --addr 0x58000000 --group1-firmware low_load_bl808_d0@0x58000000.bin --group1-addr 0x58000000
-```
-
-### with BLDevCube
-
-1. Connect M1S Dock 'UART' typec port with PC by USB cable
-2. Set BL808 board to programming mode:
-   - Press BOOT button
-   - Press RESET button
-   - Release RESET button
-   - Release BOOT button
-3. Run DevCube, select [BL808], and switch to [MCU] page
-4. Select the uart port and set baudrate with 2000000
-5. M0 Group[Group0] Image Addr [0x58000000] [PATH to low_load_bl808_m0.bin]
-6. D0 Group[Group1] Image Addr [0x58000000] [PATH to low_load_bl808_d0.bin]
-7. Click 'Create & Download' and wait until it's done
-
-<img src="./m1s_linux_firmware/mcu.png" width=50% />
-
-8. Switch to [IOT] page
-9. Enable 'Single Download', set Address with 0xD2000, choose [PATH to whole_image_linux.bin]
-10. Click 'Create & Download' again and wait until it's done.
-
-<img src="./m1s_linux_firmware/iot.png" width=50% />
-
-You may wonder why the ADDR of M0 / D0 low_load firmwares is same, they all are 0x58000000. To understand memory layout and bootrom better, please refer to : https://btashton.github.io/bl808-notes/
-
-## Boot Linux kernel
-
-1. Use any serial terminal such as `tio`, set baudrate to 2000000, and open "/dev/ttyUSB0".
-```
-tio -b 2000000 /dev/ttyUSB0
-```
-
-2. Reset M1S Dock by pressing RST button, you will receive boot msgs.
-
-3. Login as `root`.
-
-```bash
-dynamic memory init success,heap size = 26 Kbyte
-C906 start...
-mtimer clk:1000000
-linux load start...
-len:0x00376c53
-vm linux load done!
-dtb load done!
-opensbi load done!
-
-load time: 426313 us
-
-OpenSBI v0.6
-   ____                    _____ ____ _____
-  / __ \                  / ____|  _ \_   _|
- | |  | |_ __   ___ _ __ | (___ | |_) || |
- | |  | | '_ \ / _ \ '_ \ \___ \|  _ < | |
- | |__| | |_) |  __/ | | |____) | |_) || |_
-  \____/| .__/ \___|_| |_|_____/|____/_____|
-        | |
-        |_|
-
-Platform Name          : T-HEAD Xuantie c910
-Platform HART Features : RV64ACDFIMSUVX
-Platform Max HARTs     : 1
-Current Hart           : 0
-Firmware Base          : 0x3eff0000
-Firmware Size          : 56 KB
-Runtime SBI Version    : 0.2
-```
-
-```bash
-
---------Start Local Services--------
-********************************
-
-Linux login: root
-login[40]: root login on 'ttyS0'
-Processing /etc/profile ...
-Set search library path in /etc/profile
-Set user path in /etc/profile
-id: unknown ID 0
-Welcome to Linux
-[@Linux root]#
-```
 
 # Misc
 
@@ -1278,4 +1092,200 @@ To restore factory firmwares for BL808:
 To program other firmwares for D0 of BL808 (no matter factory demos or firmwares built from M1S SDK):
 ```
 ./03-program-d0-firmware.sh <firmware>
+```
+
+
+
+<hr>
+
+
+# Deprecated
+
+## Build linux kernel for BL808
+
+**This section is deprecated since Bouffalo Lab have said they will not maintain their initial Linux release at the moment.**
+
+The linux kernel building for C906 core of BL808 is worth a seperate section.
+
+When we setup toolchain, I alreay mentioned the XuanTie RISC-V linux toolchain, and it never used in above sections. The RISC-V linux toolchain is only useful for building a linux kernel for C906 core of BL808.
+
+Although there are still some drivers missing, but linux kernel can boot and run with BL808 already.
+
+Before building the linux kernel, make sure you setup toolchains correctly.
+
+### Build linux kernel
+
+- Clone bl808_linux.
+
+Upstream git is https://github.com/bouffalolab/bl808_linux, but the 'build.sh' need some changes to work better, you can use my fork now.
+
+```
+git clone https://github.com/cjacker/bl808_linux.git
+git checkout for_tutorial
+```
+
+- Build bl808_linux.
+
+If you use Sipeed M1S Dock, please run :
+```
+./switch_to_m1sdock.sh
+```
+It will apply a patch to setup UART pins for M1S Dock.
+
+Then build it step by step:
+
+```
+./build.sh opensbi
+./build.sh kernel_config
+./build.sh kernel
+./build.sh dtb
+./build.sh low_load
+./build.sh whole_bin
+```
+Or 
+```
+./build.sh all
+```
+When `./build.sh kernel_config`, it will launch kernel menuconfig, just exit directly or change kernel configuration if you really understand what you changed.
+
+If all good, the result firmwares will be generated at 'out' dir:
+- low_load_bl808_m0.bin : you can treat it as kernel loader.
+- low_load_bl808_d0.bin : you can treat it as kernel loader.
+- whole_img_linux.bin : the linux file system.
+
+I put all pre-built firmwares at '[m1s_linux_firmware](https://github.com/cjacker/opensource-toolchain-bouffalo-lab/tree/main/m1s_linux_firmware)' dir in this repo.
+
+### Program linux kernel
+
+#### with bflb-mcu-tool
+At first, I didn't find a way to program two "low_load" firmwares from command line, `bflb-mcu-tool` always erase and re-write bootinfo when programming second firmware. I keep 2 correct log files 'log.mcu' and 'log.iot' in [m1s_linux_firmware](./m1s_linux_firmware) dir, these log files is copied from BLDevCube.
+
+From the log:
+
+- `bootinfo_group0.bin` generated for `low_load_bl808_m0@0x58000000.bin` and programmed to 0x0000
+- `bootinfo_group1.bin` generated for `low_load_bl808_d0@0x58000000.bin` and programmed to 0x1000
+- `low_load_bl808_m0@0x58000000.bin` programmed to 0x2000
+- `low_load_bl808_d0@0x58000000.bin` programmed to 0x52000
+
+The root cause we can not use `bflb-mcu-tool` to program these 2 low_load firmwares is it did not export group1 related args.
+
+After reading the codes of `bflb-mcu-tool`, I found it's very easy to enable group1 support with a few code changes.
+
+The patch '[bflb_mcu_tool-1.8.3-enable-group1.patch](./m1s_linux_firmware/bflb_mcu_tool-1.8.3-enable-group1.patch)' is for bflb_mcu_tool v1.8.3 (latest version when writing this tutorial), since `bflb_mcu_tool` can be installed by pip, you should install it as:
+
+```
+pip install 'bflb-mcu-tool==1.8.3' --force-reinstall
+```
+
+Then patch it as:
+
+```
+cd $HOME/.local/lib/python?.?/site-packages/bflb_mcu_tool/core/
+cat <path>/bflb_mcu_tool-1.8.3-enable-group1.patch |patch -p0
+```
+After patched, `bflb-mcu-tool` will support 2 new args: `--group1-firmware GROUP1_FIRMWARE --group1-addr GROUP1_ADDR`
+
+Program 2 low_load firmwares as:
+
+```
+bflb-mcu-tool --chipname bl808 --interface uart --port /dev/ttyUSB1 --baudrate 2000000 --firmware low_load_bl808_m0@0x58000000.bin --addr 0x58000000 --group1-firmware low_load_bl808_d0@0x58000000.bin --group1-addr 0x58000000
+```
+
+For `whole_img_linux@0xD2000.bin`, it can be programmed from command line by:
+
+```
+bflb-iot-tool --chipname bl808 --interface uart --port /dev/ttyUSB1 --baudrate 2000000 --firmware whole_img_linux@0xD2000.bin --addr 0xD2000 --single
+```
+Or
+```
+bflb-mcu-tool --chipname bl808 --interface uart --port /dev/ttyUSB1 --baudrate 2000000 --firmware whole_img_linux@0xD2000.bin --addr 0xD0000
+```
+
+Note `--addr 0xD0000` for `bflb-mcu-tool` and `--addr 0xD2000 --single` for `bflb-iot-tool`.
+
+When using `bflb-mcu-tool` to program the 'whole_img_linux@0xD2000.bin', 'bootinfo_group0.bin' will generated again and program to 0x0000, it will erase and replace the 'bootinfo_group0' for 'low_load_bl808_m0@0x58000000.bin', you need program 2 low_load firmwares again:
+
+```
+bflb-mcu-tool --chipname bl808 --interface uart --port /dev/ttyUSB1 --baudrate 2000000 --firmware low_load_bl808_m0@0x58000000.bin --addr 0x58000000 --group1-firmware low_load_bl808_d0@0x58000000.bin --group1-addr 0x58000000
+```
+
+#### with BLDevCube
+
+1. Connect M1S Dock 'UART' typec port with PC by USB cable
+2. Set BL808 board to programming mode:
+   - Press BOOT button
+   - Press RESET button
+   - Release RESET button
+   - Release BOOT button
+3. Run DevCube, select [BL808], and switch to [MCU] page
+4. Select the uart port and set baudrate with 2000000
+5. M0 Group[Group0] Image Addr [0x58000000] [PATH to low_load_bl808_m0.bin]
+6. D0 Group[Group1] Image Addr [0x58000000] [PATH to low_load_bl808_d0.bin]
+7. Click 'Create & Download' and wait until it's done
+
+<img src="./m1s_linux_firmware/mcu.png" width=50% />
+
+8. Switch to [IOT] page
+9. Enable 'Single Download', set Address with 0xD2000, choose [PATH to whole_image_linux.bin]
+10. Click 'Create & Download' again and wait until it's done.
+
+<img src="./m1s_linux_firmware/iot.png" width=50% />
+
+You may wonder why the ADDR of M0 / D0 low_load firmwares is same, they all are 0x58000000. To understand memory layout and bootrom better, please refer to : https://btashton.github.io/bl808-notes/
+
+### Boot Linux kernel
+
+1. Use any serial terminal such as `tio`, set baudrate to 2000000, and open "/dev/ttyUSB0".
+```
+tio -b 2000000 /dev/ttyUSB0
+```
+
+2. Reset M1S Dock by pressing RST button, you will receive boot msgs.
+
+3. Login as `root`.
+
+```bash
+dynamic memory init success,heap size = 26 Kbyte
+C906 start...
+mtimer clk:1000000
+linux load start...
+len:0x00376c53
+vm linux load done!
+dtb load done!
+opensbi load done!
+
+load time: 426313 us
+
+OpenSBI v0.6
+   ____                    _____ ____ _____
+  / __ \                  / ____|  _ \_   _|
+ | |  | |_ __   ___ _ __ | (___ | |_) || |
+ | |  | | '_ \ / _ \ '_ \ \___ \|  _ < | |
+ | |__| | |_) |  __/ | | |____) | |_) || |_
+  \____/| .__/ \___|_| |_|_____/|____/_____|
+        | |
+        |_|
+
+Platform Name          : T-HEAD Xuantie c910
+Platform HART Features : RV64ACDFIMSUVX
+Platform Max HARTs     : 1
+Current Hart           : 0
+Firmware Base          : 0x3eff0000
+Firmware Size          : 56 KB
+Runtime SBI Version    : 0.2
+```
+
+```bash
+
+--------Start Local Services--------
+********************************
+
+Linux login: root
+login[40]: root login on 'ttyS0'
+Processing /etc/profile ...
+Set search library path in /etc/profile
+Set user path in /etc/profile
+id: unknown ID 0
+Welcome to Linux
+[@Linux root]#
 ```
