@@ -924,11 +924,14 @@ I also put a copy of v1.0.1 at [openboufalo-linux-firmware](./openboufalo-linux-
 
 ## Program with bflb-iot-tool and flash a SD Card 
 
-If you want to program by 'bflb-iot-tool' from commandline, After you download V1.0.1 openbouffalo image, you also need the [m0d0_lowload-combined.bin](./openboufalo-linux-firmware/m0d0_lowload-combined.bin) firmware.
+If you want to program by 'bflb-iot-tool' from commandline, After you download V1.0.1 openbouffalo image, you also need [bootinfo_group0.bin](./openboufalo-linux-firmware/bootinfo_group0.bin) and [m0d0_lowload-combined.bin](./openboufalo-linux-firmware/m0d0_lowload-combined.bin).
 
 Activate UART programming mode and program them as:
 
 ```
+# program bootinfo_group0
+bflb-iot-tool --chipname bl808 --interface uart --port /dev/ttyUSB1 --baudrate 2000000 --firmware bootinfo_group0.bin --addr 0x0 --single
+
 # program combined m0d0 lowload
 bflb-iot-tool --chipname bl808 --interface uart --port /dev/ttyUSB1 --baudrate 2000000 --firmware m0d0_lowload-combined.bin --addr 0x1000 --single
 
@@ -1031,11 +1034,7 @@ Welcome to Buildroot
 ox64 login:
 ```
 
-After login prompt show, input 'root' and without password to login.
-
-Enjoy!
-
-
+When login prompt, login as 'root'.
 
 # Misc
 
