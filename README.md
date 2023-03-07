@@ -180,6 +180,8 @@ and add `/opt/xuantie-riscv64-linux-toolchain/bin` to PATH env according to your
 
 ## For bl_iot_sdk
 
+**bl_iot_sdk was deprecated**
+
 You can not use above toolchains with bl_iot_sdk, bl_iot_sdk only works with SiFive GCC Toolchain. you can either use the full '[bl_iot_sdk](https://github.com/bouffalolab/bl_iot_sdk)' repo, it contains pre-built Windows / MacOSX / Linux toolchains and occupies about **14G** disk space. or use '[bl_iot_sdk_tiny](https://github.com/bouffalolab/bl_iot_sdk_tiny) and setup toolchain as : 
 
 ```
@@ -273,6 +275,8 @@ If you want to start a new project, you can either copy these demos from this re
 
 ## bl_iot_sdk
 
+**bl_iot_sdk was deprecated**
+
 Bouffalolab bl_iot_sdk support BL602 Wi-Fi/BLE Combo RISC-V based Chip and BL70X Zigbee/BLE RISC-V based Chip.
 
 The full [bl_iot_sdk](https://github.com/bouffalolab/bl_iot_sdk) will occupies 9G disk space since it contains all prebuilt toolchains for Windows / MacOSX (ARM and X86) and Linux (ARM and X86). If the bandwidth and disk space is not a issue for you, you can `git clone https://github.com/bouffalolab/bl_iot_sdk` directly, since toolchains for all supported platform included in it, it will be easy to use.
@@ -339,7 +343,7 @@ chmod +x bflb_iot_tool-ubuntu
 ```
 Actually, these tools are written in Python and packaged by pyinstaller, you can depackage and decompile them...
 
-'BLFlashCommand' is already integreated into 'bl_mcu_ask', there is no additional installation required, it's also written in Python and packaged by pyinstaller.
+'BLFlashCommand' and 'BLFlashCube' are already integreated into 'bl_mcu_ask', there is no additional installation required, it's also written in Python and packaged by pyinstaller.
 
 'bflb-mcu-tool' is written in python and open source, install it as: 
 ```
@@ -424,6 +428,8 @@ blisp iot -c bl70x -p /dev/ttyACM0 --reset -s build/build_out/blink_bl702.bin -l
 ```
 
 ### for bl_iot_sdk
+
+**bl_iot_sdk was deprecated**
 
 Too many options make things complex, let's keep it as simple as possible.
 
