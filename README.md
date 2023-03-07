@@ -292,12 +292,8 @@ git clone https://github.com/sipeed/M1s_BL808_SDK.git
 git clone https://github.com/sipeed/M1s_BL808_example.git
 ```
 
-After git cloned, you need:
+After git cloned, you should export an env var as `export BL_SDK_PATH=<path to>/M1s_BL808_SDK`, and change `M1s_BL808_SDK/make_scripts_thead_riscv/toolchain.mk` from
 
-- Export an env var as "export BL_SDK_PATH=<path to>/M1s_BL808_SDK"
-- According to the toolchain setup section, change `M1s_BL808_SDK/make_scripts_thead_riscv/toolchain.mk` 
-
-from 
 ```
 CONFIG_TOOLPREFIX ?= $(BL_SDK_PATH)/toolchain/$(shell uname |cut -d '_' -f1)_$(shell uname -m)/bin/riscv64-unknown-elf-
 ```
@@ -305,7 +301,6 @@ to
 ```
 CONFIG_TOOLPREFIX ?= riscv64-unknown-elf-
 ```
-
 
 Then build a demo using 'build.sh <demo dirname>':
 
@@ -351,7 +346,6 @@ cd customer_app/get-start/blink
 ```
 
 If all good, `build_out/blink.bin` will be generated.
-
 
 # Programming
 
@@ -912,6 +906,8 @@ make
 ```
 
 It will download toolchains / source packages from internet, may take one or more hours to build, be patient until it built.
+
+After built successfully, firmwares and images will be generated in `output/images` dir. Note the m0 / d0 lowload and bl808-firmware is built with ".fw_header".
 
 If you don't want to build it yourself, you can download the prebuilt image directly from https://github.com/openbouffalo/buildroot_bouffalo/releases/. There are two images currently : a minimal image 'bl808-linux-pine64_ox64_defconfig.tar.gz' and a more complete image : bl808-linux-pine64_ox64_full_defconfig.tar.gz.
 
