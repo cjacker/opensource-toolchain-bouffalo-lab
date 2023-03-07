@@ -621,9 +621,56 @@ To program Sipeed M0S Dock, hold 'BOOT' down and plug it in PC USB port:
 cd m0s_dock_cklink-lite_firmware
 ./01-program-cklink-lite.sh
 ```
-You need refer to below table for M0S Dock, since at the back of M0S Dock, only 'IOxx' is printed.
+You need refer to below table for M0S Dock (as same as Sipeed RV Debugger Plus), since at the back of M0S Dock, only 'IOxx' is printed.
 
 <img src="./m0s_dock_cklink-lite_firmware/m0sdock-cklink-lite-pinmap.png" width="60%" />
+
+<table>
+<thead>
+  <tr>
+    <th colspan="2">M0S Dock</th>
+    <th colspan="2">CK-Link pinout</th>
+  </tr>
+</thead>
+<tbody>
+  <tr>
+    <td>GND</td>
+    <td>GND</td>
+    <td>GND</td>
+    <td>GND</td>
+  </tr>
+  <tr>
+    <td>5V<br></td>
+    <td>3V3</td>
+    <td>5V</td>
+    <td>3V3</td>
+  </tr>
+  <tr>
+    <td>IO10</td>
+    <td>IO11</td>
+    <td>TCK</td>
+    <td>TXD<br></td>
+  </tr>
+  <tr>
+    <td>IO12</td>
+    <td>IO13</td>
+    <td>TDI</td>
+    <td>RXD</td>
+  </tr>
+  <tr>
+    <td>IO14</td>
+    <td>IO15</td>
+    <td>TDO</td>
+    <td>DTR</td>
+  </tr>
+  <tr>
+    <td>IO16</td>
+    <td>IO17</td>
+    <td>TMS</td>
+    <td>RTS</td>
+  </tr>
+</tbody>
+</table>
 
 After programmed, re-power it and using `lsusb`, you will find:
 ```
