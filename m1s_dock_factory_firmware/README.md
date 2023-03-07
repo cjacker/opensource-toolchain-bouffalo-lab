@@ -34,7 +34,7 @@ To program other firmwares for D0 of BL808 (no matter factory demos or build fro
  
 - `boot2_isp_debug.bin` and `boot2_isp_release.bin` : from Dev Cube
 
-- `whole_img_d0fw_20221212.bin` : preprocessed factory firmware for C906 core (D0), can be programmed by command line.
+- `whole_img_d0fw_20221212.bin` : preprocessed factory firmware for C906 core (D0) with BLDevCube, it can be programmed by command line.
 
 - `d0fw_20221212.bin` : not used, factory firmware for C906 core (D0)
 
