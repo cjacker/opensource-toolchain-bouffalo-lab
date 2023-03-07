@@ -399,7 +399,7 @@ You may need to set 'BL_SDK_BASE' to your bl_mcu_sdk dir if using 'out sdk build
 
 All demos include triple core demo for BL808 in this repo can be programmed by 'BLFlashComand'.
 
-**Update Mar 7 2023 : I removed all contents about how to use 'bflb-mcu-tool' / 'bflb-iot-tool' and 'blisp', it make things complex, the best way to programm firmware built with bl_mcu_sdk is 'BLFlashCommand'. it is more simpler for beginners.**
+**Update Mar 7 2023 : I removed all contents about how to use 'bflb-mcu-tool' / 'bflb-iot-tool' and 'blisp', it make things complex, the best way to program firmwares built with bl_mcu_sdk is 'BLFlashCommand'. it is more simpler for beginners.**
 
 If you use M1S Dock, refer to [Sipeed M1S Dock programming notes](https://github.com/cjacker/opensource-toolchain-bouffalo-lab/blob/main/README.md#m1s-dock-bl808-programming-notes) section about how to program M1S Dock by various command line utilities.
 
