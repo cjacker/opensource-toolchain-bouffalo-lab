@@ -45,7 +45,12 @@ This tutorial will try best to cover all these chips.
     - [Option 3 : Make your own CK-Link Lite debugger with STM32F103](https://github.com/cjacker/opensource-toolchain-w80x#option-3--make-your-own-ck-link-lite-debugger-with-stm32f103)
     - [Launch C-Sky debug server](https://github.com/cjacker/opensource-toolchain-bouffalo-lab/blob/main/README.md#launch-c-sky-debug-server)
     - [Debugging](https://github.com/cjacker/opensource-toolchain-bouffalo-lab/blob/main/README.md#debugging-1)
-- [Build Linux kernel for BL808](https://github.com/cjacker/opensource-toolchain-bouffalo-lab/blob/main/README.md#build-linux-kernel-for-bl808)
+- [Build and run openbouffalo Linux Image for BL808 CPU](https://github.com/cjacker/opensource-toolchain-bouffalo-lab/blob/main/README.md#build-and-run-openbouffalo-linux-image-for-bl808-cpu)
+  + [Build OpenBouffalo Linux Image](https://github.com/cjacker/opensource-toolchain-bouffalo-lab/blob/main/README.md#build-openbouffalo-linux-image)
+  + [Program with bflb-iot-tool and flash a SD Card](https://github.com/cjacker/opensource-toolchain-bouffalo-lab/blob/main/README.md#program-with-bflb-iot-tool-and-flash-a-sd-card)
+  + [Program with BLDevCube and flash a SD Card](https://github.com/cjacker/opensource-toolchain-bouffalo-lab/blob/main/README.md#program-with-bldevcube-and-flash-a-sd-card)
+  + [Run OpenBouffalo Linux](https://github.com/cjacker/opensource-toolchain-bouffalo-lab/blob/main/README.md#run-openbouffalo-linux)
+- [Build Linux kernel for BL808](https://github.com/cjacker/opensource-toolchain-bouffalo-lab/blob/main/README.md#build-linux-kernel-for-bl808) **deprecated**
   + [Build linux kernel](https://github.com/cjacker/opensource-toolchain-bouffalo-lab/blob/main/README.md#build-linux-kernel)
   + [Program linux kernel](https://github.com/cjacker/opensource-toolchain-bouffalo-lab/blob/main/README.md#program-linux-kernel)
     - [with bflb-mcu-tool](https://github.com/cjacker/opensource-toolchain-bouffalo-lab/blob/main/README.md#with-bflb-mcu-tool)
@@ -828,7 +833,7 @@ After image tarball downloaded and extracted:
     + Baud 2000000.
     + For M1S, usually it's '/dev/ttyUSB0'
 
-## Run OpenBoufflo Linux 
+## Run OpenBouffalo Linux 
 
 Open a terminal and run tio as:
 
