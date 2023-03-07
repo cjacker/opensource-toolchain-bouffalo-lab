@@ -1014,11 +1014,6 @@ You need activate BL702 UART programming mode first, please refer to above secti
 $ bflb-iot-tool --chipname=bl702 --port=/dev/ttyACM0 --baudrate=2000000 --firmware=<dualuart factory firmware> --addr 0x2000 
 ```
 
-Or 
-```
-$ blisp iot -c bl70x --reset -s usb2dualuart_bl702_221118.bin -l 0x2000
-```
-
 ### To program E907 core of BL808 for M1S Dock 
 
 You need activate BL808 UART programming mode first, please refer to above sections on how to activate it.
@@ -1026,14 +1021,14 @@ You need activate BL808 UART programming mode first, please refer to above secti
 And use the bigger number of 2 serial devices, here is '/dev/ttyUSB1'.
 
 ```
-bflb-iot-tool --chipname=bl808 --port=/dev/ttyUSB1 --baudrate=2000000 --firmware=<firmware.bin> --pt=<partition table, if have> --boot2=<boot2 file from BLDevCub>
+bflb-iot-tool --chipname=bl808 --port=/dev/ttyUSB1 --baudrate=2000000 --pt=partition_cfg_16M_m1sdock.toml --boot2=boot2_isp_debug.bin --firmware=<m0 firmware.bin> 
 ```
 
-For partion table and boot2 files, you can find it from https://github.com/sipeed/M1s_BL808_example and BLDevCube. There also has a [m1s_factory_firmware copy](https://github.com/cjacker/opensource-toolchain-bouffalo-lab/tree/main/m1s_dock_factory_firmware) in this repo.
+For partion table and boot2 files,  all files had been put into [m1s_factory_firmware copy](https://github.com/cjacker/opensource-toolchain-bouffalo-lab/tree/main/m1s_dock_factory_firmware) dir in this repo. you can also find them from https://github.com/sipeed/M1s_BL808_example and BLDevCube. 
 
-The UART programming mode can be used to program all 3 cores by BLDevCube and BLFlashCommand.
+### To program C906 core of BL808 for M1S Dock
 
-### To program C906 core of BL808 for M1S Dock (M1S Dock specific)
+#### Option 1 : with U-Disk mode (M1S Specific)
 
 M1S dock implement U-Disk programming mode for C906 core, to activate U-Disk programming mode:
 - connect the 'OTP' typec port of M1S Dock with PC USB port
@@ -1044,6 +1039,18 @@ M1S dock implement U-Disk programming mode for C906 core, to activate U-Disk pro
 - copy C906 firmware to mount point and umount it.
 
 It will programmed automatically and reset the device.
+
+#### Option 2 : with bflb-iot-tool from commandline
+
+I prefer this mode, it's more convenient than U-Disk mode.
+
+All factory demo firmwares for D0 or firmwares you build from M1S SDK can be programmed this way, After UART programming mode activated :
+
+```
+bflb-iot-tool --chipname=bl808 --port=/dev/ttyUSB1 --baudrate=2000000 --firmware=<firmware file> --addr 0x101000 --single
+```
+
+NOTE `--addr 0x101000`, since all factory demo firmwares for D0 and firmwares build from M1S SDK did not include 4k bootinfo (0x1000) at the start of bin file. Here use `--addr 0x101000` to avoid replace bootinfo programmed by factory firmware.
 
 
 ## how to restore factory firmwares for M1S Dock
@@ -1056,18 +1063,25 @@ The files in this dir includes:
 
 - `02-restore-bl808-factory-firmware.sh` : script to restore BL808 factory firmware of M1S Dock. include E907 core (M0) and C906 core (D0)
 
+- `03-program-d0-firmware.sh` : script to program D0 firmwares your build from SDK.
+
 - `usb2dualuart_bl702_221118.bin` : default dualuart firmware for BL702, from https://dl.sipeed.com/shareURL/MAIX/M1s/M1s_Dock/7_Firmware
- 
+
 - `boot2_isp_debug.bin` and `boot2_isp_release.bin` : from Dev Cube
 
-- `d0fw_20221212.bin` : factory firmware for C906 core (D0)
+- `whole_img_d0fw_20221212.bin` : preprocessed factory firmware for C906 core (D0) with 4k bootinfo prepend, can be programmed by command line.
+
+- `d0fw_20221212.bin` : not used, factory firmware for C906 core (D0)
 
 - `firmware_20230227.bin` : factory firmware for E907 core (m0)
 
 - `partition_cfg_16M_m1sdock.toml` : partition table for M1S Dock
 
+`01-restore-bl702-dualuart-firmware.sh` and `02-restore-bl808-factory-firmware.sh` can be
+used to restore the factory formware for Sipeed M1S Dock from command line.    
 
-`01-restore-bl702-dualuart-firmware.sh` and `02-restore-bl808-factory-firmware.sh` can be used to restore the factory formware for Sipeed M1S Dock. It will guide you step by step to activate the UART programming mode and program the firmware to target device.
+`03-program-d0-firmware.sh` can be used to program all other D0 factory demos or firmware you build from SDK
+ for Sipeed M1S Dock from command line.
 
 To restore or fix dualuart firmware for BL702:
 ```
@@ -1077,4 +1091,9 @@ To restore or fix dualuart firmware for BL702:
 To restore factory firmwares for BL808:
 ```
 ./02-restore-bl808-factory-firmware.sh
+```
+
+To program other firmwares for D0 of BL808 (no matter factory demos or build from M1S SDK):
+```
+./03-program-d0-firmware.sh <firmware>
 ```
