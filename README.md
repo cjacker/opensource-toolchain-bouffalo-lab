@@ -63,7 +63,7 @@ This tutorial will try best to cover all these chips.
   + [How to restore factory firmware of M1S Dock](https://github.com/cjacker/opensource-toolchain-bouffalo-lab/blob/main/README.md#how-to-restore-factory-firmwares-for-m1s-dock)
 
 - [Deprecated topics]
-  + [Build Linux kernel for BL808](https://github.com/cjacker/opensource-toolchain-bouffalo-lab/blob/main/README.md#build-linux-kernel-for-bl808) **deprecated**
+  + [Build Linux kernel for BL808](https://github.com/cjacker/opensource-toolchain-bouffalo-lab/blob/main/README.md#build-linux-kernel-for-bl808)
     - [Build linux kernel](https://github.com/cjacker/opensource-toolchain-bouffalo-lab/blob/main/README.md#build-linux-kernel)
     - [Program linux kernel](https://github.com/cjacker/opensource-toolchain-bouffalo-lab/blob/main/README.md#program-linux-kernel)
       + [with bflb-mcu-tool](https://github.com/cjacker/opensource-toolchain-bouffalo-lab/blob/main/README.md#with-bflb-mcu-tool)
