@@ -539,6 +539,7 @@ For example, using 'lvgl_demo', it can be programmed as :
 bflb-iot-tool --chipname=bl808 --port=/dev/ttyUSB1 --baudrate=2000000 --firmware=build_out/lvgl_demo.bin --addr 0x101000 --single
 ```
 
+A script `03-program-d0-firmware.sh` provided in [m1s_dock_factory_firmware](./m1s_dock_factory_firmware), you can use this script directly to program your own D0 firmware for M1S Dock if you use 'M1s_BL808_SDK'.
 
 ### for bl_iot_sdk
 
