@@ -757,7 +757,7 @@ Breakpoint 1 at 0x23002350: file /home/cjacker/work/opensource-toolchain-bouffal
 
 [OpenBouffalo](https://github.com/openbouffalo/buildroot_bouffalo) provide a 'really work' Linux OS (not just a kernel) for BL808 CPU (M1S and Ox64), with [more drivers](https://github.com/orgs/openbouffalo/projects/3) developed and integrated, refer to [BL808 Linux Driver Status](https://github.com/orgs/openbouffalo/projects/3) for more info.
 
-If you want to try Linux with BL808, you should use this image instead of [bl808_linux](https://github.com/bouffalolab/bl808_linux) prototype.
+If you want to try Linux with BL808, you should use this image instead of [bl808_linux](https://github.com/bouffalolab/bl808_linux) prototype since Bouffalo Lab have said they will not maintain their initial Linux release at the moment.
 
 ## Build OpenBouffalo Linux Image
 
@@ -773,19 +773,17 @@ make BR2_EXTERNAL=$BR_BOUFFALO_OVERLAY_PATH pine64_ox64_defconfig
 make
 ```
 
-It will download toolchains, source packages from internet, may take maybe 1 or more hours to build, be patient until it build.
+It will download toolchains / source packages from internet, may take one or more hours to build, be patient until it built.
 
-If you don't want to build it yourself, you can download the prebuilt image directly from https://github.com/openbouffalo/buildroot_bouffalo/releases/. There are two images are currently build : a minimal image 'bl808-linux-pine64_ox64_defconfig.tar.gz' and a more complete image : bl808-linux-pine64_ox64_full_defconfig.tar.gz.
+If you don't want to build it yourself, you can download the prebuilt image directly from https://github.com/openbouffalo/buildroot_bouffalo/releases/. There are two images currently : a minimal image 'bl808-linux-pine64_ox64_defconfig.tar.gz' and a more complete image : bl808-linux-pine64_ox64_full_defconfig.tar.gz.
 
-The SD card images are configured with a 1Gb Swap Partition, and will resize the rootfs partition on first boot to the full size of the SD card.
-
-Inside the downloads you will find the following files:
+Inside the archive you will find the following files:
 - m0_lowload_bl808_m0.bin - This firmware runs on M0 and forwards interupts to the D0 for several peripherals
 - d0_lowload_bl808_d0.bin - This is a very basic bootloader that loads opensbi, the kernel and dts files into ram
 - bl808-firmware.bin - A image containing OpenSBI, Uboot and uboot dtb files.
-- sdcard-pine64_ox64_[full_]defconfig.img.xz - A xz archive containing the rootfs for the image to be flashed to the SD card
+- sdcard-pine64_ox64_[full_]defconfig.img.xz - A xz archive containing the rootfs for the image to be flashed to the SD card, The SD card images are configured with a 1Gb Swap Partition, and will resize the rootfs partition on first boot to the full size of the SD card.
 
-I also put a copy of v1.0.1 at [openboufalo-linux-firmware](./openboufalo-linux-firmware) in this repo, since I want to programm them by commandline and need combine the m0/d0 lowload images to get rid of dependency on BLDevCube. the `m0d0_lowload-combined.bin` firmware combined `m0_lowload_bl808_m0.bin` and `d0_lowload_bl808_d0.bin`, and can be programmed by 'bflb-iot-tool`.
+I also put a copy of v1.0.1 at [openboufalo-linux-firmware](./openboufalo-linux-firmware) in this repo, since I want to programm them by commandline and need combine the m0/d0 lowload images to get rid of depending on BLDevCube. the `m0d0_lowload-combined.bin` firmware combined `m0_lowload_bl808_m0.bin` and `d0_lowload_bl808_d0.bin`, and can be programmed by 'bflb-iot-tool`.
 
 ## Program with bflb-iot-tool and flash a SD Card 
 
@@ -794,13 +792,13 @@ If you want to program by 'bflb-iot-tool' from commandline, After you download V
 Activate UART programming mode and program them as:
 
 ```
-# program m0d0 lowload
+# program combined m0d0 lowload
 bflb-iot-tool --chipname bl808 --interface uart --port /dev/ttyUSB1 --baudrate 2000000 --firmware m0d0_lowload-combined.bin --addr 0x1000 --single
 
 # program bl808-firmware
 bflb-iot-tool --chipname bl808 --interface uart --port /dev/ttyUSB1 --baudrate 2000000 --firmware bl808-firmware.bin --addr 0x800000 --single
 
-# plug in the SD card and find the device
+# plug in a microSD card and find the corresponding device
 xz -d sdcard-pine64_ox64_[full_]defconfig.img.xz
 sudo dd if=sdcard-pine64_ox64_[full_]defconfig.img of=/dev/sdX bs=1M
 ```
@@ -841,7 +839,10 @@ Open a terminal and run tio as:
 tio -b 20000 /dev/ttyUSB0
 ```
 
-Press the 'RESET' button on board, the output look like :
+Change the serial device according to your env.
+
+Then press the 'RESET' button on board, the booting progress look like :
+
 ```
 [I][]
 [I][]   ____                   ____               __  __      _
@@ -1137,14 +1138,13 @@ Hold the BOOT button down and power on M0S Dock by plug it in PC USB port, and p
 $ bflb-mcu-tool --chipname=bl616 --interface=uart --port=/dev/ttyACM0 --baudrate=2000000 --firmware=bl616-cklink-lite.bin
 ```
 
-
 ## M0sense board (BL702) programming notes
 
 Sipeed M0sense is an AIOT development board based on BL702 of Bouffalo Lab, it's RISC-V architecture, supports low-energy bluetooth. There is a 8Pins FPC connector for connecting LCD screen, and 1 microphone, 1 RGB LED and a six-axis sensor chip are on this board. One USB 2.0 FS routes to Type-C interface.
 
 It has 'BOOT' and 'RESET' buttons indeed, but NOT for entering UART programming mode, it's for entering U-Disk programming mode with factory firmware.
 
-To enter UART programming mode we metioned above many times, you need to **short the 3v3 and boot pin**, then power it, the M0sense board will enter UART programming mode.
+To enter UART programming mode I metioned above many times, you need to **short the 3v3 and boot pin**, then power it, the M0sense board will enter UART programming mode.
 
 After that, you can program it with `bflb-mcu-tool` etc.
 
@@ -1182,7 +1182,7 @@ Using Sipeed M1S Dock as example, beside BL808, it also have a standalone BL702 
      +------------+            +--------------------------------------+
 ```
 
-You can use 'BLDevCube' Linux version to make things easier, Sipeed already have a [good tutorial](https://wiki.sipeed.com/hardware/en/maix/m1s/other/start.html) here, please refer to [sipeed tutorial](https://wiki.sipeed.com/hardware/en/maix/m1s/other/start.html) on how to use 'BLDevCube' to program M1S Dock.
+You can use 'BLDevCube' Linux version to make things easier (but not easy for me), Sipeed already have a [good tutorial](https://wiki.sipeed.com/hardware/en/maix/m1s/other/start.html) here, please refer to [sipeed tutorial](https://wiki.sipeed.com/hardware/en/maix/m1s/other/start.html) on how to use 'BLDevCube' to program M1S Dock.
 
 Here will explain how to program BL808 by command line:
 
@@ -1198,7 +1198,7 @@ $ bflb-iot-tool --chipname=bl702 --port=/dev/ttyACM0 --baudrate=2000000 --firmwa
 
 ### To program E907 core of BL808 for M1S Dock 
 
-You need activate BL808 UART programming mode first, please refer to above sections on how to activate it.
+You need activate BL808 UART programming mode first by : hold 'BOOT' btn, toggle 'RESET' btn, then release 'BOOT' btn.
 
 And use the bigger number of 2 serial devices, here is '/dev/ttyUSB1'.
 
@@ -1206,7 +1206,7 @@ And use the bigger number of 2 serial devices, here is '/dev/ttyUSB1'.
 bflb-iot-tool --chipname=bl808 --port=/dev/ttyUSB1 --baudrate=2000000 --pt=partition_cfg_16M_m1sdock.toml --boot2=boot2_isp_debug.bin --firmware=<m0 firmware.bin> 
 ```
 
-For partion table and boot2 files,  all files had been put into [m1s_factory_firmware copy](https://github.com/cjacker/opensource-toolchain-bouffalo-lab/tree/main/m1s_dock_factory_firmware) dir in this repo. you can also find them from https://github.com/sipeed/M1s_BL808_example and BLDevCube. 
+Partion table and boot2 file had been put into [m1s_factory_firmware copy](https://github.com/cjacker/opensource-toolchain-bouffalo-lab/tree/main/m1s_dock_factory_firmware) dir in this repo. you can also find them from https://github.com/sipeed/M1s_BL808_example and BLDevCube. 
 
 ### To program C906 core of BL808 for M1S Dock
 
@@ -1245,7 +1245,7 @@ The files in this dir includes:
 
 - `02-restore-bl808-factory-firmware.sh` : script to restore BL808 factory firmware of M1S Dock. include E907 core (M0) and C906 core (D0)
 
-- `03-program-d0-firmware.sh` : script to program D0 firmwares your build from SDK.
+- `03-program-d0-firmware.sh` : script to program D0 firmwares you build from SDK.
 
 - `usb2dualuart_bl702_221118.bin` : default dualuart firmware for BL702, from https://dl.sipeed.com/shareURL/MAIX/M1s/M1s_Dock/7_Firmware
 
