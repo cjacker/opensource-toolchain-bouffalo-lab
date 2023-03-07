@@ -748,7 +748,153 @@ Breakpoint 1 at 0x23002350: file /home/cjacker/work/opensource-toolchain-bouffal
 (gdb) c
 ```
 
+# Build and run openbouffalo Linux Image for BL808 CPU
+
+[OpenBouffalo](https://github.com/openbouffalo/buildroot_bouffalo) provide a 'really work' Linux OS (not just a kernel) for BL808 CPU (M1S and Ox64), with [more drivers](https://github.com/orgs/openbouffalo/projects/3) developed and integrated, refer to [BL808 Linux Driver Status](https://github.com/orgs/openbouffalo/projects/3) for more info.
+
+If you want to try Linux with BL808, you should use this image instead of [bl808_linux](https://github.com/bouffalolab/bl808_linux) prototype.
+
+## Build OpenBouffalo Linux Image
+
+The building process is simple :
+
+```
+mkdir buildroot_bouffalo && cd buildroot_bouffalo
+git clone https://github.com/buildroot/buildroot
+git clone https://github.com/openbouffalo/buildroot_bouffalo
+export BR_BOUFFALO_OVERLAY_PATH=$(pwd)/buildroot_bouffalo
+cd buildroot
+make BR2_EXTERNAL=$BR_BOUFFALO_OVERLAY_PATH pine64_ox64_defconfig
+make
+```
+
+It will download toolchains, source packages from internet, may take maybe 1 or more hours to build, be patient until it build.
+
+If you don't want to build it yourself, you can download the prebuilt image directly from https://github.com/openbouffalo/buildroot_bouffalo/releases/. There are two images are currently build : a minimal image 'bl808-linux-pine64_ox64_defconfig.tar.gz' and a more complete image : bl808-linux-pine64_ox64_full_defconfig.tar.gz.
+
+The SD card images are configured with a 1Gb Swap Partition, and will resize the rootfs partition on first boot to the full size of the SD card.
+
+Inside the downloads you will find the following files:
+- m0_lowload_bl808_m0.bin - This firmware runs on M0 and forwards interupts to the D0 for several peripherals
+- d0_lowload_bl808_d0.bin - This is a very basic bootloader that loads opensbi, the kernel and dts files into ram
+- bl808-firmware.bin - A image containing OpenSBI, Uboot and uboot dtb files.
+- sdcard-pine64_ox64_[full_]defconfig.img.xz - A xz archive containing the rootfs for the image to be flashed to the SD card
+
+I also put a copy of v1.0.1 at [openboufalo-linux-firmware](./openboufalo-linux-firmware) in this repo, since I want to programm them by commandline and need combine the m0/d0 lowload images to get rid of dependency on BLDevCube. the `m0d0_lowload-combined.bin` firmware combined `m0_lowload_bl808_m0.bin` and `d0_lowload_bl808_d0.bin`, and can be programmed by 'bflb-iot-tool`.
+
+## Program with bflb-iot-tool and flash a SD Card 
+
+If you want to program by 'bflb-iot-tool' from commandline, After you download V1.0.1 openbouffalo image, you also need the [m0d0_lowload-combined.bin](./openboufalo-linux-firmware/m0d0_lowload-combined.bin) firmware.
+
+Activate UART programming mode and program them as:
+
+```
+# program m0d0 lowload
+bflb-iot-tool --chipname bl808 --interface uart --port /dev/ttyUSB1 --baudrate 2000000 --firmware m0d0_lowload-combined.bin --addr 0x1000 --single
+
+# program bl808-firmware
+bflb-iot-tool --chipname bl808 --interface uart --port /dev/ttyUSB1 --baudrate 2000000 --firmware bl808-firmware.bin --addr 0x800000 --single
+
+# plug in the SD card and find the device
+xz -d sdcard-pine64_ox64_[full_]defconfig.img.xz
+sudo dd if=sdcard-pine64_ox64_[full_]defconfig.img of=/dev/sdX bs=1M
+```
+
+## Program with BLDevCube and flash a SD Card 
+
+After image tarball downloaded and extracted:
+
+- Get the latest version of DevCube from http://dev.bouffalolab.com/download
+- Connect BL808 board via serial port to your PC
+- Set BL808 board to programming mode
+    + Press BOOT button when reseting or applying power
+    + Release BOOT button
+- Run DevCube, select [BL808], and switch to [MCU] page
+- Select the uart port and set baudrate with 2000000
+    + UART TX is physical pin 1/GPIO 14.
+    + UART RX is physical pin 2/GPIO 15.
+    + For M1S, usually it's '/dev/ttyUSB1'.
+- M0 Group[Group0] Image Addr [0x58000000] [PATH to m0_low_load_bl808_m0.bin]
+- D0 Group[Group0] Image Addr [0x58100000] [PATH to d0_low_load_bl808_d0.bin]
+- Click 'Create & Download' and wait until it's done
+- Switch to [IOT] page
+- Enable 'Single Download', set Address with 0x800000, choose [bl808-firmware.bin]
+- Click 'Create & Download' again and wait until it's done
+- uncompress and flash the sdcard-pine64-*.img.xz to your SD card
+  + `sudo dd if=sdcard-pine64-*.img of=<your SD card> bs=1M`
+- Serial Console access:
+    + UART TX is physical pin 32/GPIO 16.
+    + UART RX is physical pin 31/GPIO 17.
+    + Baud 2000000.
+    + For M1S, usually it's '/dev/ttyUSB0'
+
+## Run OpenBoufflo Linux 
+
+Open a terminal and run tio as:
+
+```
+tio -b 20000 /dev/ttyUSB0
+```
+
+Press the 'RESET' button on board, the output look like :
+```
+[I][]
+[I][]   ____                   ____               __  __      _
+[I][]  / __ \                 |  _ \             / _|/ _|    | |
+[I][] | |  | |_ __   ___ _ __ | |_) | ___  _   _| |_| |_ __ _| | ___
+[I][] | |  | | '_ \ / _ \ '_ \|  _ < / _ \| | | |  _|  _/ _` | |/ _ \
+[I][] | |__| | |_) |  __/ | | | |_) | (_) | |_| | | | || (_| | | (_) |
+[I][]  \____/| .__/ \___|_| |_|____/ \___/ \__,_|_| |_| \__,_|_|\___/
+[I][]        | |
+[I][]        |_|
+[I][]
+[I][] Powered by BouffaloLab
+[I][] Build:11:52:04,Mar  6 2023
+[I][] Copyright (c) 2023 OpenBouffalo team
+[I][] Copyright (c) 2022 Bouffalolab team
+[I][] dynamic memory init success,heap s[I][LowLoad] D0 start...
+[I][LowLoad] low_load start...
+......
+Select the boot mode
+1:      Pine64 0X64 Kernel
+2:      Sipeed M1SDock Kernel
+Enter choice: 2:        Sipeed M1SDock Kernel
+Retrieving file: /extlinux/../Image
+append: root=PARTLABEL=rootfs rootwait rw rootfstype=ext4 console=ttyS0,2000000 loglevel=8 earlycon=sbi
+Retrieving file: /extlinux/../bl808-sipeed-m1s.dtb
+## Flattened Device Tree blob at 51ff8000
+   Booting using the fdt blob at 0x51ff8000
+Working FDT set to 51ff8000
+   Loading Device Tree to 0000000053f21000, end 0000000053f25009 ... OK
+Working FDT set to 53f21000
+
+Starting kernel ...
+
+[    0.000000] Linux version 6.2.0 (runner@fv-az351-898) (riscv64-unknown-linux-gnu-gcc (Xuantie-900 linux-5.10.4 glibc gcc Toolchain V2.6.1 B-20220906) 10.2.0, GNU ld (GNU Binutils) 2.35) #1 Mon Mar  6 11:10:01 UTC 2023
+......
+
+Root Partition Already resized
+Starting syslogd: OK
+Starting klogd: OK
+Running sysctl: OK
+Starting mdev... OK
+Initializing random number generator: OK
+Saving random seed: OK
+Starting iptables: OK
+Starting network: OK
+Starting dropbear sshd: OK
+
+Welcome to Buildroot
+ox64 login:
+```
+
+After login prompt show, input 'root' and without password to login.
+
+Enjoy!
+
 # Build linux kernel for BL808
+
+**This section is deprecated since Bouffalo Lab have said they will not maintain their initial Linux release at the moment.**
 
 The linux kernel building for C906 core of BL808 is worth a seperate section.
 
