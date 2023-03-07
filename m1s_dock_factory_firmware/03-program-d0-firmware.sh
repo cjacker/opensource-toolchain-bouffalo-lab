@@ -4,7 +4,7 @@
 if [ $# -ne 1 ]; then
   echo "Usage: ./03-program-other-d0-firmware.sh <firmware>"
 
-  echo "Please specify a D0 firmware to program."
+  echo "Please specify a M1s D0 firmware to program."
   exit
 fi
 
