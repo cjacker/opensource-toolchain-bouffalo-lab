@@ -58,11 +58,12 @@ This tutorial will try best to cover all these chips.
   + [Program with BLDevCube and flash a SD Card](https://github.com/cjacker/opensource-toolchain-bouffalo-lab/blob/main/README.md#program-with-bldevcube-and-flash-a-sd-card)
   + [Run OpenBouffalo Linux](https://github.com/cjacker/opensource-toolchain-bouffalo-lab/blob/main/README.md#run-openbouffalo-linux)
  
-- [Misc](https://github.com/cjacker/opensource-toolchain-bouffalo-lab/blob/main/README.md#misc)
+- [Miscellaneous](https://github.com/cjacker/opensource-toolchain-bouffalo-lab/blob/main/README.md#misc)
   + [Use Sipeed RV Debugger Plus as JTAG or CK-Link Lite debugger](https://github.com/cjacker/opensource-toolchain-bouffalo-lab/blob/main/README.md#how-to-build-and-program-uartjtag-and-dualuart-firmware-for-sipeed-rv-debugger-plus)
   + [Use M0S Dock as CK-Link Lite debugger](https://github.com/cjacker/opensource-toolchain-bouffalo-lab/blob/main/README.md#how-to-turn-m0s-dock-to-ck-link-lite)
   + [Sipeed M0sense programming notes](https://github.com/cjacker/opensource-toolchain-bouffalo-lab/blob/main/README.md#m0sense-board-bl702-programming-notes)
   + [How to restore factory firmware of M1S Dock](https://github.com/cjacker/opensource-toolchain-bouffalo-lab/blob/main/README.md#how-to-restore-factory-firmwares-for-m1s-dock)
+
 - [Deprecated topics]
   + [Build Linux kernel for BL808](https://github.com/cjacker/opensource-toolchain-bouffalo-lab/blob/main/README.md#build-linux-kernel-for-bl808)
     - [Build linux kernel](https://github.com/cjacker/opensource-toolchain-bouffalo-lab/blob/main/README.md#build-linux-kernel)
