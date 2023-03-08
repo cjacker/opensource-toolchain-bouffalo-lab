@@ -378,6 +378,8 @@ Section Headers:
   ...
 ```
 
+A script [check-bootheader.sh](./misc/check-bootheader.sh) at `misc` dir can be used to check whether bin file has a bootheader or not.
+
 If you want to strip the "fw_header0" section from final bin file, you should strip the first 4k of bin file:
 
 ```
