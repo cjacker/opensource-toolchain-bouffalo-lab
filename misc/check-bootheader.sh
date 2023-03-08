@@ -6,7 +6,8 @@ if [ $# -ne 1 ]; then
   exit
 fi
 
-MN=$(head -c 4 $1)
+# use 'tr' to avoid : warning: command substitution: ignored null byte in input
+MN=$(head -c 4 $1|tr -d "\0")
 if [ $MN"x" == "BFNP""x" ]; then
 	echo "yes"
 else
