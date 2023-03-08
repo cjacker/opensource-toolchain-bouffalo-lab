@@ -302,7 +302,7 @@ to
 CONFIG_TOOLPREFIX ?= riscv64-unknown-elf-
 ```
 
-Then build a demo using 'build.sh <demo dirname>':
+Then build a demo using `build.sh <demo dirname>`:
 
 ```
 cd M1s_BL808_example/c906_app
@@ -551,7 +551,7 @@ After programming finished, you need repower the device to blink the LED connect
 
 ## Debugging
 
-Debugging of BL series chips are supported by OpenOCD with JTAG debugger or C-Sky Debug Server with CK-Link debugger. 
+Debugging of BL series chips are supported by OpenOCD with JTAG debugger or C-Sky Debug Server with CK-Link debugger.
 
 The pinmaps of JTAG or CK-Link are same as below table:
 
@@ -907,9 +907,11 @@ make
 
 It will download toolchains / source packages from internet, may take one or more hours to build, be patient until it built.
 
-After built successfully, firmwares and images will be generated in `output/images` dir. Note the m0 / d0 lowload and bl808-firmware is built with ".fw_header" (new firmware format).
+You can stop the building process at any time by 'Ctrl-C', it will continue buiding when re-run 'make'.
 
-If you don't want to build it yourself, you can download the prebuilt image directly from https://github.com/openbouffalo/buildroot_bouffalo/releases/. There are two images currently : a minimal image 'bl808-linux-pine64_ox64_defconfig.tar.gz' and a more complete image : bl808-linux-pine64_ox64_full_defconfig.tar.gz.
+After built successfully, bl808 firmwares and sdcard image will be generated in `output/images` dir. Note the m0 / d0 lowload firmwares is built with ".fw_header" (new firmware format).
+
+If you don't like to build it yourself, you can download the prebuilt image directly from https://github.com/openbouffalo/buildroot_bouffalo/releases/. There are two images currently : a minimal image 'bl808-linux-pine64_ox64_defconfig.tar.gz' and a more complete image : bl808-linux-pine64_ox64_full_defconfig.tar.gz.
 
 Inside the archive you will find the following files:
 - m0_lowload_bl808_m0.bin - This firmware runs on M0 and forwards interupts to the D0 for several peripherals
@@ -917,7 +919,7 @@ Inside the archive you will find the following files:
 - bl808-firmware.bin - A image containing OpenSBI, Uboot and uboot dtb files.
 - sdcard-pine64_ox64_[full_]defconfig.img.xz - A xz archive containing the rootfs for the image to be flashed to the SD card, The SD card images are configured with a 1Gb Swap Partition, and will resize the rootfs partition on first boot to the full size of the SD card.
 
-I also put a copy of v1.0.1 at [openboufalo-linux-firmware](./openboufalo-linux-firmware) in this repo, since I want to programm them by commandline and need combine the all images together to get rid of using BLDevCube.
+I also put a copy of v1.0.1 at [openboufalo-linux-firmware](./openboufalo-linux-firmware) in this repo, and write a script to combine all firmwares, since I want to programm them by commandline and have to combine all firmwares together to get rid of using BLDevCube.
 
 ## Program with bflb-iot-tool and flash a SD Card 
 
@@ -938,7 +940,7 @@ dd conv=notrunc if=d0_lowload_bl808_d0.bin of=openbouffalo-bl808.bin seek=104857
 cat bl808-firmware.bin >> openbouffalo-bl808.bin
 ```
 
-A script [create-full-image.sh](./openbouffalo-linux-firmware/create-full-image.sh) can be used directly to create the "openbouffalo-bl808.bin" image.
+A script [create-full-image.sh](./openbouffalo-linux-firmware/create-full-image.sh) can be used directly to create the final "openbouffalo-bl808.bin" image.
 
 Then activate UART programming mode and program it as:
 
