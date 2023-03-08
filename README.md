@@ -367,9 +367,24 @@ Usually, it's not neccesary for you to figure out the differences between all th
 After `BLFlashCommand` commited into official bl_mcu_sdk repo and with the commit [[update][board] enable fw header for new flash tool ](https://github.com/bouffalolab/bl_mcu_sdk/commit/e70e482d2129411f34208d1184b4710074c67777):
 
 - **The good news:** It has a program tool integrated, 'make flash' works.
-- **The bad news:** It alter the firmware format, and not compatible with other opensource tools.
+- **The bad news:** It alter the firmware format, prepend 4k bootheader, and not compatible with other opensource tools include 'bflb-mcu-tool'.
 
-Compare with old firmware before this commit, the final ELF has a section '.fw_header' added. you can use 'readelf -S build/build_out/xxx.elf' to verify it has a '.fw_header' section or not.
+Compare with old firmware before this commit, the final ELF has a section '.fw_header' added, it is so called 'bootheader'. you can use 'readelf -S build/build_out/xxx.elf' to verify it has a '.fw_header' section or not:
+```
+Section Headers:
+  [Nr] Name              Type            Addr     Off    Size   ES Flg Lk Inf Al
+  [ 0]                   NULL            00000000 000000 000000 00      0   0  0
+  [ 1] .fw_header0       PROGBITS        57fff000 001000 000160 00  WA  0   0  4
+  ...
+```
+
+If you want to strip the "fw_header0" section from final bin file, you should strip the first 4k of bin file:
+
+```
+tail -c +4097 orig.bin >strip.bin
+```
+
+Such stripped firmware can be programmed by 'bflb-mcu-tool' again.
 
 
 ## Programming tools installation
