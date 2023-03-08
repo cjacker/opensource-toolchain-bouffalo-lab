@@ -1,13 +1,7 @@
 #!/bin/bash
 
-# m0/d0 combined lowload firmware
-LOWLOAD_FIRMWARE_FILE=m0d0_lowload-combined.bin
-
-# can be programed from command line.
-D0_FIRMWARE_FILE=bl808-firmware.bin
-
 echo "01-program-openboufflo-linux.sh:"
-echo "A script to program essential firmwares to run Linux on BL808"
+echo "A script to program essential firmware to BL808 for OpenBouffalo Linux"
 echo ""
 
 # check 'bflb-iot-tool' command exists or not.
@@ -49,27 +43,14 @@ fi
 read -r -p "Input 'yes' or 'y' to start : " response_start
 if [[ "$response_start" =~ ^([yY][eE][sS]|[yY])$ ]]
 then
+	./create-full-image.sh
 	bflb-iot-tool \
 		--chipname bl808 \
 		--interface uart \
 		--port /dev/ttyUSB1 \
 		--baudrate 2000000 \
-		--firmware bootinfo_group0.bin \
+		--firmware openbouffalo-bl808.bin \
 		--addr 0x0 --single
-    bflb-iot-tool \
-        --chipname bl808 \
-        --interface uart \
-        --port /dev/ttyUSB1 \
-        --baudrate 2000000 \
-        --firmware $LOWLOAD_FIRMWARE_FILE \
-        --addr 0x1000 --single
-	bflb-iot-tool \
-		--chipname bl808 \
-		--interface uart \
-		--port /dev/ttyUSB1 \
-		--baudrate 2000000 \
-		--firmware $D0_FIRMWARE_FILE \
-		--addr 0x800000 --single
 else
 	echo "Exit"
 	exit

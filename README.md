@@ -907,7 +907,7 @@ make
 
 It will download toolchains / source packages from internet, may take one or more hours to build, be patient until it built.
 
-After built successfully, firmwares and images will be generated in `output/images` dir. Note the m0 / d0 lowload and bl808-firmware is built with ".fw_header".
+After built successfully, firmwares and images will be generated in `output/images` dir. Note the m0 / d0 lowload and bl808-firmware is built with ".fw_header" (new firmware format).
 
 If you don't want to build it yourself, you can download the prebuilt image directly from https://github.com/openbouffalo/buildroot_bouffalo/releases/. There are two images currently : a minimal image 'bl808-linux-pine64_ox64_defconfig.tar.gz' and a more complete image : bl808-linux-pine64_ox64_full_defconfig.tar.gz.
 
@@ -917,25 +917,38 @@ Inside the archive you will find the following files:
 - bl808-firmware.bin - A image containing OpenSBI, Uboot and uboot dtb files.
 - sdcard-pine64_ox64_[full_]defconfig.img.xz - A xz archive containing the rootfs for the image to be flashed to the SD card, The SD card images are configured with a 1Gb Swap Partition, and will resize the rootfs partition on first boot to the full size of the SD card.
 
-I also put a copy of v1.0.1 at [openboufalo-linux-firmware](./openboufalo-linux-firmware) in this repo, since I want to programm them by commandline and need combine the m0/d0 lowload images to get rid of depending on BLDevCube. the `m0d0_lowload-combined.bin` firmware combined `m0_lowload_bl808_m0.bin` and `d0_lowload_bl808_d0.bin`, and can be programmed by 'bflb-iot-tool`.
+I also put a copy of v1.0.1 at [openboufalo-linux-firmware](./openboufalo-linux-firmware) in this repo, since I want to programm them by commandline and need combine the all images together to get rid of using BLDevCube.
 
 ## Program with bflb-iot-tool and flash a SD Card 
 
-If you want to program by 'bflb-iot-tool' from commandline, After you download V1.0.1 openbouffalo image, you also need [bootinfo_group0.bin](./openboufalo-linux-firmware/bootinfo_group0.bin) and [m0d0_lowload-combined.bin](./openboufalo-linux-firmware/m0d0_lowload-combined.bin).
-
-Activate UART programming mode and program them as:
+If you want to program by 'bflb-iot-tool' from commandline, After you download V1.0.1 openbouffalo image, you need combined m0/d0 lowload and bl808-firmware.bin together as:
 
 ```
-# program bootinfo_group0
-bflb-iot-tool --chipname bl808 --interface uart --port /dev/ttyUSB1 --baudrate 2000000 --firmware bootinfo_group0.bin --addr 0x0 --single
+# create a empty image of size 0x800000 and fill it with "0xFF".
+# 0x800000 is the start addr of "bl808-firmware.bin".
+dd if=/dev/zero bs=8388608 count=1| tr "\000" "\377" >openbouffalo-bl808.bin
 
-# program combined m0d0 lowload
-bflb-iot-tool --chipname bl808 --interface uart --port /dev/ttyUSB1 --baudrate 2000000 --firmware m0d0_lowload-combined.bin --addr 0x1000 --single
+# copy "m0_lowload_bl808_m0.bin" to the start of openbouffalo-bl808.bin
+dd conv=notrunc if=m0_lowload_bl808_m0.bin of=openbouffalo-bl808.bin
 
-# program bl808-firmware
-bflb-iot-tool --chipname bl808 --interface uart --port /dev/ttyUSB1 --baudrate 2000000 --firmware bl808-firmware.bin --addr 0x800000 --single
+# copy "d0_lowload_bl808_d0.bin" to 0x100000
+dd conv=notrunc if=d0_lowload_bl808_d0.bin of=openbouffalo-bl808.bin seek=1048576 bs=1
 
-# plug in a microSD card and find the corresponding device
+# append "bl808-firmware.bin" to the end
+cat bl808-firmware.bin >> openbouffalo-bl808.bin
+```
+
+A script [create-full-image.sh](./openbouffalo-linux-firmware/create-full-image.sh) can be used directly to create the "openbouffalo-bl808.bin" image.
+
+Then activate UART programming mode and program it as:
+
+```
+bflb-iot-tool --chipname bl808 --interface uart --port /dev/ttyUSB1 --baudrate 2000000 --firmware openbouffalo-bl808.bin --addr 0x0 --single
+```
+
+After BL808 programmed, you need prepare a microSD card and flash sdcard img to it, before run below `dd` command, please **make sure which device is the microSD card,** and replace '/dev/sdX' as your microSD card device.
+
+```
 xz -d sdcard-pine64_ox64_[full_]defconfig.img.xz
 sudo dd if=sdcard-pine64_ox64_[full_]defconfig.img of=/dev/sdX bs=1M
 ```
