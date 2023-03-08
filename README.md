@@ -381,7 +381,7 @@ Section Headers:
 If you want to strip the "fw_header0" section from final bin file, you should strip the first 4k of bin file:
 
 ```
-tail -c +4097 orig.bin >strip.bin
+tail -c +4097 new_firmware_format.bin >old_firmware_format.bin
 ```
 
 Such stripped firmware can be programmed by 'bflb-mcu-tool' again.
