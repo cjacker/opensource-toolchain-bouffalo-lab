@@ -92,8 +92,7 @@ This tutorial will try best to cover all these chips.
   + RISC-V linux toolchain
 - SDK : 
   + [bl mcu sdk](https://github.com/bouffalolab/bl_mcu_sdk)
-  + [M1s_BL808_SDK](https://github.com/sipeed/M1s_BL808_SDK) and [M1s_BL808_example](https://github.com/sipeed/M1s_BL808_example), Sipeed M1s specific.
-  + [bl_iot_sdk](https://github.com/bouffalolab/bl_iot_sdk_tiny), it is stalled and will be abandoned.
+  + [M1s_BL808_SDK](https://github.com/sipeed/M1s_BL808_SDK) and [M1s_BL808_example](https://github.com/sipeed/M1s_BL808_example), it is Sipeed M1s Dock specific.
 - Programming tool : 
   + BLDevCube Linux Version. **close source**
   + BLFlashCommand (integrated in bl_mcu_sdk). **close source**
@@ -103,7 +102,7 @@ This tutorial will try best to cover all these chips.
   + blisp and various
 - Debugger : 
   + OpenOCD and gdb
-  + T-Head C-Sky Debug Server and gdb. **close source**
+  + T-Head C-Sky Debug Server (**close source**) and gdb. 
 
 **NOTE 1:**
 
@@ -117,7 +116,7 @@ According to the comment from upstream : https://github.com/bouffalolab/bl_mcu_s
 
 > Iot sdk does not update at all, please use mcu sdk (it will be named bouffalosdk)
 
-**You should use bl_mcu_sdk or M1s_BL808_SDK for BL808 from now.**
+**You should use bl_mcu_sdk or M1s_BL808_SDK for Sipeed M1s Dock from now.**
 
 **NOTE 2:**
 
@@ -125,26 +124,24 @@ BLFlashCommand and BLFlashCube is close source software up to now. If this is a 
 
 # Compiler
 
-Not like usual RISC-V based MCU (such as CH32V / GD32V, etc), the toolchain setup for BL chips is a little bit complex. Different cores and Different sdk may requires different toolchain.
-
-## For bl_mcu_sdk
+Not like usual RISC-V based MCU (such as CH32V / GD32V, etc), the toolchain setup for BL chips is a little bit complex. Different cores and Different SDKs may requires different toolchains.
 
 For BL60x/70x, it's 32bit RISC-V MCU, as usual RISC-V MCU, it require RISC-V toolchain to generate 32bit object code. 
 
 For BL616, bl_mcu_sdk set `-mtune` to `e907`, it can not supported by general RISC-V toolchain, you had to use T-Head RISC-V toolchain. Or you need change the `-mtune=e907` to `-mtune=size` and will lost some optimizations when compiling.
 
-For BL808, it has 3 different cores: two 32bit RISCV-V MCU (M0 / LP), one general purpose 64bit CPU (D0, based on T-Head C906). Since D0 core has MMU, that means it can run baremetal or run a RISC-V Linux OS, it need to setup 3 toolchains:
+For BL808, it has 3 different cores: two 32bit RISCV-V MCU (M0 / LP), one general purpose 64bit CPU (D0, based on T-Head C906). Since D0 core has MMU, that means it can run baremetal or run [Linux OS](#build-and-run-openbouffalo-linux-image-for-bl808-cpu), it need setup 3 toolchains:
 
 - riscv 32bit embed toolchain for M0 / LP core
 - riscv 64bit embed toolchain for D0 core
 - **optional** riscv 64bit linux toolchain for D0 core if you want to build and run Linux.
 
-You may already find some 'riscv64-unknown-elf' toolchains can work with 32bit RISC-V mcu, just like x86_64 toolchain, it can generate object codes for x86 and x86_64, so we can reduce toolchains to 2: 
+You may already find some 'riscv64-unknown-elf' toolchains could work with 32bit RISC-V mcu, just like x86_64 toolchain, it can generate object codes for x86 and x86_64, so we can reduce toolchains to 2: 
 
 - riscv64 embeded toolchain to generate 32bit and 64bit codes
 - **optional** riscv64 linux toolchain if you want to work with linux on C906.
 
-Usually I prefer to use [Xpack prebuilt RISC-V toolchains](https://github.com/xpack-dev-tools/riscv-none-elf-gcc-xpack/), but Xpack only provide rv32 embed toolchain up to now and not compatible with some Xuantie extentions. In this tutorial, we will and have to use prebuilt T-Head Xuantie toolchains.
+Usually I prefer to use [Xpack prebuilt RISC-V toolchains](https://github.com/xpack-dev-tools/riscv-none-elf-gcc-xpack/), but Xpack only provide rv32 embed toolchain up to now and not compatible with Xuantie extentions. In this tutorial, we will and have to use prebuilt T-Head Xuantie toolchains.
 
 ## T-Head Xuantie RISC-V embeded gcc
 
@@ -163,7 +160,7 @@ and add `/opt/xuantie-riscv64-embed-toolchain/bin` to PATH env according to your
 
 ## T-Head XuanTie RISC-V linux gcc [Optional]
 
-**You need this toolchain to build and run Linux kernel. if you have no need to run a Linux kernel on C906 core of BL808, just ignore this section.**
+**You need this toolchain to build and run Linux kernel, and this section can be ignored now.**
 
 T-Head provide pre-built RISC-V 64bit linux toolchain (gcc v10.2.0), it can be download from [here](https://occ-oss-prod.oss-cn-hangzhou.aliyuncs.com/resource//1663142514282/Xuantie-900-gcc-linux-5.10.4-glibc-x86_64-V2.6.1-20220906.tar.gz).
 
@@ -182,13 +179,11 @@ and add `/opt/xuantie-riscv64-linux-toolchain/bin` to PATH env according to your
 Above toolchain setup is also suite for [M1s_BL808_SDK](https://github.com/sipeed/M1s_BL808_SDK).
 
 
-
-
 # SDK
 
 ## bl_mcu_sdk
 
-[bl mcu sdk](https://github.com/bouffalolab/bl_mcu_sdk) is an MCU software development kit provided by the Bouffalo Lab Team, supports all the series of Bouffalo chips, include but not limited to:
+[bl mcu sdk](https://github.com/bouffalolab/bl_mcu_sdk) is a MCU software development kit provided by Bouffalo Lab, supports all the series of Bouffalo chips, include but not limited to:
 
 - BL602/BL604
 - BL702/BL704/BL706
@@ -244,7 +239,7 @@ Here use 'triplecore_bl808' example with Sipeed M1S Dock, This demo illustrates 
 
 The patch to enable LP core I made for bl_mcu_sdk was [already upstreamed](https://github.com/bouffalolab/bl_mcu_sdk/commit/ab70ccc953269bb4a35279000beea9013da5ac1c).
 
-I put `bl_mcu_sdk` at home dir, if not, change this line in `Makefile` to your sdk path:
+I put `bl_mcu_sdk` at home dir, if you not, change this line in `Makefile` to your sdk path:
 
 ```
 make -C $@ BL_SDK_BASE=$(HOME)/bl_mcu_sdk
@@ -258,7 +253,7 @@ After build successfully, these three firmware files will be generated:
 - ./helloworld_lp/build/build_out/helloworld_bl808_lp.bin : firmware for lp
 - ./helloworld_d0/build/build_out/helloworld_bl808_d0.bin : firmware for d0
 
-For more infomation about how to use this tripplecore demo, please refer to : https://github.com/cjacker/opensource-toolchain-bouffalo-lab/tree/main/triplecore_bl808
+For more infomation about how to use this tripple core demo, please refer to : https://github.com/cjacker/opensource-toolchain-bouffalo-lab/tree/main/triplecore_bl808
 
 
 If you want to start a new project, you can either copy these demos from this repo, or use various demos in `bl_mcu_sdk/examples` dir.
@@ -299,31 +294,29 @@ After built successfully, 'lvgl_demo.bin' and 'lvgl_demo.elf' should be generate
 
 There is a warning **'mis-matched ISA version 1.0 for 'v' extension, the output version is 2.0'** when link to some prebuilt binary libraries, such as 'libblai_npu_encoder.a', you can ignore it now.
 
-
-
 # Programming
 
 There are various official programming tools for BL chips:
-- BLDevCube : Official full functionality and genenral purpose GUI programming tool which support Windows / Mac and Linux. **close source.**
+- BLDevCube : Official full features and general purpose GUI programming tool which support Windows / Mac and Linux. **close source.**
 - BLFlashCommand / BLFlashCube : Official CLI and GUI programming tool only designed for and integrated in 'bl_mcu_sdk' and used by `make flash`. **close source.**
 - [bflb-mcu-tool](https://pypi.org/project/bflb-mcu-tool/) : Official CLI programming tool which can support most options in BLDevCube 'MCU' page.
 - [bflb-iot-tool](https://pypi.org/project/bflb-iot-tool/) : Official CLI programming tool which can support most options in BLDevCube 'IOT' page.
 - [blisp](https://github.com/pine64/blisp) : Simple BL60x/70x programming tool development by Pine64 community.
 
-There are too many programming tools, it may be a little bit confusing. I am also confusing at first.
+There are too many programming tools, it may be a little bit confusing. I was also confused at first.
 
-Usually, it's not neccesary for you to figure out the differences between all this programming tools and to decide which one you should use, just use bl_mcu_sdk and 'make flash' directly.
+Usually, it's not neccesary for you to figure out the differences between all this programming tools and to decide which one you should use. If you use bl_mcu_sdk, just'make flash' directly.
 
 **NOTE:**
 
 **You can ignore this note**
 
-After `BLFlashCommand` commited into official bl_mcu_sdk repo and with the commit [[update][board] enable fw header for new flash tool ](https://github.com/bouffalolab/bl_mcu_sdk/commit/e70e482d2129411f34208d1184b4710074c67777):
+After `BLFlashCommand` commited into official bl_mcu_sdk repo and with this commit [[update][board] enable fw header for new flash tool ](https://github.com/bouffalolab/bl_mcu_sdk/commit/e70e482d2129411f34208d1184b4710074c67777):
 
 - **The good news:** It has a program tool integrated, 'make flash' works.
-- **The bad news:** It alter the firmware format, prepend 4k bootheader, and not compatible with other opensource tools include 'bflb-mcu-tool'.
+- **The bad news:** It alter the firmware format, prepend 4k bootheader, and not compatible with other opensource tools include official 'bflb-mcu-tool'.
 
-Compare with old firmware before this commit, the final ELF has a section '.fw_header' added, it is so called 'bootheader'. you can use 'readelf -S build/build_out/xxx.elf' to verify it has a '.fw_header' section or not:
+Compare with old firmware before this commit, the final ELF has a section '.fw_header' prepended, it is so called 'bootheader'. you can use 'readelf -S build/build_out/xxx.elf' to verify it has a '.fw_header' section or not:
 ```
 Section Headers:
   [Nr] Name              Type            Addr     Off    Size   ES Flg Lk Inf Al
@@ -334,14 +327,13 @@ Section Headers:
 
 A script [check-bootheader.sh](./misc/check-bootheader.sh) at `misc` dir can be used to check whether bin file has a bootheader or not.
 
-If you want to strip the "fw_header0" section from final bin file, you should strip the first 4k of bin file:
+If you want to strip the "fw_header0" section from final 'bin' file, you should strip the first 4k as:
 
 ```
 tail -c +4097 new_firmware_format.bin >old_firmware_format.bin
 ```
 
-Such stripped firmware can be programmed by 'bflb-mcu-tool' to '0xX2000' again.
-
+Such stripped firmware can be programmed by 'bflb-mcu-tool' to '0xN2000' again.
 
 ## Programming tools installation
 
@@ -393,13 +385,14 @@ To program BL chips, you need enter UART programming mode first.
 - For BL602, I have a 'XT-BL12' devboard, **Plug it in PC USB port, Hold the 'D8' (GPIO8) button down, press and release 'EN' button, then release 'D8' (GPIO8) button.**
 - For BL808, such as Sipeed M1S Dock, **Use 'UART' typec port to plug in PC USB Port, Hold 'BOOT' button down, press and release 'RESET' button, then release 'BOOT' button.**
 
-In short, if devboard has 'BOOT' button, "hold BOOT button down and power it" will enter UART programming mode, actually it equals to "hold BOOT button down and toggle RESET button".
+In short, if devboard has 'BOOT' button, "hold BOOT button down and power it" will enter UART programming mode (Except Sipeed M0Sense), actually it equals to "hold BOOT button down and click RESET button".
 
 Then you can program it with `make flash`, it will invoke 'BLFlashCommand' to program BL chips.
 
 `BLFlashCommand` read 'flash_prog_cfg.ini' as config file, please setup this file correctly.
 
-Use various demos in this repo, just type:
+
+All demos in this repo can be programmed by 'BLFlashComand', With various demos in this repo, just type:
 
 ```
 make flash
@@ -407,11 +400,7 @@ make flash
 
 You may need to set 'BL_SDK_BASE' to your bl_mcu_sdk dir if using 'out sdk build'. 
 
-All demos include triple core demo for BL808 in this repo can be programmed by 'BLFlashComand'.
-
-**Update Mar 7 2023 : Finally I decided to remove all contents about how to use 'bflb-mcu-tool' / 'bflb-iot-tool' and 'blisp', it make things complex, the best way to program firmwares built with bl_mcu_sdk is 'BLFlashCommand'. it is more simpler for beginners.**
-
-If you use M1S Dock, refer to [Sipeed M1S Dock programming notes](https://github.com/cjacker/opensource-toolchain-bouffalo-lab/blob/main/README.md#m1s-dock-bl808-programming-notes) section about how to program M1S Dock by various command line utilities.
+**Update Mar 7 2023 : Finally I decided to remove all contents about how to use 'bflb-mcu-tool' / 'bflb-iot-tool' and 'blisp', it make things complex, the best way to program firmwares built with bl_mcu_sdk is 'make flash'. it is more simpler for beginners.**
 
 
 ### for M1s_BL808_SDK
@@ -448,7 +437,7 @@ Beside BL808, Sipeed M1S Dock also have a standalone BL702 chip integrated on bo
 
 You can use 'BLDevCube' Linux version to make things easier (but not easy for me), Sipeed already have a [good tutorial](https://wiki.sipeed.com/hardware/en/maix/m1s/other/start.html) here, please refer to [sipeed tutorial](https://wiki.sipeed.com/hardware/en/maix/m1s/other/start.html) on how to use 'BLDevCube' to program M1S Dock.
 
-Here will explain how to program M1s Dock by command line:
+Here will explain how to program M1s Dock from command line:
 
 #### To program on-board BL702 of M1S Dock
 
@@ -506,8 +495,6 @@ bflb-iot-tool --chipname=bl808 --port=/dev/ttyUSB1 --baudrate=2000000 --firmware
 
 A script `03-program-d0-firmware.sh` provided in [m1s_dock_factory_firmware](./m1s_dock_factory_firmware), you can use this script directly to program your own D0 firmware for M1S Dock if you use 'M1s_BL808_SDK'.
 
-
-
 ## Debugging
 
 Debugging of BL series chips are supported by OpenOCD with JTAG debugger or C-Sky Debug Server with CK-Link debugger.
@@ -529,13 +516,15 @@ There are some target config for OpenOCD in `bl_mcu_sdk`, you can use them direc
 - tools/openocd/target/tgt_e907.cfg : for E907 core of BL808
 - tools/openocd/target/tgt_c906.cfg : for C906 core of BL808
 
-Not like STM32, OpenOCD can NOT program BL chips directly. Before debugging codes run in flash with OpenOCD, you have to program the target device using ISP mode.
+Not like STM32, OpenOCD can NOT program BL chips directly. Before debugging codes run in flash with OpenOCD, you have to program the target device using UART ISP mode.
 
-After target device programmed, wire up any JTAG adapter as above table with Target device, and launch RISC-V OpenOCD as:
+After target device programmed, wire up any JTAG adapter as above table with target device, and launch RISC-V OpenOCD as:
 
 ```
 riscv-openocd -f <interface config file> -f tgt_702.cfg
 ```
+
+The 'interface config file' depends on which jtag debugger you use.
 
 If everything OK, the output looks like:
 ```
@@ -591,6 +580,7 @@ Breakpoint 1, main () at <path>/blink_bl702/main.c:17
 ```
 
 There are something need to be explained here:
+
 > For the code running on XIP, load is unnecessary and cannot be used, because XIP programs need to be
 > programmed with a programming tool before debugging, and writing to the XIP area may cause unknown
 > errors. In addition, the XIP program needs to rely on ROM code (0x21000000) to initialize the related software
@@ -846,7 +836,7 @@ Breakpoint 1 at 0x23002350: file /home/cjacker/work/opensource-toolchain-bouffal
 
 # Build and run openbouffalo Linux Image for BL808 CPU
 
-[OpenBouffalo](https://github.com/openbouffalo/buildroot_bouffalo) provide a 'really work' Linux OS (not just a kernel) for BL808 CPU (M1S and Ox64), with [more drivers](https://github.com/orgs/openbouffalo/projects/3) developed and integrated, refer to [BL808 Linux Driver Status](https://github.com/orgs/openbouffalo/projects/3) for more info.
+[OpenBouffalo](https://github.com/openbouffalo/buildroot_bouffalo) provide a 'really work' Linux OS (not just a kernel) for BL808 CPU (M1S and Ox64), with [more drivers](https://github.com/orgs/openbouffalo/projects/3) developed and integrated, please refer to [BL808 Linux Driver Status](https://github.com/orgs/openbouffalo/projects/3) for more info.
 
 If you want to try Linux with BL808, you should use this image instead of [bl808_linux](https://github.com/bouffalolab/bl808_linux) prototype since Bouffalo Lab have said they will not maintain their initial Linux release at the moment, It is understandable that Linux supporting is not the first goal of BL Lab. 
 
@@ -866,7 +856,7 @@ make
 
 It will download toolchains / source packages from internet, may take one or more hours to build, be patient until it built.
 
-You can stop the building process at any time by 'Ctrl-C', it will continue buiding when re-run 'make'.
+You can stop the building process at any time by 'Ctrl-C', it will continue building when re-run 'make'.
 
 After built successfully, bl808 firmwares and sdcard image will be generated in `output/images` dir. Note the m0 / d0 lowload firmwares is built with ".fw_header" (new firmware format).
 
@@ -878,7 +868,7 @@ Inside the archive you will find the following files:
 - bl808-firmware.bin - A image containing OpenSBI, Uboot and uboot dtb files.
 - sdcard-pine64_ox64_[full_]defconfig.img.xz - A xz archive containing the rootfs for the image to be flashed to the SD card, The SD card images are configured with a 1Gb Swap Partition, and will resize the rootfs partition on first boot to the full size of the SD card.
 
-I also put a copy of v1.0.1 at [openboufalo-linux-firmware](./openboufalo-linux-firmware) in this repo, and write a script to combine all firmwares, since I want to programm them by commandline and have to combine all firmwares together to get rid of using BLDevCube.
+I also put a copy of v1.0.1 at [openboufalo-linux-firmware](./openboufalo-linux-firmware) dir in this repo, and write a script to combine all firmwares, since I want to programm them from command line and have to combine all firmwares together to get rid of using BLDevCube.
 
 ## Program with bflb-iot-tool and flash a SD Card 
 
@@ -1007,6 +997,7 @@ ox64 login:
 
 When login prompt, login as 'root'.
 
+
 # Miscellaneous
 
 ## how to build and program uartjtag and dualuart firmware for Sipeed RV Debugger Plus
@@ -1112,7 +1103,6 @@ To program other firmwares for D0 of BL808 (no matter factory demos or firmwares
 ```
 ./03-program-d0-firmware.sh <firmware>
 ```
-
 
 
 <hr>
