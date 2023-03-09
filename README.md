@@ -82,8 +82,8 @@ This tutorial will try best to cover all these chips.
   + Option 1: T-Head or HLK CK-Link Lite debugger from Aliexpress (a little bit expensive)
   + Option 2: Sipeed RV Debugger Plus with [ck-link lite firmware for bl702](https://github.com/cjacker/opensource-toolchain-bouffalo-lab/raw/main/sipeed_rv_debugger_plus_factory_firmware/bl702_cklink_whole_img_v2.2.bin)
   + Option 3: Sipeed M0S Dock with [ck-link lite firmware for bl616](https://github.com/cjacker/opensource-toolchain-bouffalo-lab/raw/main/m0s_dock_cklink-lite_firmware/bl616-cklink-lite-2023-02-27.bin)
-  + Option 4: A STM32F103 bluepill with [this modified cklink-lite official firmware](https://github.com/cjacker/cklink-lite-fw-convertor)
-  + Any JTAG debugger, such as ftdi, jlink, etc, which can be supported by OpenOCD
+  + Option 4: A STM32F103 bluepill with [this modified ck-link lite official firmware](https://github.com/cjacker/cklink-lite-fw-convertor)
+  + Option 5: Any JTAG debugger, such as ftdi, jlink, etc, which can be supported by OpenOCD
 
 
 # Toolchain overview:
@@ -292,20 +292,20 @@ cd M1s_BL808_example/c906_app
 
 After built successfully, 'lvgl_demo.bin' and 'lvgl_demo.elf' should be generated at `build_out` dir.
 
-There is a warning **'mis-matched ISA version 1.0 for 'v' extension, the output version is 2.0'** when link to some prebuilt binary libraries, such as 'libblai_npu_encoder.a', you can ignore it now.
+There is a warning **'mis-matched ISA version 1.0 for 'v' extension, the output version is 2.0'** when link to some prebuilt binary libraries, such as 'libblai_npu_encoder.a', it can not fixed since 'libblai_npu_encoder.a' built with a private toolchain and it's safe to ignore it now.
 
 # Programming
 
-There are various official programming tools for BL chips:
+There are tooooo many official programming tools for BL chips:
 - BLDevCube : Official full features and general purpose GUI programming tool which support Windows / Mac and Linux. **close source.**
 - BLFlashCommand / BLFlashCube : Official CLI and GUI programming tool only designed for and integrated in 'bl_mcu_sdk' and used by `make flash`. **close source.**
 - [bflb-mcu-tool](https://pypi.org/project/bflb-mcu-tool/) : Official CLI programming tool which can support most options in BLDevCube 'MCU' page.
 - [bflb-iot-tool](https://pypi.org/project/bflb-iot-tool/) : Official CLI programming tool which can support most options in BLDevCube 'IOT' page.
 - [blisp](https://github.com/pine64/blisp) : Simple BL60x/70x programming tool development by Pine64 community.
 
-There are too many programming tools, it may be a little bit confusing. I was also confused at first.
+I know it may be a little bit confusing, I was also confused at first.
 
-Usually, it's not neccesary for you to figure out the differences between all this programming tools and to decide which one you should use. If you use bl_mcu_sdk, just'make flash' directly.
+Usually, it's not neccesary for you to figure out the differences between all this programming tools and to decide which one you should use. If you use bl_mcu_sdk, just use 'make flash' directly.
 
 **NOTE:**
 
@@ -357,7 +357,7 @@ Actually, these tools are written in Python and packaged by pyinstaller, you can
 pip install bflb-mcu-tool
 ```
 
-'bflb-iot-tool' is written in python and open source too, install is as:
+'bflb-iot-tool' is written in python and open source too, you can use the pyinstalled-packaged one released with BLDevCube or install is as:
 ```
 pip install bflb-iot-tool
 ```
@@ -390,7 +390,6 @@ In short, if devboard has 'BOOT' button, "hold BOOT button down and power it" wi
 Then you can program it with `make flash`, it will invoke 'BLFlashCommand' to program BL chips.
 
 `BLFlashCommand` read 'flash_prog_cfg.ini' as config file, please setup this file correctly.
-
 
 All demos in this repo can be programmed by 'BLFlashComand', With various demos in this repo, just type:
 
