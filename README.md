@@ -25,13 +25,11 @@ This tutorial will try best to cover all these chips.
   + [For bl_mcu_sdk](https://github.com/cjacker/opensource-toolchain-bouffalo-lab/blob/main/README.md#for-bl_mcu_sdk)
     - [T-Head RISC-V embeded gnu toolchain](https://github.com/cjacker/opensource-toolchain-bouffalo-lab/blob/main/README.md#t-head-xuantie-risc-v-embeded-gcc)
     - [T-Head RISC-V Linux toolchain](https://github.com/cjacker/opensource-toolchain-bouffalo-lab/blob/main/README.md#t-head-xuantie-risc-v-linux-gcc-optional)
-  + [For bl_iot_sdk](https://github.com/cjacker/opensource-toolchain-bouffalo-lab/blob/main/README.md#for-bl_iot_sdk)
 - [SDK](https://github.com/cjacker/opensource-toolchain-bouffalo-lab/blob/main/README.md#sdk)
   + [bl_mcu_sdk](https://github.com/cjacker/opensource-toolchain-bouffalo-lab/blob/main/README.md#bl_mcu_sdk)
     - [sdk installation](https://github.com/cjacker/opensource-toolchain-bouffalo-lab/blob/main/README.md#sdk-installation)
     - [demo projects](https://github.com/cjacker/opensource-toolchain-bouffalo-lab/blob/main/README.md#demo-project)
   + [M1s_BL808_SDK](https://github.com/cjacker/opensource-toolchain-bouffalo-lab/blob/main/README.md#m1s_bl808_sdk)
-  + [bl_iot_sdk](https://github.com/cjacker/opensource-toolchain-bouffalo-lab/blob/main/README.md#bl_iot_sdk)
 - [Programming](https://github.com/cjacker/opensource-toolchain-bouffalo-lab/blob/main/README.md#programming)
   + [programming tools installation](https://github.com/cjacker/opensource-toolchain-bouffalo-lab/blob/main/README.md#programming-tools-installation)
   + [programming](https://github.com/cjacker/opensource-toolchain-bouffalo-lab/blob/main/README.md#programming-1)
@@ -42,7 +40,6 @@ This tutorial will try best to cover all these chips.
       + [To program C906 core of BL808 for M1S Dock](https://github.com/cjacker/opensource-toolchain-bouffalo-lab/blob/main/README.md#to-program-c906-core-of-bl808-for-m1s-dock)
         - [Option 1 : with U-Disk mode (M1S Specific)](https://github.com/cjacker/opensource-toolchain-bouffalo-lab/blob/main/README.md#option-1--with-u-disk-mode-m1s-specific)
         - [Option 2 : with bflb-iot-tool from commandline](https://github.com/cjacker/opensource-toolchain-bouffalo-lab/blob/main/README.md#option-2--with-bflb-iot-tool-from-commandline)
-    - [for bl_iot_sdk](https://github.com/cjacker/opensource-toolchain-bouffalo-lab/blob/main/README.md#for-bl_iot_sdk-1)
 - [Debugging](https://github.com/cjacker/opensource-toolchain-bouffalo-lab/blob/main/README.md#debugging)
   + [With OpenOCD and JTAG debugger](https://github.com/cjacker/opensource-toolchain-bouffalo-lab/blob/main/README.md#with-openocd-and-jtag-debugger)
   + [With C-Sky debug server and CK-Link Lite](https://github.com/cjacker/opensource-toolchain-bouffalo-lab/blob/main/README.md#with-c-sky-debug-server-and-ck-link-lite)
@@ -58,13 +55,14 @@ This tutorial will try best to cover all these chips.
   + [Program with BLDevCube and flash a SD Card](https://github.com/cjacker/opensource-toolchain-bouffalo-lab/blob/main/README.md#program-with-bldevcube-and-flash-a-sd-card)
   + [Run OpenBouffalo Linux](https://github.com/cjacker/opensource-toolchain-bouffalo-lab/blob/main/README.md#run-openbouffalo-linux)
  
-- [Miscellaneous](https://github.com/cjacker/opensource-toolchain-bouffalo-lab/blob/main/README.md#misc)
+- [Miscellaneous](https://github.com/cjacker/opensource-toolchain-bouffalo-lab/blob/main/README.md#miscellaneous)
   + [Use Sipeed RV Debugger Plus as JTAG or CK-Link Lite debugger](https://github.com/cjacker/opensource-toolchain-bouffalo-lab/blob/main/README.md#how-to-build-and-program-uartjtag-and-dualuart-firmware-for-sipeed-rv-debugger-plus)
   + [Use M0S Dock as CK-Link Lite debugger](https://github.com/cjacker/opensource-toolchain-bouffalo-lab/blob/main/README.md#how-to-turn-m0s-dock-to-ck-link-lite)
   + [Sipeed M0sense programming notes](https://github.com/cjacker/opensource-toolchain-bouffalo-lab/blob/main/README.md#m0sense-board-bl702-programming-notes)
   + [How to restore factory firmware of M1S Dock](https://github.com/cjacker/opensource-toolchain-bouffalo-lab/blob/main/README.md#how-to-restore-factory-firmwares-for-m1s-dock)
 
 - [Deprecated topics]
+  + [bl_iot_sdk](#bl_iot_sdk)
   + [Build Linux kernel for BL808](https://github.com/cjacker/opensource-toolchain-bouffalo-lab/blob/main/README.md#build-linux-kernel-for-bl808)
     - [Build linux kernel](https://github.com/cjacker/opensource-toolchain-bouffalo-lab/blob/main/README.md#build-linux-kernel)
     - [Program linux kernel](https://github.com/cjacker/opensource-toolchain-bouffalo-lab/blob/main/README.md#program-linux-kernel)
@@ -184,18 +182,7 @@ and add `/opt/xuantie-riscv64-linux-toolchain/bin` to PATH env according to your
 
 Above toolchain setup is also suite for [M1s_BL808_SDK](https://github.com/sipeed/M1s_BL808_SDK).
 
-## For bl_iot_sdk
 
-**bl_iot_sdk was deprecated**
-
-You can not use above toolchains with bl_iot_sdk, bl_iot_sdk only works with SiFive GCC Toolchain. you can either use the full '[bl_iot_sdk](https://github.com/bouffalolab/bl_iot_sdk)' repo, it contains pre-built Windows / MacOSX / Linux toolchains and occupies about **14G** disk space. or use '[bl_iot_sdk_tiny](https://github.com/bouffalolab/bl_iot_sdk_tiny) and setup toolchain as : 
-
-```
-cd bl_iot_sdk_tiny
-sudo bash ./scripts/setup.sh
-```
-
-It will download the SiFive gcc toolchain from bouffalo lab's official website and setup it automatically.
 
 
 # SDK
@@ -233,7 +220,7 @@ The bl_mcu_sdk use 'cmake' and 'make' to manage whole project, use blink demos i
 ```
 demo dir
 ├── CMakeLists.txt : manage sources list, build flags and target name.
-├── flash_prog_cfg.ini : used by BLFlashCommand.
+├── flash_prog_cfg.ini : config file for BLFlashCommand.
 ├── main.c : source file(s).
 ├── Makefile : define CHIP/BOARD name, toolchain prefix, SDK PATH, etc. used to invoke the building process.
 ├── proj.conf : project specific CMAKE flags
@@ -313,39 +300,7 @@ After built successfully, 'lvgl_demo.bin' and 'lvgl_demo.elf' should be generate
 
 There is a warning **'mis-matched ISA version 1.0 for 'v' extension, the output version is 2.0'** when link to some prebuilt binary libraries, such as 'libblai_npu_encoder.a', you can ignore it now.
 
-## bl_iot_sdk
 
-**bl_iot_sdk was deprecated**
-
-Bouffalolab bl_iot_sdk support BL602 Wi-Fi/BLE Combo RISC-V based Chip and BL70X Zigbee/BLE RISC-V based Chip.
-
-The full [bl_iot_sdk](https://github.com/bouffalolab/bl_iot_sdk) will occupies 9G disk space since it contains all prebuilt toolchains for Windows / MacOSX (ARM and X86) and Linux (ARM and X86). If the bandwidth and disk space is not a issue for you, you can `git clone https://github.com/bouffalolab/bl_iot_sdk` directly, since toolchains for all supported platform included in it, it will be easy to use.
-
-I recommend use [bl_iot_sdk_tiny](https://github.com/bouffalolab/bl_iot_sdk_tiny).
-
-```
-git clone https://github.com/bouffalolab/bl_iot_sdk_tiny
-cd bl_iot_sdk_tiny
-git submodule update --init --recursive --progress
-cd components && git checkout
-cd tools && git checkout
-cd docs && git checkout
-cd customer_app && git checkout
-```
-As mentions above, bl_iot_sdk only works with SiFive GCC toolchain, you need install it as :
-
-```
-cd bl_iot_sdk_tiny
-sudo bash ./scripts/setup.sh
-```
-
-After toolchain installed, let's build the blink demo for BL602 to blink a LED connect to GPIO 5:
-```
-cd customer_app/get-start/blink
-./genromap
-```
-
-If all good, `build_out/blink.bin` will be generated.
 
 # Programming
 
@@ -552,19 +507,7 @@ bflb-iot-tool --chipname=bl808 --port=/dev/ttyUSB1 --baudrate=2000000 --firmware
 
 A script `03-program-d0-firmware.sh` provided in [m1s_dock_factory_firmware](./m1s_dock_factory_firmware), you can use this script directly to program your own D0 firmware for M1S Dock if you use 'M1s_BL808_SDK'.
 
-### for bl_iot_sdk
 
-**bl_iot_sdk was deprecated**
-
-Use `bl_iot_sdk/customer_app/get-start/blink` as example, after `build_out/blink.bin` generated as mentioned in 'SDK' section, program it to XT-BL12 devboard by :
-
-```
-bflb-iot-tool --chipname=bl602 --port=/dev/ttyUSB0 --baudrate=2000000 --firmware=build_out/blink.bin
-```
-
-Don't forget enter programming mode first by **Hold the 'D8' (GPIO8) button down, press and release 'EN' button, then release 'D8' (GPIO8) button.**
-
-After programming finished, you need repower the device to blink the LED connect to GPIO 5.
 
 ## Debugging
 
@@ -1065,7 +1008,7 @@ ox64 login:
 
 When login prompt, login as 'root'.
 
-# Misc
+# Miscellaneous
 
 ## how to build and program uartjtag and dualuart firmware for Sipeed RV Debugger Plus
 
@@ -1177,6 +1120,53 @@ To program other firmwares for D0 of BL808 (no matter factory demos or firmwares
 
 
 # Deprecated
+
+## bl_iot_sdk
+
+**bl_iot_sdk was deprecated**
+
+Bouffalolab bl_iot_sdk support BL602 Wi-Fi/BLE Combo RISC-V based Chip and BL70X Zigbee/BLE RISC-V based Chip.
+
+The full [bl_iot_sdk](https://github.com/bouffalolab/bl_iot_sdk) will occupies 9G disk space since it contains all prebuilt toolchains for Windows / MacOSX (ARM and X86) and Linux (ARM and X86). If the bandwidth and disk space is not a issue for you, you can `git clone https://github.com/bouffalolab/bl_iot_sdk` directly, since toolchains for all supported platform included in it, it will be easy to use.
+
+I recommend use [bl_iot_sdk_tiny](https://github.com/bouffalolab/bl_iot_sdk_tiny).
+
+```
+git clone https://github.com/bouffalolab/bl_iot_sdk_tiny
+cd bl_iot_sdk_tiny
+git submodule update --init --recursive --progress
+cd components && git checkout
+cd tools && git checkout
+cd docs && git checkout
+cd customer_app && git checkout
+```
+bl_iot_sdk only works with SiFive GCC Toolchain. you can either use the full '[bl_iot_sdk](https://github.com/bouffalolab/bl_iot_sdk)' repo, it contains pre-built Windows / MacOSX / Linux toolchains and occupies about **14G** disk space. or use '[bl_iot_sdk_tiny](https://github.com/bouffalolab/bl_iot_sdk_tiny) and setup toolchain as : 
+
+```
+cd bl_iot_sdk_tiny
+sudo bash ./scripts/setup.sh
+```
+
+It will download the SiFive gcc toolchain from bouffalo lab's official website and setup it automatically.
+
+After toolchain installed, let's build the blink demo for BL602 to blink a LED connect to GPIO 5:
+```
+cd customer_app/get-start/blink
+./genromap
+```
+
+If all good, `build_out/blink.bin` will be generated.
+
+Then program it to XT-BL12 devboard by :
+
+```
+bflb-iot-tool --chipname=bl602 --port=/dev/ttyUSB0 --baudrate=2000000 --firmware=build_out/blink.bin
+```
+
+Don't forget enter programming mode first by **Hold the 'D8' (GPIO8) button down, press and release 'EN' button, then release 'D8' (GPIO8) button.**
+
+After programming finished, you may need reset the device to blink the LED connect to GPIO 5.
+
 
 ## Build linux kernel for BL808
 
