@@ -1,3 +1,7 @@
+# Patch for Sipeed M0P Dock
+for Sipeed M0P Dock, the patch '[bouffalo_sdk-patch-for-m0p.patch](./bouffalo_sdk-patch-for-m0p.patch)' need to be applied to bouffalo_sdk.
+
+
 # to build:
 
 ```bash
