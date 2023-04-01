@@ -32,7 +32,7 @@ This tutorial will try best to cover all these chips.
 - [Programming](#programming)
   + [programming tools installation](#programming-tools-installation)
   + [programming](#programming-1)
-    - [for bouffalo_sdk](#for-bouffalo_sdk-1)
+    - [for bouffalo_sdk](#for-bouffalo_sdk)
     - [for M1s_BL808_SDK](#for-m1s_bl808_sdk)
       + [To program on-board BL702 of M1S Dock](#to-program-on-board-bl702-of-m1s-dock)
       + [To program E907 core of BL808 for M1S Dock](#to-program-e907-core-of-bl808-for-m1s-dock)
