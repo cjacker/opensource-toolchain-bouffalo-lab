@@ -75,6 +75,7 @@ This tutorial will try best to cover all these chips.
   + [Sipeed RV Debugger Plus](https://github.com/sipeed/RV-Debugger-BL702) : BL702, this so called "debugger" is a mini BL702 devboard actually.
   + [Sipeed M0sense](https://wiki.sipeed.com/hardware/en/maixzero/sense/maix_zero_sense.html) : BL702, M0sense is 'NOT' M0S, you can treat it as 'M0'.
   + [Sipeed M0S and M0S Dock](https://wiki.sipeed.com/hardware/en/maixzero/m0s/m0s.html) : BL616, this so called "dock" can also be a "debugger".
+  + [Sipeed M0P and M0P Dock](https://wiki.sipeed.com/hardware/zh/maixzero/m0p/m0p_dock.html): BL618, **a patch need to be applied to bouffalo_sdk for Sipeed M0P Dock.**
   + [Sipeed M1s Dock](https://wiki.sipeed.com/hardware/en/maix/m1s/m1s_module.html) or [Pine64 Ox64](https://wiki.pine64.org/wiki/Ox64) : BL808. M1s Dock is really a "dock".
   + various other devboards, for example XT-ZB1 (BL702) and XT-BL12 (BL602) devboards from Aliexpress.
 
@@ -237,6 +238,13 @@ make
 If you did not export BL_SDK_BASE env var before, an error will happen here. 
 
 Please look at the contents of 'Makefile' to figure out how to define 'CHIP', 'BOARD' etc.
+
+### NOTE for Sipeed M0P BL618
+
+You should use bl616 demos With Sipeed M0P Bl618, but [a patch](./blink_bl616/bouffalo_sdk-patch-for-m0p.patch) need to be applied to bouffalo_sdk first.
+```
+cat ./blink_bl616/bouffalo_sdk-patch-for-m0p.patch |patch -p1 -d <where your bouffalo_sdk>
+```
 
 ### Triple Core Demo for BL808
 
