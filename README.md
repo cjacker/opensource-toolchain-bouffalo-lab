@@ -25,14 +25,14 @@ This tutorial will try best to cover all these chips.
   + [T-Head RISC-V embeded gnu toolchain](#t-head-xuantie-risc-v-embeded-gcc)
   + [T-Head RISC-V Linux toolchain](#t-head-xuantie-risc-v-linux-gcc-optional)
 - [SDK](#sdk)
-  + [bl_mcu_sdk](#bl_mcu_sdk)
+  + [bouffalo_sdk](#bouffalo_sdk)
     - [sdk installation](#sdk-installation)
     - [demo projects](#demo-project)
   + [M1s_BL808_SDK](#m1s_bl808_sdk)
 - [Programming](#programming)
   + [programming tools installation](#programming-tools-installation)
   + [programming](#programming-1)
-    - [for bl_mcu_sdk](#for-bl_mcu_sdk-1)
+    - [for bouffalo_sdk](#for-bouffalo_sdk-1)
     - [for M1s_BL808_SDK](#for-m1s_bl808_sdk)
       + [To program on-board BL702 of M1S Dock](#to-program-on-board-bl702-of-m1s-dock)
       + [To program E907 core of BL808 for M1S Dock](#to-program-e907-core-of-bl808-for-m1s-dock)
@@ -91,12 +91,12 @@ This tutorial will try best to cover all these chips.
   + RISC-V 32/64 bit embed toolchain 
   + RISC-V linux toolchain
 - SDK : 
-  + [bl mcu sdk](https://github.com/bouffalolab/bl_mcu_sdk)
+  + [bouffalo sdk](https://github.com/bouffalolab/bouffalo_sdk)
   + [M1s_BL808_SDK](https://github.com/sipeed/M1s_BL808_SDK) and [M1s_BL808_example](https://github.com/sipeed/M1s_BL808_example), it is Sipeed M1s Dock specific.
 - Programming tool : 
   + BLDevCube Linux Version. **close source**
-  + BLFlashCommand (integrated in bl_mcu_sdk). **close source**
-  + BLFlashCube (gui version of BLFlashCommand, integrated in bl_mcu_sdk). **close source**
+  + BLFlashCommand (integrated in bouffalo_sdk). **close source**
+  + BLFlashCube (gui version of BLFlashCommand, integrated in bouffalo_sdk). **close source**
   + bflb-iot-tool
   + bflb-mcu-tool
   + blisp and various
@@ -106,21 +106,26 @@ This tutorial will try best to cover all these chips.
 
 **NOTE 1:**
 
-**About the difference between bl_iot_sdk & bl_mcu_sdk**, there is an answer [here](https://bbs.bouffalolab.com/d/124-difference-bl-iot-sdk-bl-mcu-sdk).
+**About the difference between bl_iot_sdk & bouffalo_sdk**, there is an answer [here](https://bbs.bouffalolab.com/d/124-difference-bl-iot-sdk-bl-mcu-sdk).
 
 <img src="./misc/diff-iot-mcu.png" width="60%" />
 
-The answer is not very clear. In short, bl_iot_sdk focused on IOT-related programming, such as Wi-Fi/BLE, etc, and bl_mcu_sdk didn't have these support before. 
+The answer is not very clear. In short, bl_iot_sdk focused on IOT-related programming, such as Wi-Fi/BLE, etc, and bouffalo_sdk didn't have these support before. 
 
-According to the comment from upstream : https://github.com/bouffalolab/bl_mcu_sdk/issues/115
+According to the comment from upstream : https://github.com/bouffalolab/bouffalo_sdk/issues/115
 
 > Iot sdk does not update at all, please use mcu sdk (it will be named bouffalosdk)
 
-**You should use bl_mcu_sdk or M1s_BL808_SDK for Sipeed M1s Dock from now.**
+**You should use bouffalo_sdk or M1s_BL808_SDK for Sipeed M1s Dock from now.**
 
 **NOTE 2:**
 
 BLFlashCommand and BLFlashCube is close source software up to now. If this is a issue for you, you should know that. 
+
+**NOTE 3:**
+
+`bouffalo_sdk` was originally called `bl_mcu_sdk` and changed to `bouffalo_sdk` recently.
+
 
 # Compiler
 
@@ -128,7 +133,7 @@ Not like usual RISC-V based MCU (such as CH32V / GD32V, etc), the toolchain setu
 
 For BL60x/70x, it's 32bit RISC-V MCU, as usual RISC-V MCU, it require RISC-V toolchain to generate 32bit object code. 
 
-For BL616, bl_mcu_sdk set `-mtune` to `e907`, it can not supported by general RISC-V toolchain, you had to use T-Head RISC-V toolchain. Or you need change the `-mtune=e907` to `-mtune=size` and will lost some optimizations when compiling.
+For BL616, bouffalo_sdk set `-mtune` to `e907`, it can not supported by general RISC-V toolchain, you had to use T-Head RISC-V toolchain. Or you need change the `-mtune=e907` to `-mtune=size` and will lost some optimizations when compiling.
 
 For BL808, it has 3 different cores: two 32bit RISCV-V MCU (M0 / LP), one general purpose 64bit CPU (D0, based on T-Head C906). Since D0 core has MMU, that means it can run baremetal or run [Linux OS](#build-and-run-openbouffalo-linux-image-for-bl808-cpu), it need setup 3 toolchains:
 
@@ -181,9 +186,9 @@ Above toolchain setup is also suite for [M1s_BL808_SDK](https://github.com/sipee
 
 # SDK
 
-## bl_mcu_sdk
+## bouffalo_sdk
 
-[bl mcu sdk](https://github.com/bouffalolab/bl_mcu_sdk) is a MCU software development kit provided by Bouffalo Lab, supports all the series of Bouffalo chips, include but not limited to:
+[bouffalo_sdk](https://github.com/bouffalolab/bouffalo_sdk) is a MCU software development kit provided by Bouffalo Lab, supports all the series of Bouffalo chips, include but not limited to:
 
 - BL602/BL604
 - BL702/BL704/BL706
@@ -192,24 +197,24 @@ Above toolchain setup is also suite for [M1s_BL808_SDK](https://github.com/sipee
 
 ### SDK installation
 
-The installation of bl_mcu_sdk is very simple, just git clone and put it somewhere, for example:
+The installation of bouffalo_sdk is very simple, just git clone and put it somewhere, for example:
 
 ```
-git clone https://github.com/bouffalolab/bl_mcu_sdk.git
+git clone https://github.com/bouffalolab/bouffalo_sdk.git
 # move it to home dir if not, you should have write permission to sdk dir.
-mv bl_mcu_sdk <where your home dir>
+mv bouffalo_sdk <where your home dir>
 ```
 
 And, set env to export BL_SDK_BASE:
 ```
-export BL_SDK_BASE=<path to>/bl_mcu_sdk
+export BL_SDK_BASE=<path to>/bouffalo_sdk
 ```
 
-'Out of SDK' building will use this env var to find bl_mcu_sdk.
+'Out of SDK' building will use this env var to find bouffalo_sdk.
 
 ### Demo project
 
-The bl_mcu_sdk use 'cmake' and 'make' to manage whole project, use blink demos in this repo as example, the dir structure looks like:
+The bouffalo_sdk use 'cmake' and 'make' to manage whole project, use blink demos in this repo as example, the dir structure looks like:
 
 ```
 demo dir
@@ -237,12 +242,12 @@ Please look at the contents of 'Makefile' to figure out how to define 'CHIP', 'B
 
 Here use 'triplecore_bl808' example with Sipeed M1S Dock, This demo illustrates how to enable all 3 cores of BL808 and receive hello world msg from M0 / D0 and LP cores.
 
-The patch to enable LP core I made for bl_mcu_sdk was [already upstreamed](https://github.com/bouffalolab/bl_mcu_sdk/commit/ab70ccc953269bb4a35279000beea9013da5ac1c).
+The patch to enable LP core I made for bouffalo_sdk was [already upstreamed](https://github.com/bouffalolab/bouffalo_sdk/commit/ab70ccc953269bb4a35279000beea9013da5ac1c).
 
-I put `bl_mcu_sdk` at home dir, if you not, change this line in `Makefile` to your sdk path:
+I put `bouffalo_sdk` at home dir, if you not, change this line in `Makefile` to your sdk path:
 
 ```
-make -C $@ BL_SDK_BASE=$(HOME)/bl_mcu_sdk
+make -C $@ BL_SDK_BASE=$(HOME)/bouffalo_sdk
 ```
 
 And type `make` directly.
@@ -256,14 +261,14 @@ After build successfully, these three firmware files will be generated:
 For more infomation about how to use this tripple core demo, please refer to : https://github.com/cjacker/opensource-toolchain-bouffalo-lab/tree/main/triplecore_bl808
 
 
-If you want to start a new project, you can either copy these demos from this repo, or use various demos in `bl_mcu_sdk/examples` dir.
+If you want to start a new project, you can either copy these demos from this repo, or use various demos in `bouffalo_sdk/examples` dir.
 
 
 ## M1s_BL808_SDK
 
-For Sipeed M1s, you can use bl_mcu_sdk without any problem. But Sipeed [M1s_BL808_SDK](https://github.com/sipeed/M1s_BL808_SDK) provide more features that bl_mcu_sdk lacks now, for example, [M1s_BL808_SDK](https://github.com/sipeed/M1s_BL808_SDK) has freertos / wifi / video / blai support that bl_mcu_sdk don't have (for now). And the project management styles of bl_mcu_sdk and M1s_BL808_SDK also differ a lot.
+For Sipeed M1s, you can use bouffalo_sdk without any problem. But Sipeed [M1s_BL808_SDK](https://github.com/sipeed/M1s_BL808_SDK) provide more features that bouffalo_sdk lacks now, for example, [M1s_BL808_SDK](https://github.com/sipeed/M1s_BL808_SDK) has freertos / wifi / video / blai support that bouffalo_sdk don't have (for now). And the project management styles of bouffalo_sdk and M1s_BL808_SDK also differ a lot.
 
-**For Sipeed M1s dock, It's more convenient to use 'M1s_BL808_SDK' instead of 'bl_mcu_sdk'.**
+**For Sipeed M1s dock, It's more convenient to use 'M1s_BL808_SDK' instead of 'bouffalo_sdk'.**
 
 The installation of M1s_BL808_SDK is very simple:
 
@@ -298,20 +303,20 @@ There is a warning **'mis-matched ISA version 1.0 for 'v' extension, the output 
 
 There are tooooo many official programming tools for BL chips:
 - BLDevCube : Official full features and general purpose GUI programming tool which support Windows / Mac and Linux. **close source.**
-- BLFlashCommand / BLFlashCube : Official CLI and GUI programming tool only designed for and integrated in 'bl_mcu_sdk' and used by `make flash`. **close source.**
+- BLFlashCommand / BLFlashCube : Official CLI and GUI programming tool only designed for and integrated in 'bouffalo_sdk' and used by `make flash`. **close source.**
 - [bflb-mcu-tool](https://pypi.org/project/bflb-mcu-tool/) : Official CLI programming tool which can support most options in BLDevCube 'MCU' page.
 - [bflb-iot-tool](https://pypi.org/project/bflb-iot-tool/) : Official CLI programming tool which can support most options in BLDevCube 'IOT' page.
 - [blisp](https://github.com/pine64/blisp) : Simple BL60x/70x programming tool development by Pine64 community.
 
 I know it may be a little bit confusing, I was also confused at first.
 
-Usually, it's not neccesary for you to figure out the differences between all this programming tools and to decide which one you should use. If you use bl_mcu_sdk, just use 'make flash' directly.
+Usually, it's not neccesary for you to figure out the differences between all this programming tools and to decide which one you should use. If you use bouffalo_sdk, just use 'make flash' directly.
 
 **NOTE:**
 
 **You can ignore this note**
 
-After `BLFlashCommand` commited into official bl_mcu_sdk repo and with this commit [[update][board] enable fw header for new flash tool ](https://github.com/bouffalolab/bl_mcu_sdk/commit/e70e482d2129411f34208d1184b4710074c67777):
+After `BLFlashCommand` commited into official bouffalo_sdk repo and with this commit [[update][board] enable fw header for new flash tool ](https://github.com/bouffalolab/bouffalo_sdk/commit/e70e482d2129411f34208d1184b4710074c67777):
 
 - **The good news:** It has a program tool integrated, 'make flash' works.
 - **The bad news:** It alter the firmware format, prepend 4k bootheader, and not compatible with other opensource tools include official 'bflb-mcu-tool'.
@@ -377,7 +382,7 @@ cmake --build .
 
 ## Programming
 
-### for bl_mcu_sdk
+### for bouffalo_sdk
 
 To program BL chips, you need enter UART programming mode first.
 
@@ -397,9 +402,9 @@ All demos in this repo can be programmed by 'BLFlashComand', With various demos 
 make flash
 ```
 
-You may need to set 'BL_SDK_BASE' to your bl_mcu_sdk dir if using 'out sdk build'. 
+You may need to set 'BL_SDK_BASE' to your bouffalo_sdk dir if using 'out sdk build'. 
 
-**Update Mar 7 2023 : Finally I decided to remove all contents about how to use 'bflb-mcu-tool' / 'bflb-iot-tool' and 'blisp', it make things complex, the best way to program firmwares built with bl_mcu_sdk is 'make flash'. it is more simpler for beginners.**
+**Update Mar 7 2023 : Finally I decided to remove all contents about how to use 'bflb-mcu-tool' / 'bflb-iot-tool' and 'blisp', it make things complex, the best way to program firmwares built with bouffalo_sdk is 'make flash'. it is more simpler for beginners.**
 
 
 ### for M1s_BL808_SDK
@@ -509,7 +514,7 @@ The pinmaps of JTAG or CK-Link are same as below table:
 
 ## With OpenOCD and JTAG debugger
 
-There are some target config for OpenOCD in `bl_mcu_sdk`, you can use them directly:
+There are some target config for OpenOCD in `bouffalo_sdk`, you can use them directly:
 - tools/openocd/target/tgt_602.cfg : for BL602
 - tools/openocd/target/tgt_702.cfg : for BL702 
 - tools/openocd/target/tgt_e907.cfg : for E907 core of BL808
