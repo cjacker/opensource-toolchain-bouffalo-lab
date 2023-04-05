@@ -125,7 +125,7 @@ BLFlashCommand and BLFlashCube is close source software up to now. If this is a 
 
 **NOTE 3:**
 
-`bouffalo_sdk` was originally called `bl_mcu_sdk` and changed to `bouffalo_sdk` recently.
+`bouffalo_sdk` was originally named as `bl_mcu_sdk` and renamed to `bouffalo_sdk` recently.
 
 
 # Compiler
@@ -241,7 +241,7 @@ Please look at the contents of 'Makefile' to figure out how to define 'CHIP', 'B
 
 ### NOTE for Sipeed M0P BL618
 
-You should use bl616 demos With Sipeed M0P Bl618, but [a patch](./blink_bl616/bouffalo_sdk-patch-for-m0p.patch) need to be applied to bouffalo_sdk first.
+You should use bl616 demos With Sipeed M0P Dock (BL618), but [a patch](./blink_bl616/bouffalo_sdk-patch-for-m0p.patch) need to be applied to bouffalo_sdk first.
 ```
 cat ./blink_bl616/bouffalo_sdk-patch-for-m0p.patch |patch -p1 -d <where your bouffalo_sdk>
 ```
