@@ -16,3 +16,8 @@
   + `bflb-mcu-tool --chipname=bl702 --interface=uart --port=/dev/ttyACM0 --baudrate=2000000 --firmware=usb2uartjtag_bl702.bin`
 - It is built from https://github.com/sipeed/RV-Debugger-BL702/tree/main/firmware
 
+'ft2232d.cfg':
+- OpenOCD cfg file for usb2uartjtag firmware.
+
+'ft2232h.cfg':
+- OpenOCD cfg file for usb2dualuart firmware.
